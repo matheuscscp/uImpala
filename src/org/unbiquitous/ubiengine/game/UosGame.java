@@ -6,7 +6,7 @@ import java.lang.Object;
 import java.util.Map;
 
 import org.unbiquitous.ubiengine.game.state.QuitException;
-import org.unbiquitous.ubiengine.game.state.State;
+import org.unbiquitous.ubiengine.game.state.GameState;
 import org.unbiquitous.ubiengine.resources.input.InputManager;
 import org.unbiquitous.ubiengine.resources.input.KeyboardReceptionDriverManager;
 import org.unbiquitous.ubiengine.resources.network.NetworkManager;
@@ -23,7 +23,7 @@ import org.unbiquitous.uos.core.ontologyEngine.api.OntologyUndeploy;
 
 public abstract class UosGame implements UosApplication {
   private SingletonContainer singletons = new SingletonContainer();
-  private State state;
+  private GameState state;
   
   public abstract Map<String, Object> getSettings();
   
@@ -56,7 +56,7 @@ public abstract class UosGame implements UosApplication {
     
     // loading first state
     try {
-      state = (State) Class.forName((String) initial_settings.get("first_state"))
+      state = (GameState) Class.forName((String) initial_settings.get("first_state"))
       .getDeclaredConstructor(SingletonContainer.class)
       .newInstance(singletons);
     }

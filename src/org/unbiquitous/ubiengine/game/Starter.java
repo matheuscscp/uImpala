@@ -1,12 +1,11 @@
 package org.unbiquitous.ubiengine.game;
 
-import java.lang.Object;
 import java.util.ListResourceBundle;
 
 import org.unbiquitous.ubiengine.resources.input.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.resources.network.NetworkNO;
 import org.unbiquitous.uos.core.UOS;
-import org.unbiquitous.uos.network.socket.radar.EthernetPingRadar;
+import org.unbiquitous.uos.network.socket.radar.PingRadar;
 
 public final class Starter {
   public static void startGame(final String game) {
@@ -15,7 +14,7 @@ public final class Starter {
         protected Object[][] getContents() {
           return new Object[][] {
             {"ubiquitos.connectionManager", NetworkNO.class.getName()},
-            {"ubiquitos.radar", EthernetPingRadar.class.getName()},
+            {"ubiquitos.radar", PingRadar.class.getName()},
             {"ubiquitos.eth.tcp.port", "14984"},
             {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
             {"ubiquitos.uos.deviceName","compDevice"},

@@ -4,7 +4,7 @@ import org.unbiquitous.ubiengine.resources.video.texture.Sprite;
 import org.unbiquitous.ubiengine.util.linearalgebra.Vector3;
 
 
-public class Object {
+public class GameObject {
   public void update() {
     
   }

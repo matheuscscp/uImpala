@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
-import org.unbiquitous.uos.core.applicationManager.UOSMessageContext;
+import org.unbiquitous.uos.core.applicationManager.CallContext;
 import org.unbiquitous.uos.core.driverManager.UosDriver;
 import org.unbiquitous.uos.core.messageEngine.dataType.UpDriver;
 import org.unbiquitous.uos.core.messageEngine.dataType.UpService.ParameterType;
@@ -43,31 +43,31 @@ public class KeyboardReceptionDriver implements UosDriver {
   }
 
   public void requestAccepted(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, UOSMessageContext messageContext) {
+      ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.requestAccepted();
   }
 
   public void keyboardClosed(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, UOSMessageContext messageContext) {
+      ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyboardClosed();
   }
 
   public void keyDown(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, UOSMessageContext messageContext) {
+      ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyDown(((Integer) serviceCall.getParameter("unicodeChar")).intValue());
   }
 
   public void keyUp(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, UOSMessageContext messageContext) {
+      ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyUp(((Integer) serviceCall.getParameter("unicodeChar")).intValue());
   }
 
   public void setManager(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, UOSMessageContext messageContext) {
+      ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager == null)
       manager = (KeyboardReceptionDriverManager) serviceCall.getParameter("manager");
   }
