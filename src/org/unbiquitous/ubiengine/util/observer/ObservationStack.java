@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
  * 
  * @author Matheus
  */
-public final class Stack {
+public final class ObservationStack {
   private int level = 0;
   private SubjectDevice subject = new SubjectDevice(this, "push", "pop");
   

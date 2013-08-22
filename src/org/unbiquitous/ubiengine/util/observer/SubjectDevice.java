@@ -2,9 +2,11 @@ package org.unbiquitous.ubiengine.util.observer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,7 +22,7 @@ public final class SubjectDevice {
     private Object observer;
     private Method handler;
     
-    public Observation(Stack stack, Object observer, Method handler) {
+    public Observation(ObservationStack stack, Object observer, Method handler) {
       if (stack != null)
         this.level = stack.getLevel();
       this.observer = observer;
@@ -28,7 +30,7 @@ public final class SubjectDevice {
       this.handler.setAccessible(true);
     }
     
-    protected void notifyEvent(Stack stack, org.unbiquitous.ubiengine.util.observer.Event event) {
+    protected void notifyEvent(ObservationStack stack, org.unbiquitous.ubiengine.util.observer.Event event) {
       if (stack != null) {
         if (level != stack.getLevel())
           return;
@@ -77,7 +79,7 @@ public final class SubjectDevice {
   private HashMap<String, EventObservations> events = new HashMap<String, EventObservations>();
   
   // Stack reference
-  private Stack stack;
+  private ObservationStack stack;
   
   // ===========================================================================
   // SubjectDevice methods
@@ -87,7 +89,7 @@ public final class SubjectDevice {
    * @param stack Stack reference to block stacked observations. Pass null to ignore observer stack.
    * @param events String array of all event types that this subject will broadcast.
    */
-  public SubjectDevice(Stack stack, String... events) {
+  public SubjectDevice(ObservationStack stack, String... events) {
     if (events.length == 0)
       throw new Error("Trying to create subject without events");
     
@@ -100,7 +102,7 @@ public final class SubjectDevice {
   }
   
   // Constructor to clone subject devices.
-  private SubjectDevice(Stack stack) {
+  private SubjectDevice(ObservationStack stack) {
     this.stack = stack;
   }
   
@@ -115,6 +117,34 @@ public final class SubjectDevice {
     }
     
     return other;
+  }
+  
+  /** Creates an ArrayList with all events this device broadcasts. */
+  public List<String> listEvents() {
+    List<String> events = new ArrayList<String>();
+    
+    Iterator<?> it = this.events.entrySet().iterator();
+    while (it.hasNext()) {
+      Map.Entry<?, ?> entry = (Map.Entry<?, ?>) it.next();
+      events.add((String) entry.getKey());
+    }
+    
+    return events;
+  }
+  
+  /**
+   * Method to add new events to this device.
+   * 
+   * @param events String array with all new events.
+   */
+  public void addEvents(String... events) {
+    if (events == null)
+      return;
+    
+    for (String event : events) {
+      if (event != null)
+        this.events.put(event, new EventObservations());
+    }
   }
   
   /**

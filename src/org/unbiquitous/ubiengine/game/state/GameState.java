@@ -1,12 +1,12 @@
 package org.unbiquitous.ubiengine.game.state;
 
-import org.unbiquitous.ubiengine.util.SingletonContainer;
+import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 public abstract class GameState {
-  protected SingletonContainer singletons;
+  protected ComponentContainer components;
   
-  public GameState(SingletonContainer singletons) {
-    this.singletons = singletons;
+  public GameState(ComponentContainer components) {
+    this.components = components;
   }
   
   public abstract void input();

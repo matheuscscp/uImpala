@@ -8,83 +8,66 @@ import java.util.Map;
 import org.unbiquitous.ubiengine.game.state.QuitException;
 import org.unbiquitous.ubiengine.game.state.GameState;
 import org.unbiquitous.ubiengine.resources.input.InputManager;
-import org.unbiquitous.ubiengine.resources.input.KeyboardReceptionDriverManager;
-import org.unbiquitous.ubiengine.resources.network.NetworkManager;
 import org.unbiquitous.ubiengine.resources.time.DeltaTime;
 import org.unbiquitous.ubiengine.resources.video.Screen;
-import org.unbiquitous.ubiengine.util.SingletonContainer;
-import org.unbiquitous.ubiengine.util.observer.Stack;
+import org.unbiquitous.ubiengine.util.ComponentContainer;
+import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.applicationManager.UosApplication;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyDeploy;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyStart;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyUndeploy;
 
-
 public abstract class UosGame implements UosApplication {
-  private SingletonContainer singletons = new SingletonContainer();
+  private ComponentContainer components = new ComponentContainer();
   private GameState state;
   
   public abstract Map<String, Object> getSettings();
-  
-  public void init(OntologyDeploy ontology, String appId) {
-    // DeltaTime singleton
+
+  private void init(Gateway gateway) {
+    // Gateway component
+    components.put(Gateway.class, gateway);
+    
+    // DeltaTime component
     DeltaTime deltatime = new DeltaTime();
-    singletons.put(DeltaTime.class, deltatime);
+    components.put(DeltaTime.class, deltatime);
 
-    // Settings singleton
+    // Settings component
     Settings initial_settings = new Settings(getSettings());
-    singletons.put(Settings.class, initial_settings);
+    components.put(Settings.class, initial_settings);
 
-    // Screen singleton
-    singletons.put(Screen.class, new Screen(
+    // Screen component
+    components.put(Screen.class, new Screen(
         (String) initial_settings.get("window_title"),
         ((Integer) initial_settings.get("window_width")).intValue(),
         ((Integer) initial_settings.get("window_height")).intValue(),
         deltatime
     ));
 
-    // observer.Stack singleton
-    Stack observer_stack = new Stack();
-    singletons.put(Stack.class, observer_stack);
+    // ObservationStack component
+    ObservationStack observer_stack = new ObservationStack();
+    components.put(ObservationStack.class, observer_stack);
 
-    // InputManager singleton
-    singletons.put(InputManager.class, new InputManager(singletons));
+    // InputManager component
+    components.put(InputManager.class, new InputManager(components));
 
-    // NetworkManager singleton
-    singletons.put(NetworkManager.class, new NetworkManager());
-    
     // loading first state
     try {
       state = (GameState) Class.forName((String) initial_settings.get("first_state"))
-      .getDeclaredConstructor(SingletonContainer.class)
-      .newInstance(singletons);
+      .getDeclaredConstructor(ComponentContainer.class)
+      .newInstance(components);
     }
     catch (Throwable e) {
       throw new Error(e);
     }
   }
   
-  public void tearDown(OntologyUndeploy ontology) {
-    
-  }
-  
-  public void start(Gateway gateway, OntologyStart ontology) {
+  private void run() {
     try {
-      // Gateway singleton
-      singletons.put(Gateway.class, gateway);
-      
-      DeltaTime deltatime = singletons.get(DeltaTime.class);
-      NetworkManager network_manager = singletons.get(NetworkManager.class);
-      
-      // Network initialization with Gateway singleton
-      network_manager.setGateway(gateway);
-      network_manager.setApplicationName((String) singletons.get(Settings.class).get("window_title"));
-      KeyboardReceptionDriverManager.init(singletons.get(InputManager.class), gateway);
+      DeltaTime deltatime = components.get(DeltaTime.class);
       
       while (true) {
         deltatime.start();
-        network_manager.update();
         input();
         update();
         render();
@@ -99,12 +82,8 @@ public abstract class UosGame implements UosApplication {
     }
   }
   
-  public void stop() {
-    
-  }
-  
   private void input() throws Throwable {
-    singletons.get(InputManager.class).update();
+    components.get(InputManager.class).update();
     state.input();
   }
   
@@ -114,6 +93,23 @@ public abstract class UosGame implements UosApplication {
   
   private void render() throws Throwable {
     state.render();
-    singletons.get(Screen.class).update();
+    components.get(Screen.class).update();
+  }
+  
+  public void init(OntologyDeploy ontology, String appId) {
+    
+  }
+  
+  public void tearDown(OntologyUndeploy ontology) {
+    
+  }
+  
+  public void start(Gateway gateway, OntologyStart ontology) {
+    init(gateway);
+    run();
+  }
+  
+  public void stop() {
+    
   }
 }

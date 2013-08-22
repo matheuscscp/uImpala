@@ -2,7 +2,7 @@ package org.unbiquitous.ubiengine.game;
 
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.resources.input.KeyboardReceptionDriver;
+import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.resources.network.NetworkNO;
 import org.unbiquitous.uos.core.UOS;
 import org.unbiquitous.uos.network.socket.radar.PingRadar;

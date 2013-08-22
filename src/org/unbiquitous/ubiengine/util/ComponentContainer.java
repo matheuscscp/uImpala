@@ -2,7 +2,7 @@ package org.unbiquitous.ubiengine.util;
 
 import java.util.HashMap;
 
-public final class SingletonContainer {
+public final class ComponentContainer {
   private HashMap<Class<?>, Object> singletons = new HashMap<Class<?>, Object>();
   
   @SuppressWarnings("unchecked")

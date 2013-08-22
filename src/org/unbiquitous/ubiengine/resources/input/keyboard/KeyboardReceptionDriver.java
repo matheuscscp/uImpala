@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.resources.input;
+package org.unbiquitous.ubiengine.resources.input.keyboard;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,25 +45,31 @@ public class KeyboardReceptionDriver implements UosDriver {
   public void requestAccepted(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
-      manager.requestAccepted();
+      manager.requestAccepted(messageContext.getCallerDevice().getNetworkDeviceName());
   }
 
   public void keyboardClosed(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
-      manager.keyboardClosed();
+      manager.keyboardClosed(messageContext.getCallerDevice().getNetworkDeviceName());
   }
 
   public void keyDown(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
-      manager.keyDown(((Integer) serviceCall.getParameter("unicodeChar")).intValue());
+      manager.keyDown(
+        messageContext.getCallerDevice().getNetworkDeviceName(),
+        ((Integer) serviceCall.getParameter("unicodeChar")).intValue()
+      );
   }
 
   public void keyUp(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
-      manager.keyUp(((Integer) serviceCall.getParameter("unicodeChar")).intValue());
+      manager.keyUp(
+        messageContext.getCallerDevice().getNetworkDeviceName(),
+        ((Integer) serviceCall.getParameter("unicodeChar")).intValue()
+      );
   }
 
   public void setManager(ServiceCall serviceCall,
