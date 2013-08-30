@@ -21,10 +21,16 @@ public class KeyboardReceptionDriver implements UosDriver {
   public UpDriver getDriver() {
     UpDriver driver = new UpDriver(RECEPTION_DRIVER);
 
-    driver.addService("requestAccepted");
-    driver.addService("keyboardClosed");
-    driver.addService("keyDown").addParameter("unicodeChar", ParameterType.MANDATORY);
-    driver.addService("keyUp").addParameter("unicodeChar", ParameterType.MANDATORY);
+    driver.addService("requestAccepted")
+    .addParameter("transmitter_device", ParameterType.MANDATORY);
+    driver.addService("keyboardClosed")
+    .addParameter("transmitter_device", ParameterType.MANDATORY);
+    driver.addService("keyDown")
+    .addParameter("transmitter_device", ParameterType.MANDATORY)
+    .addParameter("unicode_char", ParameterType.MANDATORY);
+    driver.addService("keyUp")
+    .addParameter("transmitter_device", ParameterType.MANDATORY)
+    .addParameter("unicode_char", ParameterType.MANDATORY);
     driver.addService("setManager").addParameter("manager", ParameterType.MANDATORY);
     
     return driver;
@@ -45,21 +51,21 @@ public class KeyboardReceptionDriver implements UosDriver {
   public void requestAccepted(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
-      manager.requestAccepted(messageContext.getCallerDevice().getNetworkDeviceName());
+      manager.requestAccepted(serviceCall.getParameterString("transmitter_device"));
   }
 
   public void keyboardClosed(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
-      manager.keyboardClosed(messageContext.getCallerDevice().getNetworkDeviceName());
+      manager.keyboardClosed(serviceCall.getParameterString("transmitter_device"));
   }
 
   public void keyDown(ServiceCall serviceCall,
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyDown(
-        messageContext.getCallerDevice().getNetworkDeviceName(),
-        ((Integer) serviceCall.getParameter("unicodeChar")).intValue()
+        serviceCall.getParameterString("transmitter_device"),
+        ((Integer) serviceCall.getParameter("unicode_char")).intValue()
       );
   }
 
@@ -67,8 +73,8 @@ public class KeyboardReceptionDriver implements UosDriver {
       ServiceResponse serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyUp(
-        messageContext.getCallerDevice().getNetworkDeviceName(),
-        ((Integer) serviceCall.getParameter("unicodeChar")).intValue()
+        serviceCall.getParameterString("transmitter_device"),
+        ((Integer) serviceCall.getParameter("unicode_char")).intValue()
       );
   }
 

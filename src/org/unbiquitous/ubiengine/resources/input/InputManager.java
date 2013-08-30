@@ -1,29 +1,76 @@
 package org.unbiquitous.ubiengine.resources.input;
 
-import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardManager;
-import org.unbiquitous.ubiengine.resources.input.mouse.MouseManager;
-import org.unbiquitous.ubiengine.util.ComponentContainer;
+import java.lang.reflect.Method;
 
-public final class InputManager {
+import org.unbiquitous.ubiengine.util.observer.Event;
+import org.unbiquitous.ubiengine.util.observer.MissingEventType;
+import org.unbiquitous.ubiengine.util.observer.ObservationStack;
+import org.unbiquitous.ubiengine.util.observer.Subject;
+import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
-  private KeyboardManager keyboard_manager;
-  private MouseManager mouse_manager;
+public abstract class InputManager implements Subject {
+
+  public static final class DeviceEvent extends Event {
+
+    private InputDevice input_device;
+    
+    public DeviceEvent(String event, InputDevice input_device) {
+      super(event);
+      this.input_device = input_device;
+    }
+    
+    public InputDevice getDevice() {
+      return input_device;
+    }
+  }
+
+  public static String NEWDEVICE  = "NEWDEVICE";
+  public static String DEVICEDOWN = "DEVICEDOWN";
   
-  public InputManager(ComponentContainer components) {
-    keyboard_manager = new KeyboardManager(components);
-    mouse_manager = new MouseManager(components);
+  protected SubjectDevice subject;
+  
+  public InputManager(ObservationStack observation_stack) {
+    subject = new SubjectDevice(observation_stack, NEWDEVICE);
   }
   
-  public KeyboardManager getKeyboardManager() {
-    return keyboard_manager;
+  public void connect(String event_type, Method handler)
+      throws MissingEventType {
+    subject.connect(event_type, handler);
+  }
+
+  public void connect(String event_type, Object observer, Method handler)
+      throws MissingEventType {
+    subject.connect(event_type, observer, handler);
+  }
+
+  public void disconnect(Method handler) {
+    subject.disconnect(handler);
+  }
+
+  public void disconnect(String event_type, Method handler)
+      throws MissingEventType {
+    subject.disconnect(event_type, handler);
+  }
+
+  public void disconnect(Object observer) {
+    subject.disconnect(observer);
+  }
+
+  public void disconnect(String event_type, Object observer)
+      throws MissingEventType {
+    subject.disconnect(event_type, observer);
   }
   
-  public MouseManager getMouseManager() {
-    return mouse_manager;
+  protected void broadcastNewDevice(InputDevice input_device) throws Throwable {
+    subject.broadcast(new DeviceEvent(NEWDEVICE, input_device));
   }
   
-  public void update() throws Throwable {
-    keyboard_manager.update();
-    mouse_manager.update();
+  protected void broadcastDeviceDown(InputDevice input_device) throws Throwable {
+    subject.broadcast(new DeviceEvent(DEVICEDOWN, input_device));
   }
+  
+  public abstract void externalRequestAccepted(String transmitter_device);
+  public abstract void externalDeviceClosed(String transmitter_device);
+  public abstract void sendRequest(InputDevice input_device);
+  public abstract boolean isDevicePlugged(InputDevice input_device);
 }

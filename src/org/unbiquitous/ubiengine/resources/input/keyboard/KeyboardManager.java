@@ -2,155 +2,170 @@ package org.unbiquitous.ubiengine.resources.input.keyboard;
 
 import java.awt.event.KeyListener;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 
+import org.unbiquitous.json.JSONException;
 import org.unbiquitous.ubiengine.game.Settings;
+import org.unbiquitous.ubiengine.resources.input.InputDevice;
+import org.unbiquitous.ubiengine.resources.input.InputManager;
 import org.unbiquitous.ubiengine.resources.video.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
+import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;
+import org.unbiquitous.uos.core.driverManager.DriverData;
+import org.unbiquitous.uos.core.messageEngine.dataType.UpDevice;
+import org.unbiquitous.uos.core.messageEngine.dataType.json.JSONDevice;
 
-public final class KeyboardManager implements KeyListener {
+public final class KeyboardManager extends InputManager implements KeyListener {
 
-  private KeyboardDevice keyboard;
-  private HashMap<String, KeyboardDevice> external_keyboards = new HashMap<String, KeyboardDevice>();
+  private static final class DeviceTuple {
+    public boolean plugged = false;
+    public UpDevice uos_device;
+    public KeyboardDevice engine_device;
+    
+    public DeviceTuple(UpDevice uos_device, ObservationStack observation_stack) {
+      this.uos_device = uos_device;
+      engine_device = new KeyboardDevice(observation_stack);
+    }
+  }
+  
+  private KeyboardDevice main_keyboard;
+  private HashMap<String, DeviceTuple> keyboards = new HashMap<String, DeviceTuple>();
   private ObservationStack observation_stack;
   private Gateway gateway;
-  private String application_name;
+  private Queue<String> down_devices = new LinkedList<String>();
+  private Map<String, Object> request_map;
   
   public KeyboardManager(ComponentContainer components) {
+    super(components.get(ObservationStack.class));
+    
     observation_stack = components.get(ObservationStack.class);
     gateway = components.get(Gateway.class);
-    application_name = (String) components.get(Settings.class).get("window_title");
     
-    keyboard = new KeyboardDevice(observation_stack);
+    main_keyboard = new KeyboardDevice(observation_stack);
     components.get(Screen.class).addKeyListener(this);
+    
     KeyboardReceptionDriverManager.init(this, gateway);
-  }
-  
-  public KeyboardDevice getKeyboard() {
-    return keyboard;
-  }
-  
-  public KeyboardDevice newExternalKeyboard() {
-    KeyboardDevice new_keyboard = null;
     
-    // find a new device
-    Iterator<?> it = external_keyboards.entrySet().iterator();
-    while (it.hasNext()) {
-      KeyboardDevice device = (KeyboardDevice) ((Map.Entry<?, ?>) it.next()).getValue();
-      if (device == null) {
-        new_keyboard = new KeyboardDevice(observation_stack);
-        break;
-      }
+    request_map = new HashMap<String, Object>();
+    try {
+      request_map.put("receiver_device", new JSONDevice(gateway.getCurrentDevice()));
+    } catch (JSONException e) {
     }
-    
-    return new_keyboard;
+    request_map.put("application_name", (String) components.get(Settings.class).get("window_title"));
+  }
+  
+  public KeyboardDevice getMainKeyboard() {
+    return main_keyboard;
   }
   
   public void update() throws Throwable {
-    keyboard.update();
+    updateDeviceList();
+    
+    // updating down devices
+    while (!down_devices.isEmpty())
+      broadcastDeviceDown(keyboards.remove(down_devices.poll()).engine_device);
+    
+    main_keyboard.update();
     
     // updating external keyboards
-    Iterator<?> it = external_keyboards.entrySet().iterator();
-    while (it.hasNext()) {
-      KeyboardDevice device = (KeyboardDevice) ((Map.Entry<?, ?>) it.next()).getValue();
-      if (device != null)
-        device.update();
-    }
-    
-    updateDeviceList();
+    Iterator<?> it = keyboards.entrySet().iterator();
+    while (it.hasNext())
+      ((DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue()).engine_device.update();
   }
-
-  private void updateDeviceList() {
-    
-    
-    
-    /*
-    if (gateway == null)
-      return;
-    
+  
+  private void updateDeviceList() throws Throwable {
+    // get all the transmission drivers in the smart space
     List<DriverData> current_drivers = gateway.listDrivers(KeyboardReceptionDriver.TRANSMISSION_DRIVER);
     if (current_drivers == null) {
-      old_devices = new ArrayList<UpDevice>();
+      // clear device list
+      Iterator<?> it = keyboards.entrySet().iterator();
+      while (it.hasNext())
+        down_devices.add((String) ((Map.Entry<?, ?>) it.next()).getKey());
+      
       return;
     }
     
-    List<UpDevice> current_devices = new ArrayList<UpDevice>();
-    List<UpDevice> new_devices = new ArrayList<UpDevice>();
-    
-    // get current devices
-    for (DriverData driver : current_drivers)
-      current_devices.add(driver.getDevice());
-    
-    // find new devices
-    for (UpDevice current_device : current_devices) {
-      int i = 0;
-      while (i < old_devices.size()) {
-        if (old_devices.get(i).getName().equals(current_device.getName()))
-          break;
-        else
-          ++i;
-      }
-      if (i == old_devices.size())
-        new_devices.add(current_device);
-    }
-    
-    // call service for new devices
-    Map<String, Object> map = new HashMap<String, Object>();
-    map.put("device_name", gateway.getCurrentDevice().getName());
-    map.put("application_name", application_name);
-    for (UpDevice device : new_devices) {
-      try {
-        gateway.callService(device, "receiveRequest", KeyboardReceptionDriver.TRANSMISSION_DRIVER, null, null, map);
-      } catch (ServiceCallException e) {
+    // get drivers devices
+    HashSet<String> current_devices = new HashSet<String>();
+    for (DriverData driver : current_drivers) {
+      UpDevice device = driver.getDevice();
+      String device_name = device.getName();
+      current_devices.add(device_name);
+      
+      // checking for new devices
+      if (keyboards.get(device_name) == null) {
+        DeviceTuple device_tuple = new DeviceTuple(device, observation_stack);
+        keyboards.put(device_name, device_tuple);
+        broadcastNewDevice(device_tuple.engine_device);
       }
     }
     
-    old_devices = current_devices;
-    */
+    // checking for down devices
+    Iterator<?> it = keyboards.entrySet().iterator();
+    while (it.hasNext()) {
+      String device = (String) ((Map.Entry<?, ?>) it.next()).getKey();
+      if (!current_devices.contains(device))
+        down_devices.add(device);
+    }
   }
   
   public void keyPressed(java.awt.event.KeyEvent e) {
-    keyboard.forceKeyPressed(e.getKeyCode());
+    main_keyboard.forceKeyPressed(e.getKeyCode());
   }
 
   public void keyReleased(java.awt.event.KeyEvent e) {
-    keyboard.forceKeyReleased(e.getKeyCode());
+    main_keyboard.forceKeyReleased(e.getKeyCode());
   }
 
   public void keyTyped(java.awt.event.KeyEvent e) {
     
   }
   
-  public void externalRequestAccepted(String device_name) {
-    
+  public void externalRequestAccepted(String transmitter_device) {
+    keyboards.get(transmitter_device).plugged = true;
   }
   
-  public void externalKeyboardClosed(String device_name) {
-    try {
-      KeyboardDevice keyboard_device = external_keyboards.get(device_name);
-      if (keyboard_device != null)
-        keyboard_device.unplug();
-    } catch (Throwable e) {
-      e.printStackTrace();
+  public void externalDeviceClosed(String transmitter_device) {
+    down_devices.add(transmitter_device);
+  }
+  
+  public void externalKeyDown(String transmitter_device, int unicode_char) {
+    keyboards.get(transmitter_device).engine_device.forceKeyPressed(unicode_char);
+  }
+  
+  public void externalKeyUp(String transmitter_device, int unicode_char) {
+    keyboards.get(transmitter_device).engine_device.forceKeyReleased(unicode_char);
+  }
+
+  public void sendRequest(InputDevice input_device) {
+    Iterator<?> it = keyboards.entrySet().iterator();
+    while (it.hasNext()) {
+      DeviceTuple device_tuple = (DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue();
+      if ((InputDevice) device_tuple.engine_device == input_device) {
+        try {
+          gateway.callService(device_tuple.uos_device, "receiveRequest", KeyboardReceptionDriver.TRANSMISSION_DRIVER, null, null, request_map);
+        } catch (ServiceCallException e) {
+          e.printStackTrace();
+        }
+        return;
+      }
     }
   }
   
-  public void externalKeyDown(String device_name, int unicodeChar) {
-    KeyboardDevice keyboard_device = external_keyboards.get(device_name);
-    if (keyboard_device != null) {
-      if (keyboard_device.isPlugged())
-        keyboard_device.forceKeyPressed(unicodeChar);
+  public boolean isDevicePlugged(InputDevice input_device) {
+    Iterator<?> it = keyboards.entrySet().iterator();
+    while (it.hasNext()) {
+      DeviceTuple device_tuple = (DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue();
+      if ((InputDevice) device_tuple.engine_device == input_device)
+        return device_tuple.plugged;
     }
-  }
-  
-  public void externalKeyUp(String device_name, int unicodeChar) {
-    KeyboardDevice keyboard_device = external_keyboards.get(device_name);
-    if (keyboard_device != null) {
-      if (keyboard_device.isPlugged())
-        keyboard_device.forceKeyReleased(unicodeChar);
-    }
+    return false;
   }
 }

@@ -1,13 +1,11 @@
-//TODO implementar o texto de fps
-
 package org.unbiquitous.ubiengine.game;
 
-import java.lang.Object;
 import java.util.Map;
 
-import org.unbiquitous.ubiengine.game.state.QuitException;
 import org.unbiquitous.ubiengine.game.state.GameState;
-import org.unbiquitous.ubiengine.resources.input.InputManager;
+import org.unbiquitous.ubiengine.game.state.QuitException;
+import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardManager;
+import org.unbiquitous.ubiengine.resources.input.mouse.MouseManager;
 import org.unbiquitous.ubiengine.resources.time.DeltaTime;
 import org.unbiquitous.ubiengine.resources.video.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
@@ -48,8 +46,11 @@ public abstract class UosGame implements UosApplication {
     ObservationStack observer_stack = new ObservationStack();
     components.put(ObservationStack.class, observer_stack);
 
-    // InputManager component
-    components.put(InputManager.class, new InputManager(components));
+    // KeyboardManager component
+    components.put(KeyboardManager.class, new KeyboardManager(components));
+
+    // MouseManager component
+    components.put(MouseManager.class, new MouseManager(components));
 
     // loading first state
     try {
@@ -83,7 +84,8 @@ public abstract class UosGame implements UosApplication {
   }
   
   private void input() throws Throwable {
-    components.get(InputManager.class).update();
+    components.get(KeyboardManager.class).update();
+    components.get(MouseManager.class).update();
     state.input();
   }
   

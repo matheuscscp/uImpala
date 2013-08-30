@@ -147,6 +147,11 @@ public final class SubjectDevice {
     }
   }
   
+  /** Method to get the ObservationStack this device is associated. */
+  public ObservationStack getObservationStack() {
+    return stack;
+  }
+  
   /**
    * The subject object owner of this device must call this method to broadcast its events.
    * This method iterates over all the observations of the event type, calling the handler method.

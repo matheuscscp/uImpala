@@ -23,23 +23,23 @@ public class KeyboardReceptionDriverManager {
     this.keyboard_manager = keyboard_manager;
   }
   
-  public void requestAccepted(String device_name) {
+  public void requestAccepted(String transmitter_device) {
     if (keyboard_manager != null)
-      keyboard_manager.externalRequestAccepted(device_name);
+      keyboard_manager.externalRequestAccepted(transmitter_device);
   }
   
-  public void keyboardClosed(String device_name) {
+  public void keyboardClosed(String transmitter_device) {
     if (keyboard_manager != null)
-      keyboard_manager.externalKeyboardClosed(device_name);
+      keyboard_manager.externalDeviceClosed(transmitter_device);
   }
   
-  public void keyDown(String device_name, int unicodeChar) {
+  public void keyDown(String transmitter_device, int unicode_char) {
     if (keyboard_manager != null)
-      keyboard_manager.externalKeyDown(device_name, unicodeChar);
+      keyboard_manager.externalKeyDown(transmitter_device, unicode_char);
   }
   
-  public void keyUp(String device_name, int unicodeChar) {
+  public void keyUp(String transmitter_device, int unicode_char) {
     if (keyboard_manager != null)
-      keyboard_manager.externalKeyUp(device_name, unicodeChar);
+      keyboard_manager.externalKeyUp(transmitter_device, unicode_char);
   }
 }
