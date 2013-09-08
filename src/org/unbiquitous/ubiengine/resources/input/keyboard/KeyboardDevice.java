@@ -34,7 +34,7 @@ public class KeyboardDevice extends InputDevice {
     subject = new SubjectDevice(KEYDOWN, KEYUP);
   }
   
-  public void update() throws Throwable {
+  public void update() throws Exception {
     KeyEvent event;
     while (!events.isEmpty()) {
       event = events.poll();

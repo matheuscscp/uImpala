@@ -19,7 +19,6 @@ public final class DeltaTime {
         Thread.sleep(diff);
       }
       catch (InterruptedException e) {
-        throw new RuntimeException(e);
       }
       real_DT = System.currentTimeMillis() - begin;
     }

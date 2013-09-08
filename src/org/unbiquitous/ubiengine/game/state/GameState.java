@@ -18,39 +18,43 @@ public abstract class GameState {
 
   protected ComponentContainer components;
   
-  public GameState(ComponentContainer components, GameStateArgs args) throws NoSuchMethodException {
+  public GameState(ComponentContainer components, GameStateArgs args) {
     this.components = components;
     
     KeyboardManager keyboard_manager = components.get(KeyboardManager.class);
     MouseManager mouse_manager = components.get(MouseManager.class);
     
-    // connecting the game state to the KeyboardManager.NEWDEVICE event
-    keyboard_manager.connect(
-      KeyboardManager.NEWDEVICE,
-      this,
-      GameState.class.getDeclaredMethod("handleNewKeyboardDevice", Event.class)
-    );
-
-    // connecting the game state to the KeyboardManager.DEVICEDOWN event
-    keyboard_manager.connect(
-      KeyboardManager.DEVICEDOWN,
-      this,
-      GameState.class.getDeclaredMethod("handleKeyboardDeviceDown", Event.class)
-    );
-
-    // connecting the game state to the MouseManager.NEWDEVICE event
-    mouse_manager.connect(
-      MouseManager.NEWDEVICE,
-      this,
-      GameState.class.getDeclaredMethod("handleNewMouseDevice", Event.class)
-    );
-    
-    // connecting the game state to the MouseManager.DEVICEDOWN event
-    mouse_manager.connect(
-      MouseManager.DEVICEDOWN,
-      this,
-      GameState.class.getDeclaredMethod("handleMouseDeviceDown", Event.class)
-    );
+    try {
+      // connecting the game state to the KeyboardManager.NEWDEVICE event
+      keyboard_manager.connect(
+        KeyboardManager.NEWDEVICE,
+        this,
+        GameState.class.getDeclaredMethod("handleNewKeyboardDevice", Event.class)
+      );
+  
+      // connecting the game state to the KeyboardManager.DEVICEDOWN event
+      keyboard_manager.connect(
+        KeyboardManager.DEVICEDOWN,
+        this,
+        GameState.class.getDeclaredMethod("handleKeyboardDeviceDown", Event.class)
+      );
+  
+      // connecting the game state to the MouseManager.NEWDEVICE event
+      mouse_manager.connect(
+        MouseManager.NEWDEVICE,
+        this,
+        GameState.class.getDeclaredMethod("handleNewMouseDevice", Event.class)
+      );
+      
+      // connecting the game state to the MouseManager.DEVICEDOWN event
+      mouse_manager.connect(
+        MouseManager.DEVICEDOWN,
+        this,
+        GameState.class.getDeclaredMethod("handleMouseDeviceDown", Event.class)
+      );
+    }
+    catch (NoSuchMethodException e) {
+    }
     
     init(args);
   }
@@ -62,7 +66,7 @@ public abstract class GameState {
     components.get(MouseManager.class).disconnect(this);
   }
   
-  public void handleUnstack(GameStateArgs args) throws ChangeState {
+  public void handleUnstack(GameStateArgs args) throws Exception {
     
   }
 

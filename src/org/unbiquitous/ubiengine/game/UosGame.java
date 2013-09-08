@@ -1,15 +1,14 @@
 package org.unbiquitous.ubiengine.game;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 
-import org.unbiquitous.ubiengine.game.state.GameStateArgs;
+import org.unbiquitous.ubiengine.game.state.ChangeState;
 import org.unbiquitous.ubiengine.game.state.CommonChange;
 import org.unbiquitous.ubiengine.game.state.GameState;
+import org.unbiquitous.ubiengine.game.state.GameStateArgs;
 import org.unbiquitous.ubiengine.game.state.GameStateList;
-import org.unbiquitous.ubiengine.game.state.ChangeState;
 import org.unbiquitous.ubiengine.game.state.StackUpChange;
 import org.unbiquitous.ubiengine.game.state.UnstackChange;
 import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardManager;
@@ -33,7 +32,7 @@ public abstract class UosGame implements UosApplication {
   
   public abstract Map<String, Object> getSettings();
 
-  private void init(Gateway gateway) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
+  private void init(Gateway gateway) throws Exception {
     // Gateway component
     components.put(Gateway.class, gateway);
     
@@ -79,7 +78,7 @@ public abstract class UosGame implements UosApplication {
     screen.close();
   }
   
-  private void run() throws Throwable {
+  private void run() {
     boolean quit = false;
     
     while (!quit) {
@@ -90,6 +89,7 @@ public abstract class UosGame implements UosApplication {
         render();
         deltatime.finish();
         
+        // checking quit
         if (screen.quit_requested) {
           quit = true;
           
@@ -102,25 +102,36 @@ public abstract class UosGame implements UosApplication {
             screen.quit_requested = false;
         }
       }
-      catch (ChangeState e) {
-        handleStateChange(e);
+      // checking state changes
+      catch (Exception e) {
+        if (e instanceof ChangeState)
+          handleChangeState((ChangeState) e);
+        else
+          throw new Error(e);
       }
     }
   }
   
-  private void handleStateChange(ChangeState cs) throws InvocationTargetException, IllegalAccessException, Throwable {
+  private void handleChangeState(ChangeState cs) {
     if (cs instanceof StackUpChange) {
       states.addFirst(((StackUpChange) cs).newInstance(components));
     }
     else if (cs instanceof UnstackChange) {
       if (states.size() == 1)
         throw new Error("Trying to drop all game states");
+      
       states.removeFirst().delete();
+      
+      // top game state handle unstack
       try {
         states.element().handleUnstack(cs.getArgs());
       }
-      catch (ChangeState e) {
-        handleStateChange(e);
+      // checking new state changes
+      catch (Exception e) {
+        if (e instanceof ChangeState)
+          handleChangeState((ChangeState) e);
+        else
+          throw new Error(e);
       }
     }
     else if (cs instanceof CommonChange) {
@@ -129,7 +140,7 @@ public abstract class UosGame implements UosApplication {
     }
   }
   
-  private void input() throws Throwable {
+  private void input() throws Exception {
     keyboard_manager.update();
     mouse_manager.update();
     
@@ -138,13 +149,13 @@ public abstract class UosGame implements UosApplication {
       it.next().input();
   }
   
-  private void update() throws Throwable {
+  private void update() throws Exception {
     Iterator<GameState> it = states.iterator();
     while (it.hasNext())
       it.next().update();
   }
   
-  private void render() throws Throwable {
+  private void render() throws Exception {
     Iterator<GameState> it = states.iterator();
     while (it.hasNext())
       it.next().render();

@@ -59,7 +59,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     return main_keyboard;
   }
   
-  public void update() throws Throwable {
+  public void update() throws Exception {
     updateDeviceList();
     
     // updating down devices
@@ -74,7 +74,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
       ((DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue()).engine_device.update();
   }
   
-  private void updateDeviceList() throws Throwable {
+  private void updateDeviceList() throws Exception {
     // get all the transmission drivers in the smart space
     List<DriverData> current_drivers = gateway.listDrivers(KeyboardReceptionDriver.TRANSMISSION_DRIVER);
     if (current_drivers == null) {

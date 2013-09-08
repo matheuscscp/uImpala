@@ -1,7 +1,5 @@
 package org.unbiquitous.ubiengine.game.state;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 @SuppressWarnings("serial")
@@ -14,10 +12,13 @@ public class StackUpChange extends ChangeState {
     this.state = state;
   }
   
-  public GameState newInstance(ComponentContainer components) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException {
+  public GameState newInstance(ComponentContainer components) {
     GameState game_state = null;
     if (state != null) {
-      game_state = (GameState) state.getDeclaredConstructor(ComponentContainer.class, GameStateArgs.class).newInstance(components, args);
+      try {
+        game_state = (GameState) state.getDeclaredConstructor(ComponentContainer.class, GameStateArgs.class).newInstance(components, args);
+      } catch (Exception e) {
+      }
       state = null;
     }
     return game_state;

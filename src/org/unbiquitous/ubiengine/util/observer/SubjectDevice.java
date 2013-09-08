@@ -27,12 +27,12 @@ public final class SubjectDevice {
       this.handler.setAccessible(true);
     }
     
-    protected void notifyEvent(Event event) {
+    protected void notifyEvent(Event event) throws InvocationTargetException {
       try {
         handler.invoke(observer, event);
       } catch (IllegalAccessException e) {
       } catch (IllegalArgumentException e) {
-      } catch (InvocationTargetException e) {
+        throw new Error("Observer callback \"" + handler.toString() + "\" argument exception");
       }
     }
     
@@ -126,17 +126,17 @@ public final class SubjectDevice {
    * This method iterates over all the observations of the event type, calling the handler method.
    * 
    * @param event Event to broadcast.
-   * @throws Throwable
+   * @throws Exception
    */
-  public void broadcast(Event event) throws Throwable {
+  public void broadcast(Event event) throws Exception {
     String event_type = event.getType();
     EventObservations subj_event = events.get(event_type);
     
     if (subj_event == null)
-      throw new Error("Event \"" + event_type + "\" not found");
+      throw new Error("Event type \"" + event_type + "\" missing");
     
     if (subj_event.broadcasting)
-      throw new Error("Trying to recursively broadcast an event of type: " + event.getType());
+      throw new Error("Trying to recursively broadcast an event of type: \"" + event_type + "\"");
     
     subj_event.broadcasting = true;
     try {
@@ -144,9 +144,9 @@ public final class SubjectDevice {
       while (it.hasNext() && !event.stop)
         it.next().notifyEvent(event);
     }
-    catch (Throwable e) {
+    catch (InvocationTargetException e) {
       subj_event.broadcasting = false;
-      throw e;
+      throw (Exception) e.getCause();
     }
     subj_event.broadcasting = false;
   }
@@ -163,7 +163,7 @@ public final class SubjectDevice {
     
     EventObservations event = events.get(event_type);
     if (event == null)
-      throw new Error("Event type missing");
+      throw new Error("Event type \"" + event_type + "\" missing");
     event.observers.add(new Observation(null, handler));
   }
   
@@ -183,7 +183,7 @@ public final class SubjectDevice {
     
     EventObservations event = events.get(event_type);
     if (event == null)
-      throw new Error("Event type missing");
+      throw new Error("Event type \"" + event_type + "\" missing");
     event.observers.add(new Observation(observer, handler));
   }
   

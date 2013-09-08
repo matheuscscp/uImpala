@@ -27,7 +27,7 @@ public final class Logger {
       pw.close();
     }
     catch (java.io.IOException e2) {
-      
+      e2.printStackTrace();
     }
     finally {
       e.printStackTrace();

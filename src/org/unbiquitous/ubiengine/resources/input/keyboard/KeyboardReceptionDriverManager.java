@@ -16,6 +16,7 @@ public class KeyboardReceptionDriverManager {
     try {
       gateway.callService(gateway.getCurrentDevice(), "setManager", KeyboardReceptionDriver.RECEPTION_DRIVER, null, null, map);
     } catch (ServiceCallException e) {
+      e.printStackTrace();
     }
   }
   

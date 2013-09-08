@@ -55,11 +55,11 @@ public abstract class InputManager implements Subject {
     subject.disconnect(event_type, observer);
   }
   
-  protected void broadcastNewDevice(InputDevice input_device) throws Throwable {
+  protected void broadcastNewDevice(InputDevice input_device) throws Exception {
     subject.broadcast(new DeviceEvent(NEWDEVICE, input_device));
   }
   
-  protected void broadcastDeviceDown(InputDevice input_device) throws Throwable {
+  protected void broadcastDeviceDown(InputDevice input_device) throws Exception {
     subject.broadcast(new DeviceEvent(DEVICEDOWN, input_device));
   }
   

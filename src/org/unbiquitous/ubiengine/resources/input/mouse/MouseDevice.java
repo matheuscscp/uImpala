@@ -55,7 +55,7 @@ public class MouseDevice extends InputDevice {
     subject = new SubjectDevice(MOUSEDOWN, MOUSEUP, MOUSEMOTION);
   }
 
-  public void update() throws Throwable {
+  public void update() throws Exception {
     while (!events.isEmpty()) {
       Event event = events.poll();
       if (event instanceof MouseEvent)

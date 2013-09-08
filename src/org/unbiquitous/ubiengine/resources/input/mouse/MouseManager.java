@@ -23,7 +23,7 @@ public final class MouseManager extends InputManager implements MouseListener, M
     return main_mouse;
   }
   
-  public void update() throws Throwable {
+  public void update() throws Exception {
     main_mouse.update();
   }
 
