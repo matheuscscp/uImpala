@@ -49,7 +49,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     
     request_map = new HashMap<String, Object>();
     try {
-      request_map.put("receiver_device", gateway.getCurrentDevice().toJSON());
+      request_map.put("receiver_device", gateway.getCurrentDevice().toJSON().toString());
     } catch (JSONException e) {
     }
     request_map.put("application_name", (String) components.get(GameSettings.class).get("window_title"));

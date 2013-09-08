@@ -121,12 +121,13 @@ public final class Screen implements WindowListener {
     
     screen.setPreferredSize(new Dimension(width, height));
     window.add(screen);
+    window.setResizable(false);
     window.pack();
     window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
     window.setLocationRelativeTo(null);
     window.setTitle(title);
-    window.setVisible(true);
     window.addWindowListener(this);
+    window.setVisible(true);
   }
   
   public void close() {
@@ -141,6 +142,11 @@ public final class Screen implements WindowListener {
       screen.renderText(String.format("FPS: %.2f", deltatime.getRealFPS()), null, 950, 15, false);
     
     screen.repaint();
+  }
+
+  public void setSize(int w, int h) {
+    screen.setPreferredSize(new Dimension(w, h));
+    window.pack();
   }
   
   public void showFPS(boolean enable) {
