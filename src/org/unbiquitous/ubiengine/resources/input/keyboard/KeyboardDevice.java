@@ -6,7 +6,6 @@ import java.util.Queue;
 
 import org.unbiquitous.ubiengine.resources.input.InputDevice;
 import org.unbiquitous.ubiengine.util.observer.Event;
-import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
 public class KeyboardDevice extends InputDevice {
@@ -31,8 +30,8 @@ public class KeyboardDevice extends InputDevice {
   
   private HashMap<Integer, Boolean> key_pressed = new HashMap<Integer, Boolean>();
 
-  public KeyboardDevice(ObservationStack observation_stack) {
-    subject = new SubjectDevice(observation_stack, KEYDOWN, KEYUP);
+  public KeyboardDevice() {
+    subject = new SubjectDevice(KEYDOWN, KEYUP);
   }
   
   public void update() throws Throwable {

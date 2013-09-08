@@ -18,24 +18,16 @@ public final class SubjectDevice {
   // An observation holds data about the observer object, or method,
   // and makes the notification.
   private static final class Observation {
-    private Integer level;
     private Object observer;
     private Method handler;
     
-    public Observation(ObservationStack stack, Object observer, Method handler) {
-      if (stack != null)
-        this.level = stack.getLevel();
+    public Observation(Object observer, Method handler) {
       this.observer = observer;
       this.handler = handler;
       this.handler.setAccessible(true);
     }
     
-    protected void notifyEvent(ObservationStack stack, org.unbiquitous.ubiengine.util.observer.Event event) {
-      if (stack != null) {
-        if (level != stack.getLevel())
-          return;
-      }
-      
+    protected void notifyEvent(Event event) {
       try {
         handler.invoke(observer, event);
       } catch (IllegalAccessException e) {
@@ -46,9 +38,8 @@ public final class SubjectDevice {
     
     public boolean equals(Object obj) {
       Observation other = (Observation) obj;
-      return ((level == other.level) &&
-              ((observer == null && other.observer == null && handler.equals(other.handler)) ||
-               (observer != null && observer == other.observer)));
+      return ((observer == null && other.observer == null && handler.equals(other.handler)) ||
+              (observer != null && observer == other.observer));
     }
     
     public int hashCode() {
@@ -78,22 +69,25 @@ public final class SubjectDevice {
   // Container for EventObservations by Event types.
   private HashMap<String, EventObservations> events = new HashMap<String, EventObservations>();
   
-  // Stack reference
-  private ObservationStack stack;
-  
   // ===========================================================================
   // SubjectDevice methods
   // ===========================================================================
   
   /**
-   * @param stack Stack reference to block stacked observations. Pass null to ignore observer stack.
    * @param events String array of all event types that this subject will broadcast.
    */
-  public SubjectDevice(ObservationStack stack, String... events) {
-    if (events.length == 0)
-      throw new Error("Trying to create subject without events");
-    
-    this.stack = stack;
+  public SubjectDevice(String... events) {
+    addEvents(events);
+  }
+  
+  /**
+   * Method to add new events to this device.
+   * 
+   * @param events String array with all new events.
+   */
+  public void addEvents(String... events) {
+    if (events == null)
+      return;
     
     for (String event : events) {
       if (event != null)
@@ -101,14 +95,9 @@ public final class SubjectDevice {
     }
   }
   
-  // Constructor to clone subject devices.
-  private SubjectDevice(ObservationStack stack) {
-    this.stack = stack;
-  }
-  
-  /** Creates a new Subject by cloning all observations. */
+  /** Creates a new SubjectDevice by cloning all observations. */
   public SubjectDevice clone() {
-    SubjectDevice other = new SubjectDevice(stack);
+    SubjectDevice other = new SubjectDevice();
     
     Iterator<?> it = events.entrySet().iterator();
     while (it.hasNext()) {
@@ -133,34 +122,18 @@ public final class SubjectDevice {
   }
   
   /**
-   * Method to add new events to this device.
-   * 
-   * @param events String array with all new events.
-   */
-  public void addEvents(String... events) {
-    if (events == null)
-      return;
-    
-    for (String event : events) {
-      if (event != null)
-        this.events.put(event, new EventObservations());
-    }
-  }
-  
-  /** Method to get the ObservationStack this device is associated. */
-  public ObservationStack getObservationStack() {
-    return stack;
-  }
-  
-  /**
    * The subject object owner of this device must call this method to broadcast its events.
    * This method iterates over all the observations of the event type, calling the handler method.
    * 
    * @param event Event to broadcast.
    * @throws Throwable
    */
-  public void broadcast(org.unbiquitous.ubiengine.util.observer.Event event) throws Throwable {
-    EventObservations subj_event = events.get(event.getType());
+  public void broadcast(Event event) throws Throwable {
+    String event_type = event.getType();
+    EventObservations subj_event = events.get(event_type);
+    
+    if (subj_event == null)
+      throw new Error("Event \"" + event_type + "\" not found");
     
     if (subj_event.broadcasting)
       throw new Error("Trying to recursively broadcast an event of type: " + event.getType());
@@ -169,7 +142,7 @@ public final class SubjectDevice {
     try {
       Iterator<Observation> it = subj_event.observers.iterator();
       while (it.hasNext() && !event.stop)
-        it.next().notifyEvent(stack, event);
+        it.next().notifyEvent(event);
     }
     catch (Throwable e) {
       subj_event.broadcasting = false;
@@ -183,16 +156,15 @@ public final class SubjectDevice {
    * 
    * @param event_type String that describes the event type.
    * @param handler Observer method.
-   * @throws MissingEventType
    */
-  public void connect(String event_type, Method handler) throws MissingEventType {
+  public void connect(String event_type, Method handler) {
     if (handler == null)
-      return;
+      throw new Error("Cannot connect null handler");
     
     EventObservations event = events.get(event_type);
     if (event == null)
-      throw new MissingEventType();
-    event.observers.add(new Observation(stack, null, handler));
+      throw new Error("Event type missing");
+    event.observers.add(new Observation(null, handler));
   }
   
   /**
@@ -201,77 +173,65 @@ public final class SubjectDevice {
    * @param event_type String to describe the event type.
    * @param observer Observer object.
    * @param handler Handler method for notification.
-   * @throws MissingEventType
    */
-  public void connect(String event_type, Object observer, Method handler) throws MissingEventType {
-    if (observer == null || handler == null)
-      return;
+  public void connect(String event_type, Object observer, Method handler) {
+    if (observer == null)
+      throw new Error("Cannot connect null observer");
+    
+    if (handler == null)
+      throw new Error("Cannot connect null handler");
     
     EventObservations event = events.get(event_type);
     if (event == null)
-      throw new MissingEventType();
-    event.observers.add(new Observation(stack, observer, handler));
+      throw new Error("Event type missing");
+    event.observers.add(new Observation(observer, handler));
   }
   
   /**
-   * Destroys all observations of the observer method in the current stack level.
+   * Destroys all observations of the observer method.
    * 
    * @param handler Observer method.
    */
   public void disconnect(Method handler) {
-    if (handler == null)
-      return;
-    
     Iterator<?> it = events.entrySet().iterator();
     while (it.hasNext())
-      ((EventObservations) ((Map.Entry<?, ?>) it.next()).getValue()).observers.remove(new Observation(stack, null, handler));
+      ((EventObservations) ((Map.Entry<?, ?>) it.next()).getValue()).observers.remove(new Observation(null, handler));
   }
   
   /**
-   * Destroy the observation of the observer method for the given event type in the current stack level.
+   * Destroy the observation of the observer method for the given event type.
    * 
    * @param event_type String to describe the event type.
    * @param handler Observer method.
-   * @throws MissingEventType
    */
-  public void disconnect(String event_type, Method handler) throws MissingEventType {
-    if (event_type == null || handler == null)
-      return;
-    
+  public void disconnect(String event_type, Method handler) {
     EventObservations event = events.get(event_type);
     if (event == null)
-      throw new MissingEventType();
-    event.observers.remove(new Observation(stack, null, handler));
+      return;
+    event.observers.remove(new Observation(null, handler));
   }
   
   /**
-   * Destroys all observations of the observer object in the current stack level.
+   * Destroys all observations of the observer object.
    * 
    * @param observer Observer object.
    */
   public void disconnect(Object observer) {
-    if (observer == null)
-      return;
-    
     Iterator<?> it = events.entrySet().iterator();
     while (it.hasNext())
-      ((EventObservations) ((Map.Entry<?, ?>) it.next()).getValue()).observers.remove(new Observation(stack, observer, null));
+      ((EventObservations) ((Map.Entry<?, ?>) it.next()).getValue()).observers.remove(new Observation(observer, null));
   }
   
   /**
-   * Destroy the observation of the observer object for the given event type in the current stack level.
+   * Destroy the observation of the observer object for the given event type.
    * 
    * @param event_type String to describe the event type.
    * @param observer Observer object.
-   * @throws MissingEventType
    */
-  public void disconnect(String event_type, Object observer) throws MissingEventType {
-    if (event_type == null || observer == null)
-      return;
-    
+  public void disconnect(String event_type, Object observer) {
     EventObservations event = events.get(event_type);
     if (event == null)
-      throw new MissingEventType();
-    event.observers.remove(new Observation(stack, observer, null));
+      return;
+    event.observers.remove(new Observation(observer, null));
   }
 }

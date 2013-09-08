@@ -1,15 +1,22 @@
 package org.unbiquitous.ubiengine.game;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map;
 
+import org.unbiquitous.ubiengine.game.state.GameStateArgs;
+import org.unbiquitous.ubiengine.game.state.CommonChange;
 import org.unbiquitous.ubiengine.game.state.GameState;
-import org.unbiquitous.ubiengine.game.state.QuitException;
+import org.unbiquitous.ubiengine.game.state.GameStateList;
+import org.unbiquitous.ubiengine.game.state.ChangeState;
+import org.unbiquitous.ubiengine.game.state.StackUpChange;
+import org.unbiquitous.ubiengine.game.state.UnstackChange;
 import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardManager;
 import org.unbiquitous.ubiengine.resources.input.mouse.MouseManager;
 import org.unbiquitous.ubiengine.resources.time.DeltaTime;
 import org.unbiquitous.ubiengine.resources.video.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
-import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.applicationManager.UosApplication;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyDeploy;
@@ -18,84 +25,131 @@ import org.unbiquitous.uos.core.ontologyEngine.api.OntologyUndeploy;
 
 public abstract class UosGame implements UosApplication {
   private ComponentContainer components = new ComponentContainer();
-  private GameState state;
+  private LinkedList<GameState> states;
+  private Screen screen;
+  private DeltaTime deltatime;
+  private KeyboardManager keyboard_manager;
+  private MouseManager mouse_manager;
   
   public abstract Map<String, Object> getSettings();
 
-  private void init(Gateway gateway) {
+  private void init(Gateway gateway) throws InstantiationException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, ClassNotFoundException {
     // Gateway component
     components.put(Gateway.class, gateway);
     
     // DeltaTime component
-    DeltaTime deltatime = new DeltaTime();
+    deltatime = new DeltaTime();
     components.put(DeltaTime.class, deltatime);
 
-    // Settings component
-    Settings initial_settings = new Settings(getSettings());
-    components.put(Settings.class, initial_settings);
+    // GameSettings component
+    GameSettings initial_settings = new GameSettings(getSettings());
+    components.put(GameSettings.class, initial_settings);
 
     // Screen component
-    components.put(Screen.class, new Screen(
+    screen = new Screen(
         (String) initial_settings.get("window_title"),
         ((Integer) initial_settings.get("window_width")).intValue(),
         ((Integer) initial_settings.get("window_height")).intValue(),
         deltatime
-    ));
-
-    // ObservationStack component
-    ObservationStack observer_stack = new ObservationStack();
-    components.put(ObservationStack.class, observer_stack);
+    );
+    components.put(Screen.class, screen);
 
     // KeyboardManager component
-    components.put(KeyboardManager.class, new KeyboardManager(components));
+    keyboard_manager = new KeyboardManager(components);
+    components.put(KeyboardManager.class, keyboard_manager);
 
     // MouseManager component
-    components.put(MouseManager.class, new MouseManager(components));
+    mouse_manager = new MouseManager(components);
+    components.put(MouseManager.class, mouse_manager);
 
+    // GameStateList component
+    GameStateList gs_list = new GameStateList();
+    components.put(GameStateList.class, gs_list);
+    states = gs_list.states;
+    
     // loading first state
-    try {
-      state = (GameState) Class.forName((String) initial_settings.get("first_state"))
-      .getDeclaredConstructor(ComponentContainer.class)
-      .newInstance(components);
-    }
-    catch (Throwable e) {
-      throw new Error(e);
-    }
+    states.add(
+      (GameState) Class.forName((String) initial_settings.get("first_state"))
+      .getDeclaredConstructor(ComponentContainer.class, GameStateArgs.class)
+      .newInstance(components, null)
+    );
   }
   
-  private void run() {
-    try {
-      DeltaTime deltatime = components.get(DeltaTime.class);
-      
-      while (true) {
+  private void close() {
+    screen.close();
+  }
+  
+  private void run() throws Throwable {
+    boolean quit = false;
+    
+    while (!quit) {
+      try {
         deltatime.start();
         input();
         update();
         render();
         deltatime.finish();
+        
+        if (screen.quit_requested) {
+          quit = true;
+          
+          // notify all game states of quit request
+          Iterator<GameState> it = states.iterator();
+          while (it.hasNext() && quit)
+            quit = it.next().handleQuit();
+          
+          if (!quit)
+            screen.quit_requested = false;
+        }
+      }
+      catch (ChangeState e) {
+        handleStateChange(e);
       }
     }
-    catch (QuitException e) {
-      
+  }
+  
+  private void handleStateChange(ChangeState cs) throws InvocationTargetException, IllegalAccessException, Throwable {
+    if (cs instanceof StackUpChange) {
+      states.addFirst(((StackUpChange) cs).newInstance(components));
     }
-    catch (Throwable e) {
-      
+    else if (cs instanceof UnstackChange) {
+      if (states.size() == 1)
+        throw new Error("Trying to drop all game states");
+      states.removeFirst().delete();
+      try {
+        states.element().handleUnstack(cs.getArgs());
+      }
+      catch (ChangeState e) {
+        handleStateChange(e);
+      }
+    }
+    else if (cs instanceof CommonChange) {
+      states.removeFirst().delete();
+      states.addFirst(((CommonChange) cs).newInstance(components));
     }
   }
   
   private void input() throws Throwable {
-    components.get(KeyboardManager.class).update();
-    components.get(MouseManager.class).update();
-    state.input();
+    keyboard_manager.update();
+    mouse_manager.update();
+    
+    Iterator<GameState> it = states.iterator();
+    while (it.hasNext())
+      it.next().input();
   }
   
   private void update() throws Throwable {
-    state.update();
+    Iterator<GameState> it = states.iterator();
+    while (it.hasNext())
+      it.next().update();
   }
   
   private void render() throws Throwable {
-    state.render();
-    components.get(Screen.class).update();
+    Iterator<GameState> it = states.iterator();
+    while (it.hasNext())
+      it.next().render();
+    
+    screen.update();
   }
   
   public void init(OntologyDeploy ontology, String appId) {
@@ -107,8 +161,15 @@ public abstract class UosGame implements UosApplication {
   }
   
   public void start(Gateway gateway, OntologyStart ontology) {
-    init(gateway);
-    run();
+    try {
+      init(gateway);
+      run();
+      close();
+    }
+    catch (Throwable e) {
+      org.unbiquitous.ubiengine.util.Logger.log(new Error(e));
+    }
+    System.exit(0);
   }
   
   public void stop() {

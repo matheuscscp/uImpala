@@ -8,8 +8,8 @@ import org.unbiquitous.uos.core.applicationManager.CallContext;
 import org.unbiquitous.uos.core.driverManager.UosDriver;
 import org.unbiquitous.uos.core.messageEngine.dataType.UpDriver;
 import org.unbiquitous.uos.core.messageEngine.dataType.UpService.ParameterType;
-import org.unbiquitous.uos.core.messageEngine.messages.ServiceCall;
-import org.unbiquitous.uos.core.messageEngine.messages.ServiceResponse;
+import org.unbiquitous.uos.core.messageEngine.messages.Call;
+import org.unbiquitous.uos.core.messageEngine.messages.Response;
 
 public class KeyboardReceptionDriver implements UosDriver {
 
@@ -48,20 +48,20 @@ public class KeyboardReceptionDriver implements UosDriver {
     
   }
 
-  public void requestAccepted(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, CallContext messageContext) {
+  public void requestAccepted(Call serviceCall,
+      Response serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.requestAccepted(serviceCall.getParameterString("transmitter_device"));
   }
 
-  public void keyboardClosed(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, CallContext messageContext) {
+  public void keyboardClosed(Call serviceCall,
+      Response serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyboardClosed(serviceCall.getParameterString("transmitter_device"));
   }
 
-  public void keyDown(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, CallContext messageContext) {
+  public void keyDown(Call serviceCall,
+      Response serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyDown(
         serviceCall.getParameterString("transmitter_device"),
@@ -69,8 +69,8 @@ public class KeyboardReceptionDriver implements UosDriver {
       );
   }
 
-  public void keyUp(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, CallContext messageContext) {
+  public void keyUp(Call serviceCall,
+      Response serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyUp(
         serviceCall.getParameterString("transmitter_device"),
@@ -78,8 +78,8 @@ public class KeyboardReceptionDriver implements UosDriver {
       );
   }
 
-  public void setManager(ServiceCall serviceCall,
-      ServiceResponse serviceResponse, CallContext messageContext) {
+  public void setManager(Call serviceCall,
+      Response serviceResponse, CallContext messageContext) {
     if (manager == null)
       manager = (KeyboardReceptionDriverManager) serviceCall.getParameter("manager");
   }

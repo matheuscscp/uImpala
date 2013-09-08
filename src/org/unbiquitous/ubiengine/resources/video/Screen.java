@@ -10,6 +10,8 @@ import java.awt.Image;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -18,8 +20,8 @@ import javax.swing.JPanel;
 
 import org.unbiquitous.ubiengine.resources.time.DeltaTime;
 
-
-public final class Screen {
+public final class Screen implements WindowListener {
+  @SuppressWarnings("serial")
   private static final class ScreenJPanel extends JPanel {
     private static abstract class RenderOperation {
       protected int x, y;
@@ -108,21 +110,23 @@ public final class Screen {
   private ScreenJPanel screen;
   private boolean show_fps;
   private DeltaTime deltatime;
+  public boolean quit_requested;
   
   public Screen(String title, int width, int height, DeltaTime dt) {
     window = new JFrame();
     screen = new ScreenJPanel();
     show_fps = false;
+    deltatime = dt;
+    quit_requested = false;
     
     screen.setPreferredSize(new Dimension(width, height));
     window.add(screen);
     window.pack();
-    window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+    window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
     window.setLocationRelativeTo(null);
     window.setTitle(title);
     window.setVisible(true);
-    
-    deltatime = dt;
+    window.addWindowListener(this);
   }
   
   public void close() {
@@ -161,5 +165,33 @@ public final class Screen {
   
   public void addMouseMotionListener(MouseMotionListener l) {
     window.addMouseMotionListener(l);
+  }
+
+  public void windowActivated(WindowEvent arg0) {
+    
+  }
+
+  public void windowClosed(WindowEvent arg0) {
+    
+  }
+
+  public void windowClosing(WindowEvent arg0) {
+    quit_requested = true;
+  }
+
+  public void windowDeactivated(WindowEvent arg0) {
+    
+  }
+
+  public void windowDeiconified(WindowEvent arg0) {
+    
+  }
+
+  public void windowIconified(WindowEvent arg0) {
+    
+  }
+
+  public void windowOpened(WindowEvent arg0) {
+    
   }
 }

@@ -6,16 +6,14 @@ package org.unbiquitous.ubiengine.util;
  * @author Matheus
  */
 public final class RootPath {
-  private String path = null;
+  private String path;
   
-  /** @param path Path string. */
-  public void init(String path) {
-    if (path != null)
-      throw new Error("Trying to initialize RootPath more than once");
+  /** @param path Root path string. */
+  public RootPath(String path) {
     this.path = path;
   }
   
-  /** @return Path string. */
+  /** @return Root path string. */
   public String get() {
     return path;
   }
@@ -25,8 +23,6 @@ public final class RootPath {
    * @return Concatenation of root path with the passed argument.
    */
   public String get(String path) {
-    if (path.indexOf(path) == -1)
-      return path + path;
-    return path;
+    return this.path + (path == null ? "" : path);
   }
 }

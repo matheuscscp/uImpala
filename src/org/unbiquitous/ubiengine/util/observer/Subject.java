@@ -20,9 +20,8 @@ public interface Subject {
    * 
    * @param event_type String that describes the event type.
    * @param handler Observer method.
-   * @throws MissingEventType
    */
-  public void connect(String event_type, Method handler) throws MissingEventType;
+  public void connect(String event_type, Method handler);
   
   /**
    * Method to create an observation for an observer object.
@@ -35,9 +34,8 @@ public interface Subject {
    * @param event_type String to describe the event type.
    * @param observer Observer object.
    * @param handler Handler method for notification.
-   * @throws MissingEventType
    */
-  public void connect(String event_type, Object observer, Method handler) throws MissingEventType;
+  public void connect(String event_type, Object observer, Method handler);
   
   /**
    * Destroys all observations of the observer method in the current stack level.
@@ -55,9 +53,8 @@ public interface Subject {
    * 
    * @param event_type String to describe the event type.
    * @param handler Observer method.
-   * @throws MissingEventType
    */
-  public void disconnect(String event_type, Method handler) throws MissingEventType;
+  public void disconnect(String event_type, Method handler);
   
   /**
    * Destroys all observations of the observer object in the current stack level.
@@ -75,7 +72,6 @@ public interface Subject {
    * 
    * @param event_type String to describe the event type.
    * @param observer Observer object.
-   * @throws MissingEventType
    */
-  public void disconnect(String event_type, Object observer) throws MissingEventType;
+  public void disconnect(String event_type, Object observer);
 }

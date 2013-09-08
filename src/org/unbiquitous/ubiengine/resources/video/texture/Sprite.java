@@ -7,7 +7,6 @@ import javax.swing.ImageIcon;
 
 import org.unbiquitous.ubiengine.resources.video.Screen;
 
-
 public class Sprite {
   private Screen screen;
   private Image sprite;

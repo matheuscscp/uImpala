@@ -5,6 +5,7 @@ package org.unbiquitous.ubiengine.util.linearalgebra;
  * 
  * @author Matheus
  */
+@SuppressWarnings("serial")
 public final class DivisionByZero extends Exception {
   public DivisionByZero() {
     

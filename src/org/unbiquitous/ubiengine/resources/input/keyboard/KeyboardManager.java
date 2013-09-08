@@ -10,17 +10,15 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
-import org.unbiquitous.ubiengine.game.Settings;
+import org.unbiquitous.ubiengine.game.GameSettings;
 import org.unbiquitous.ubiengine.resources.input.InputDevice;
 import org.unbiquitous.ubiengine.resources.input.InputManager;
 import org.unbiquitous.ubiengine.resources.video.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
-import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;
 import org.unbiquitous.uos.core.driverManager.DriverData;
 import org.unbiquitous.uos.core.messageEngine.dataType.UpDevice;
-import org.unbiquitous.uos.core.messageEngine.dataType.json.JSONDevice;
 
 public final class KeyboardManager extends InputManager implements KeyListener {
 
@@ -29,36 +27,32 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     public UpDevice uos_device;
     public KeyboardDevice engine_device;
     
-    public DeviceTuple(UpDevice uos_device, ObservationStack observation_stack) {
+    public DeviceTuple(UpDevice uos_device) {
       this.uos_device = uos_device;
-      engine_device = new KeyboardDevice(observation_stack);
+      engine_device = new KeyboardDevice();
     }
   }
   
   private KeyboardDevice main_keyboard;
   private HashMap<String, DeviceTuple> keyboards = new HashMap<String, DeviceTuple>();
-  private ObservationStack observation_stack;
   private Gateway gateway;
   private Queue<String> down_devices = new LinkedList<String>();
   private Map<String, Object> request_map;
   
   public KeyboardManager(ComponentContainer components) {
-    super(components.get(ObservationStack.class));
-    
-    observation_stack = components.get(ObservationStack.class);
     gateway = components.get(Gateway.class);
     
-    main_keyboard = new KeyboardDevice(observation_stack);
+    main_keyboard = new KeyboardDevice();
     components.get(Screen.class).addKeyListener(this);
     
     KeyboardReceptionDriverManager.init(this, gateway);
     
     request_map = new HashMap<String, Object>();
     try {
-      request_map.put("receiver_device", new JSONDevice(gateway.getCurrentDevice()));
+      request_map.put("receiver_device", gateway.getCurrentDevice().toJSON());
     } catch (JSONException e) {
     }
-    request_map.put("application_name", (String) components.get(Settings.class).get("window_title"));
+    request_map.put("application_name", (String) components.get(GameSettings.class).get("window_title"));
   }
   
   public KeyboardDevice getMainKeyboard() {
@@ -101,7 +95,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
       
       // checking for new devices
       if (keyboards.get(device_name) == null) {
-        DeviceTuple device_tuple = new DeviceTuple(device, observation_stack);
+        DeviceTuple device_tuple = new DeviceTuple(device);
         keyboards.put(device_name, device_tuple);
         broadcastNewDevice(device_tuple.engine_device);
       }

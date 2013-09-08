@@ -7,16 +7,13 @@ import org.unbiquitous.ubiengine.resources.input.InputDevice;
 import org.unbiquitous.ubiengine.resources.input.InputManager;
 import org.unbiquitous.ubiengine.resources.video.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
-import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 
 public final class MouseManager extends InputManager implements MouseListener, MouseMotionListener {
 
   private MouseDevice main_mouse;
   
   public MouseManager(ComponentContainer components) {
-    super(components.get(ObservationStack.class));
-
-    main_mouse = new MouseDevice(components.get(ObservationStack.class));
+    main_mouse = new MouseDevice();
     Screen screen = components.get(Screen.class);
     screen.addMouseListener(this);
     screen.addMouseMotionListener(this);

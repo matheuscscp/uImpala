@@ -6,7 +6,6 @@ import java.util.Queue;
 
 import org.unbiquitous.ubiengine.resources.input.InputDevice;
 import org.unbiquitous.ubiengine.util.observer.Event;
-import org.unbiquitous.ubiengine.util.observer.ObservationStack;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
 public class MouseDevice extends InputDevice {
@@ -52,8 +51,8 @@ public class MouseDevice extends InputDevice {
   private int mouse_x;
   private int mouse_y;
   
-  public MouseDevice(ObservationStack observation_stack) {
-    subject = new SubjectDevice(observation_stack, MOUSEDOWN, MOUSEUP, MOUSEMOTION);
+  public MouseDevice() {
+    subject = new SubjectDevice(MOUSEDOWN, MOUSEUP, MOUSEMOTION);
   }
 
   public void update() throws Throwable {
