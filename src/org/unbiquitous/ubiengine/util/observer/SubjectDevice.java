@@ -24,7 +24,8 @@ public final class SubjectDevice {
     public Observation(Object observer, Method handler) {
       this.observer = observer;
       this.handler = handler;
-      this.handler.setAccessible(true);
+      if (handler != null)
+        this.handler.setAccessible(true);
     }
     
     protected void notifyEvent(Event event) throws InvocationTargetException {
@@ -129,6 +130,9 @@ public final class SubjectDevice {
    * @throws Exception
    */
   public void broadcast(Event event) throws Exception {
+    if (event == null)
+      return;
+    
     String event_type = event.getType();
     EventObservations subj_event = events.get(event_type);
     

@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.util.linearalgebra;
+package org.unbiquitous.ubiengine.util.mathematics;
 
 /**
  * Thrown when divisions by zero occur.

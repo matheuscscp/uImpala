@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.util;
  * 
  * @author Matheus
  */
-public final class RootPath {
+public class RootPath {
   private String path;
   
   /** @param path Root path string. */

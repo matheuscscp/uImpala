@@ -3,7 +3,7 @@ package org.unbiquitous.ubiengine.game.state;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 @SuppressWarnings("serial")
-public class StackUpChange extends ChangeState {
+public final class StackUpChange extends ChangeState {
   
   private Class<?> state;
   

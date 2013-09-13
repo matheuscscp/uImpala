@@ -1,11 +1,11 @@
-package org.unbiquitous.ubiengine.util.linearalgebra;
+package org.unbiquitous.ubiengine.util.mathematics.linearalgebra;
 
 /**
  * Class to implement some Linear Algebra functions.
  * 
  * @author Matheus
  */
-public final class LinearAlgebraFunctions {
+public class LinearAlgebraFunctions {
   /**
    * Calculates the determinant of a two-dimensional matrix.
    * 

@@ -31,19 +31,33 @@ public abstract class GameState {
         this,
         GameState.class.getDeclaredMethod("handleNewKeyboardDevice", Event.class)
       );
-  
+
+      // connecting the game state to the KeyboardManager.DEVICEPLUGGED event
+      keyboard_manager.connect(
+        KeyboardManager.DEVICEPLUGGED,
+        this,
+        GameState.class.getDeclaredMethod("handleKeyboardDevicePlugged", Event.class)
+      );
+
       // connecting the game state to the KeyboardManager.DEVICEDOWN event
       keyboard_manager.connect(
         KeyboardManager.DEVICEDOWN,
         this,
         GameState.class.getDeclaredMethod("handleKeyboardDeviceDown", Event.class)
       );
-  
+
       // connecting the game state to the MouseManager.NEWDEVICE event
       mouse_manager.connect(
         MouseManager.NEWDEVICE,
         this,
         GameState.class.getDeclaredMethod("handleNewMouseDevice", Event.class)
+      );
+
+      // connecting the game state to the MouseManager.DEVICEPLUGGED event
+      mouse_manager.connect(
+        MouseManager.DEVICEPLUGGED,
+        this,
+        GameState.class.getDeclaredMethod("handleMouseDevicePlugged", Event.class)
       );
       
       // connecting the game state to the MouseManager.DEVICEDOWN event
@@ -82,6 +96,14 @@ public abstract class GameState {
     
   }
 
+  protected void handleKeyboardDevicePlugged(Event event) {
+    handleKeyboardDevicePlugged((KeyboardDevice) ((KeyboardManager.DeviceEvent) event).getDevice());
+  }
+
+  protected void handleKeyboardDevicePlugged(KeyboardDevice keyboard_device) {
+    
+  }
+
   protected void handleKeyboardDeviceDown(Event event) {
     handleKeyboardDeviceDown((KeyboardDevice) ((KeyboardManager.DeviceEvent) event).getDevice());
   }
@@ -95,6 +117,14 @@ public abstract class GameState {
   }
   
   protected void handleNewMouseDevice(MouseDevice mouse_device) {
+    
+  }
+  
+  protected void handleMouseDevicePlugged(Event event) {
+    handleMouseDevicePlugged((MouseDevice) ((MouseManager.DeviceEvent) event).getDevice());
+  }
+  
+  protected void handleMouseDevicePlugged(MouseDevice mouse_device) {
     
   }
   

@@ -35,6 +35,12 @@ public class KeyboardDevice extends InputDevice {
   }
   
   public void update() throws Exception {
+    if (!plugged) {
+      while (!events.isEmpty())
+        events.remove();
+      return;
+    }
+    
     KeyEvent event;
     while (!events.isEmpty()) {
       event = events.poll();

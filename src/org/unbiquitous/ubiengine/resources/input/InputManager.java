@@ -22,13 +22,14 @@ public abstract class InputManager implements Subject {
     }
   }
 
-  public static String NEWDEVICE  = "NEWDEVICE";
-  public static String DEVICEDOWN = "DEVICEDOWN";
+  public static String NEWDEVICE      = "NEWDEVICE";
+  public static String DEVICEPLUGGED  = "DEVICEPLUGGED";
+  public static String DEVICEDOWN     = "DEVICEDOWN";
   
   protected SubjectDevice subject;
   
   public InputManager() {
-    subject = new SubjectDevice(NEWDEVICE, DEVICEDOWN);
+    subject = new SubjectDevice(NEWDEVICE, DEVICEPLUGGED, DEVICEDOWN);
   }
   
   public void connect(String event_type, Method handler) {
@@ -59,6 +60,10 @@ public abstract class InputManager implements Subject {
     subject.broadcast(new DeviceEvent(NEWDEVICE, input_device));
   }
   
+  protected void broadcastDevicePlugged(InputDevice input_device) throws Exception {
+    subject.broadcast(new DeviceEvent (DEVICEPLUGGED, input_device));
+  }
+  
   protected void broadcastDeviceDown(InputDevice input_device) throws Exception {
     subject.broadcast(new DeviceEvent(DEVICEDOWN, input_device));
   }
@@ -66,5 +71,4 @@ public abstract class InputManager implements Subject {
   public abstract void externalRequestAccepted(String transmitter_device);
   public abstract void externalDeviceClosed(String transmitter_device);
   public abstract void sendRequest(InputDevice input_device);
-  public abstract boolean isDevicePlugged(InputDevice input_device);
 }

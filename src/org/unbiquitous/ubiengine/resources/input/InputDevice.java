@@ -7,6 +7,16 @@ import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
 public abstract class InputDevice implements Subject {
   
+  protected boolean plugged = false;
+  
+  public boolean isPlugged() {
+    return plugged;
+  }
+  
+  public void plug(boolean plug) {
+    plugged = plug;
+  }
+  
   protected SubjectDevice subject;
   
   public void connect(String event_type, Method handler) {

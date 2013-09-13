@@ -1,6 +1,6 @@
 package org.unbiquitous.ubiengine.game;
 
-import org.unbiquitous.ubiengine.util.linearalgebra.Vector3;
+import org.unbiquitous.ubiengine.util.mathematics.linearalgebra.Vector3;
 
 public abstract class GameObject {
   public abstract void input();

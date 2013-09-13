@@ -1,4 +1,6 @@
-package org.unbiquitous.ubiengine.util.linearalgebra;
+package org.unbiquitous.ubiengine.util.mathematics.linearalgebra;
+
+import org.unbiquitous.ubiengine.util.mathematics.DivisionByZero;
 
 /**
  * Class to represent a three-dimensional vector.
@@ -6,7 +8,7 @@ package org.unbiquitous.ubiengine.util.linearalgebra;
  * 
  * @author Matheus
  */
-public final class Vector3 {
+public class Vector3 {
   private float x_;
   private float y_;
   private float z_;

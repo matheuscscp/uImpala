@@ -14,6 +14,7 @@ public final class MouseManager extends InputManager implements MouseListener, M
   
   public MouseManager(ComponentContainer components) {
     main_mouse = new MouseDevice();
+    main_mouse.plug(true);
     Screen screen = components.get(Screen.class);
     screen.addMouseListener(this);
     screen.addMouseMotionListener(this);
@@ -65,9 +66,5 @@ public final class MouseManager extends InputManager implements MouseListener, M
   
   public void sendRequest(InputDevice input_device) {
     
-  }
-
-  public boolean isDevicePlugged(InputDevice input_device) {
-    return false;
   }
 }

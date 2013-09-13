@@ -24,26 +24,29 @@ public final class DeltaTime {
     }
   }
   
+  /** Time in milliseconds. */
   public long getBegin() {             // unit: millisecond
     return begin;
   }
-  
+
   public float getIdealFPS() {         // unit: frame/second
     return ideal_FPS;
   }
-  
+
   public float getRealFPS() {          // unit: frame/second
     if (real_DT == 0)
       return 0;
     return 1000.0f/real_DT;
   }
-  
+
+  /** Time in seconds. */
   public float getIdealDT() {          // unit: second
     if (real_DT == 0)
       return 0;
     return 1/ideal_FPS;
   }
-  
+
+  /** Time in seconds. */
   public float getRealDT() {           // unit: second
     return real_DT/1000.0f;
   }
@@ -52,7 +55,8 @@ public final class DeltaTime {
     if (FPS > 0)
       ideal_FPS = FPS;
   }
-  
+
+  /** @param DT Time in seconds. */
   public void setIdealDT(float DT) {   // unit: second
     if (DT > 0)
       ideal_FPS = 1/DT;

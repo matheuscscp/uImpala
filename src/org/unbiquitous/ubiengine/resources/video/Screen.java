@@ -7,6 +7,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -19,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import org.unbiquitous.ubiengine.resources.time.DeltaTime;
+import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
 public final class Screen implements WindowListener {
   @SuppressWarnings("serial")
@@ -38,47 +40,68 @@ public final class Screen implements WindowListener {
     
     private static class RenderImage extends RenderOperation {
       private Image src;
+      private int rect_x, rect_y, rect_w, rect_h;
       
-      public RenderImage(Image src, int x, int y, boolean center) {
+      public RenderImage(int x, int y, boolean center, Image src, Rectangle clip_rect) {
         super(x, y, center);
         this.src = src;
+        rect_x = (int) clip_rect.getX();
+        rect_y = (int) clip_rect.getY();
+        rect_w = (int) clip_rect.getW();
+        rect_h = (int) clip_rect.getH();
+        if (center) {
+          this.x -= rect_w/2;
+          this.y -= rect_h/2;
+        }
       }
       
       public void render(Graphics2D g2d) {
-        if (center) {
-          x -= src.getWidth(null)/2;
-          y -= src.getHeight(null)/2;
-        }
-        g2d.drawImage(src, x, y, null);
+        g2d.drawImage(
+          src,
+          x, y, x + rect_w, y + rect_h,
+          rect_x, rect_y, rect_x + rect_w, rect_y + rect_h,
+          null
+        );
       }
     }
     
-    private static class RenderText extends RenderOperation {//FIXME
+    private static class RenderText extends RenderOperation {
       private Font font;
+      private Color color;
       private String str;
       
-      public RenderText(String str, Font font, int x, int y, boolean center) {
+      public RenderText(String str, Font font, Color color, int x, int y, boolean center) {
         super(x, y, center);
         this.str = str;
         this.font = font;
+        this.color = color;
       }
       
       public void render(Graphics2D g2d) {
-        Font save;
+        Font font_save;
+        Color color_save;
         if (font != null) {
-          save = g2d.getFont();
+          font_save = g2d.getFont();
+          color_save = g2d.getColor();
           g2d.setFont(font);
-          g2d.setColor(Color.WHITE);
+          g2d.setColor(color != null ? color : Color.WHITE);
           if (center) {
             FontMetrics metrics = g2d.getFontMetrics(font);
             x -= metrics.stringWidth(str)/2;
             y -= metrics.getHeight()/2;
           }
           g2d.drawString(str, x, y);
-          g2d.setFont(save);
+          g2d.setFont(font_save);
+          g2d.setColor(color_save);
         }
         else {
+          g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
           g2d.setColor(Color.WHITE);
+          if (center) {
+            FontMetrics metrics = g2d.getFontMetrics(font);
+            x -= metrics.stringWidth(str)/2;
+            y -= metrics.getHeight()/2;
+          }
           g2d.drawString(str, x, y);
         }
       }
@@ -92,17 +115,18 @@ public final class Screen implements WindowListener {
     
     public void paint(Graphics g) {
       Graphics2D g2d = (Graphics2D) g;
+      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
       while (!render_ops.isEmpty()) {
         render_ops.poll().render(g2d);
       }
     }
     
-    public void renderImage(Image src, int x, int y, boolean center) {
-      render_ops.add(new RenderImage(src, x, y, center));
+    public void renderImage(int x, int y, boolean center, Image src, Rectangle clip_rect) {
+      render_ops.add(new RenderImage(x, y, center, src, clip_rect));
     }
     
-    public void renderText(String str, Font font, int x, int y, boolean center) {
-      render_ops.add(new RenderText(str, font, x, y, center));
+    public void renderText(String str, Font font, Color color, int x, int y, boolean center) {
+      render_ops.add(new RenderText(str, font, color, x, y, center));
     }
   }
   
@@ -111,6 +135,7 @@ public final class Screen implements WindowListener {
   private boolean show_fps;
   private DeltaTime deltatime;
   public boolean quit_requested;
+  private int w;
   
   public Screen(String title, int width, int height, DeltaTime dt) {
     window = new JFrame();
@@ -118,6 +143,7 @@ public final class Screen implements WindowListener {
     show_fps = false;
     deltatime = dt;
     quit_requested = false;
+    w = width;
     
     screen.setPreferredSize(new Dimension(width, height));
     window.add(screen);
@@ -137,9 +163,8 @@ public final class Screen implements WindowListener {
   }
   
   public void update() {
-    //FIXME show FPS FIXME
     if (show_fps)
-      screen.renderText(String.format("FPS: %.2f", deltatime.getRealFPS()), null, 950, 15, false);
+      screen.renderText(String.format("%.1f FPS", deltatime.getRealFPS()), null, null, w - 100, 18, false);
     
     screen.repaint();
   }
@@ -153,12 +178,12 @@ public final class Screen implements WindowListener {
     show_fps = enable;
   }
   
-  public void renderImage(Image src, int x, int y, boolean center) {
-    screen.renderImage(src, x, y, center);
+  public void renderImage(int x, int y, boolean center, Image src, Rectangle clip_rect) {
+    screen.renderImage(x, y, center, src, clip_rect);
   }
   
-  public void renderText(String text, Font font, int x, int y, boolean center) {
-    screen.renderText(text, font, x, y, center);
+  public void renderText(String text, Font font, Color color, int x, int y, boolean center) {
+    screen.renderText(text, font, color, x, y, center);
   }
   
   public void addKeyListener(KeyListener l) {
@@ -166,11 +191,11 @@ public final class Screen implements WindowListener {
   }
   
   public void addMouseListener(MouseListener l) {
-    window.addMouseListener(l);
+    screen.addMouseListener(l);
   }
   
   public void addMouseMotionListener(MouseMotionListener l) {
-    window.addMouseMotionListener(l);
+    screen.addMouseMotionListener(l);
   }
 
   public void windowActivated(WindowEvent arg0) {

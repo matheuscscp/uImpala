@@ -23,19 +23,18 @@ import org.unbiquitous.uos.core.messageEngine.dataType.UpDevice;
 public final class KeyboardManager extends InputManager implements KeyListener {
 
   private static final class DeviceTuple {
-    public boolean plugged = false;
     public UpDevice uos_device;
-    public KeyboardDevice engine_device;
+    public KeyboardDevice engine_device = new KeyboardDevice();
     
     public DeviceTuple(UpDevice uos_device) {
       this.uos_device = uos_device;
-      engine_device = new KeyboardDevice();
     }
   }
   
   private KeyboardDevice main_keyboard;
   private HashMap<String, DeviceTuple> keyboards = new HashMap<String, DeviceTuple>();
   private Gateway gateway;
+  private Queue<String> plugged_devices = new LinkedList<String>();
   private Queue<String> down_devices = new LinkedList<String>();
   private Map<String, Object> request_map;
   
@@ -43,6 +42,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     gateway = components.get(Gateway.class);
     
     main_keyboard = new KeyboardDevice();
+    main_keyboard.plug(true);
     components.get(Screen.class).addKeyListener(this);
     
     KeyboardReceptionDriverManager.init(this, gateway);
@@ -62,9 +62,20 @@ public final class KeyboardManager extends InputManager implements KeyListener {
   public void update() throws Exception {
     updateDeviceList();
     
+    // updating plugged devices
+    while (!plugged_devices.isEmpty()) {
+      String transmitter_device = plugged_devices.poll();
+      DeviceTuple d_tuple = keyboards.get(transmitter_device);
+      d_tuple.engine_device.plug(true);
+      broadcastDevicePlugged(d_tuple.engine_device);
+    }
+    
     // updating down devices
-    while (!down_devices.isEmpty())
-      broadcastDeviceDown(keyboards.remove(down_devices.poll()).engine_device);
+    while (!down_devices.isEmpty()) {
+      KeyboardDevice kdev = keyboards.remove(down_devices.poll()).engine_device;
+      kdev.plug(false);
+      broadcastDeviceDown(kdev);
+    }
     
     main_keyboard.update();
     
@@ -123,7 +134,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
   }
   
   public void externalRequestAccepted(String transmitter_device) {
-    keyboards.get(transmitter_device).plugged = true;
+    plugged_devices.add(transmitter_device);
   }
   
   public void externalDeviceClosed(String transmitter_device) {
@@ -151,15 +162,5 @@ public final class KeyboardManager extends InputManager implements KeyListener {
         return;
       }
     }
-  }
-  
-  public boolean isDevicePlugged(InputDevice input_device) {
-    Iterator<?> it = keyboards.entrySet().iterator();
-    while (it.hasNext()) {
-      DeviceTuple device_tuple = (DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue();
-      if ((InputDevice) device_tuple.engine_device == input_device)
-        return device_tuple.plugged;
-    }
-    return false;
   }
 }
