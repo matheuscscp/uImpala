@@ -12,9 +12,9 @@ public abstract class GameState {
   public abstract void init(GameStateArgs args);
   public abstract void close();
   
-  public abstract void input();
-  public abstract void update();
-  public abstract void render();
+  public abstract void input() throws Exception;
+  public abstract void update() throws Exception;
+  public abstract void render() throws Exception;
 
   protected ComponentContainer components;
   
@@ -80,7 +80,7 @@ public abstract class GameState {
     components.get(MouseManager.class).disconnect(this);
   }
   
-  public void handleUnstack(GameStateArgs args) throws Exception {
+  public void handleUnstack(GameStateArgs args) throws ChangeState {
     
   }
 

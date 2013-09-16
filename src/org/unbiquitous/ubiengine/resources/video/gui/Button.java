@@ -3,9 +3,10 @@ package org.unbiquitous.ubiengine.resources.video.gui;
 import java.lang.reflect.Method;
 
 import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardDevice;
-import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardDevice.KeyEvent;
+import org.unbiquitous.ubiengine.resources.input.keyboard.KeyboardDevice.KeyDownEvent;
 import org.unbiquitous.ubiengine.resources.input.mouse.MouseDevice;
-import org.unbiquitous.ubiengine.resources.input.mouse.MouseDevice.MouseEvent;
+import org.unbiquitous.ubiengine.resources.input.mouse.MouseDevice.MouseDownEvent;
+import org.unbiquitous.ubiengine.resources.input.mouse.MouseDevice.MouseUpEvent;
 import org.unbiquitous.ubiengine.resources.time.Timer;
 import org.unbiquitous.ubiengine.resources.video.texture.Sprite;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
@@ -175,7 +176,7 @@ public class Button implements Subject {
   }
   
   protected void handleKeyDown(Event event) {
-    if (((KeyEvent) event).getUnicodeChar() == java.awt.event.KeyEvent.VK_ENTER) {
+    if (((KeyDownEvent) event).getUnicodeChar() == java.awt.event.KeyEvent.VK_ENTER) {
       if ((selected) && (enabled)) {
         timer.start(ENTER_DELAY);
         
@@ -187,7 +188,7 @@ public class Button implements Subject {
   }
   
   protected void handleMouseDown(Event event) {
-    if (((MouseEvent) event).getButton() != MouseDevice.LEFT_BUTTON)
+    if (((MouseDownEvent) event).getButton() != MouseDevice.LEFT_BUTTON)
       return;
     
     if (!mouse_device.isMouseDownInside(rect))
@@ -211,7 +212,13 @@ public class Button implements Subject {
   }
   
   protected void handleMouseUp(Event event) throws Exception {
-    if (mouse_device.isMouseDownInside(rect) && mouse_device.isMouseInside(rect) && enabled && was_enabled) {
+    if (
+      ((MouseUpEvent) event).getButton() == MouseDevice.LEFT_BUTTON &&
+      mouse_device.isMouseDownInside(rect) &&
+      mouse_device.isMouseInside(rect) &&
+      enabled &&
+      was_enabled
+    ) {
       clicked = true;
       just_clicked = true;
       
@@ -219,12 +226,12 @@ public class Button implements Subject {
       /*FIXME if ((sound_clicked) && (!just_hit) && (play_sounds))
         sound_clicked->play(1);*/
       
-      subject.broadcast(new Event(CLICKED));
+      subject.broadcast(CLICKED);
     }
   }
   
   protected void handleTimerDone(Event event) throws Exception {
-    subject.broadcast(new Event(CLICKED));
+    subject.broadcast(CLICKED);
   }
   
   protected SubjectDevice subject;

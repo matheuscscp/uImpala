@@ -12,12 +12,11 @@ public class KeyboardDevice extends InputDevice {
   
   public static final String KEYDOWN  = "KEYDOWN";
   public static final String KEYUP    = "KEYUP";
-  
-  public static final class KeyEvent extends Event {
+
+  public static final class KeyDownEvent extends Event {
     private int unicode_char;
     
-    public KeyEvent(String type, int unicode_char) {
-      super(type);
+    public KeyDownEvent(int unicode_char) {
       this.unicode_char = unicode_char;
     }
     
@@ -26,7 +25,19 @@ public class KeyboardDevice extends InputDevice {
     }
   }
 
-  private Queue<KeyEvent> events = new LinkedList<KeyEvent>();
+  public static final class KeyUpEvent extends Event {
+    private int unicode_char;
+    
+    public KeyUpEvent(int unicode_char) {
+      this.unicode_char = unicode_char;
+    }
+    
+    public int getUnicodeChar() {
+      return unicode_char;
+    }
+  }
+
+  private Queue<Event> events = new LinkedList<Event>();
   
   private HashMap<Integer, Boolean> key_pressed = new HashMap<Integer, Boolean>();
 
@@ -41,11 +52,16 @@ public class KeyboardDevice extends InputDevice {
       return;
     }
     
-    KeyEvent event;
     while (!events.isEmpty()) {
-      event = events.poll();
-      key_pressed.put(Integer.valueOf(event.getUnicodeChar()), event.getType().equals(KEYDOWN));
-      subject.broadcast(event);
+      Event event = events.poll();
+      if (event instanceof KeyDownEvent) {
+        key_pressed.put(Integer.valueOf(((KeyDownEvent) event).getUnicodeChar()), true);
+        subject.broadcast(KEYDOWN, event);
+      }
+      else if (event instanceof KeyUpEvent) {
+        key_pressed.put(Integer.valueOf(((KeyUpEvent) event).getUnicodeChar()), false);
+        subject.broadcast(KEYUP, event);
+      }
     }
   }
 
@@ -57,10 +73,10 @@ public class KeyboardDevice extends InputDevice {
   }
   
   public void forceKeyPressed(int unicode_char) {
-    events.add(new KeyEvent(KEYDOWN, unicode_char));
+    events.add(new KeyDownEvent(unicode_char));
   }
 
   public void forceKeyReleased(int unicode_char) {
-    events.add(new KeyEvent(KEYUP, unicode_char));
+    events.add(new KeyUpEvent(unicode_char));
   }
 }

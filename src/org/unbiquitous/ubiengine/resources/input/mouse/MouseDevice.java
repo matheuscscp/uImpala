@@ -19,11 +19,22 @@ public class MouseDevice extends InputDevice {
   public static final int MIDDLE_BUTTON  = java.awt.event.MouseEvent.BUTTON2;
   public static final int RIGHT_BUTTON   = java.awt.event.MouseEvent.BUTTON3;
 
-  public static final class MouseEvent extends Event {
+  public static final class MouseDownEvent extends Event {
     private int button;
     
-    public MouseEvent(String type, int button) {
-      super(type);
+    public MouseDownEvent(int button) {
+      this.button = button;
+    }
+    
+    public int getButton() {
+      return button;
+    }
+  }
+
+  public static final class MouseUpEvent extends Event {
+    private int button;
+    
+    public MouseUpEvent(int button) {
       this.button = button;
     }
     
@@ -36,7 +47,6 @@ public class MouseDevice extends InputDevice {
     private int x, y;
     
     public MouseMotionEvent(int x, int y) {
-      super(MOUSEMOTION);
       this.x = x;
       this.y = y;
     }
@@ -75,16 +85,21 @@ public class MouseDevice extends InputDevice {
     
     while (!events.isEmpty()) {
       Event event = events.poll();
-      if (event instanceof MouseEvent) {
+      if (event instanceof MouseDownEvent) {
         mousedown_x = mouse_x;
         mousedown_y = mouse_y;
-        mouse_pressed.put(Integer.valueOf(((MouseEvent) event).getButton()), event.getType().equals(MOUSEDOWN));
+        mouse_pressed.put(Integer.valueOf(((MouseDownEvent) event).getButton()), true);
+        subject.broadcast(MOUSEDOWN, event);
+      }
+      else if (event instanceof MouseUpEvent) {
+        mouse_pressed.put(Integer.valueOf(((MouseUpEvent) event).getButton()), false);
+        subject.broadcast(MOUSEUP, event);
       }
       else if (event instanceof MouseMotionEvent) {
         mouse_x = ((MouseMotionEvent) event).getX();
         mouse_y = ((MouseMotionEvent) event).getY();
+        subject.broadcast(MOUSEMOTION, event);
       }
-      subject.broadcast(event);
     }
   }
 
@@ -112,11 +127,11 @@ public class MouseDevice extends InputDevice {
   }
 
   public void forceMousePressed(int button) {
-    events.add(new MouseEvent(MOUSEDOWN, button));
+    events.add(new MouseDownEvent(button));
   }
 
   public void forceMouseReleased(int button) {
-    events.add(new MouseEvent(MOUSEUP, button));
+    events.add(new MouseUpEvent(button));
   }
   
   public void forceMouseMotion(int x, int y) {

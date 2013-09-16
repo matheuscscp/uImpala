@@ -126,14 +126,11 @@ public final class SubjectDevice {
    * The subject object owner of this device must call this method to broadcast its events.
    * This method iterates over all the observations of the event type, calling the handler method.
    * 
-   * @param event Event to broadcast.
+   * @param event_type Event to broadcast.
+   * @param event Event data.
    * @throws Exception
    */
-  public void broadcast(Event event) throws Exception {
-    if (event == null)
-      return;
-    
-    String event_type = event.getType();
+  public void broadcast(String event_type, Event event) throws Exception {
     EventObservations subj_event = events.get(event_type);
     
     if (subj_event == null)
@@ -141,6 +138,9 @@ public final class SubjectDevice {
     
     if (subj_event.broadcasting)
       throw new Error("Trying to recursively broadcast an event of type: \"" + event_type + "\"");
+    
+    if (event == null)
+      event = new Event();
     
     subj_event.broadcasting = true;
     try {
@@ -153,6 +153,16 @@ public final class SubjectDevice {
       throw (Exception) e.getCause();
     }
     subj_event.broadcasting = false;
+  }
+  
+  /**
+   * Event without data. Calls broadcast(event_type, null).
+   * 
+   * @param event_type Event to broadcast.
+   * @throws Exception
+   */
+  public void broadcast(String event_type) throws Exception {
+    broadcast(event_type, null);
   }
   
   /**

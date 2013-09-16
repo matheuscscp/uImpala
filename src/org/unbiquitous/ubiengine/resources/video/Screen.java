@@ -1,5 +1,6 @@
 package org.unbiquitous.ubiengine.resources.video;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,11 +29,13 @@ public final class Screen implements WindowListener {
     private static abstract class RenderOperation {
       protected int x, y;
       protected boolean center;
+      protected float alpha;
       
-      public RenderOperation(int x, int y, boolean center) {
+      public RenderOperation(int x, int y, boolean center, float alpha) {
         this.x = x;
         this.y = y;
         this.center = center;
+        this.alpha = (alpha < 0.0f || alpha > 1.0f ? 1.0f : alpha);
       }
       
       public abstract void render(Graphics2D g2d);
@@ -42,8 +45,8 @@ public final class Screen implements WindowListener {
       private Image src;
       private int rect_x, rect_y, rect_w, rect_h;
       
-      public RenderImage(int x, int y, boolean center, Image src, Rectangle clip_rect) {
-        super(x, y, center);
+      public RenderImage(int x, int y, boolean center, float alpha, Image src, Rectangle clip_rect) {
+        super(x, y, center, alpha);
         this.src = src;
         rect_x = (int) clip_rect.getX();
         rect_y = (int) clip_rect.getY();
@@ -56,6 +59,7 @@ public final class Screen implements WindowListener {
       }
       
       public void render(Graphics2D g2d) {
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
         g2d.drawImage(
           src,
           x, y, x + rect_w, y + rect_h,
@@ -70,40 +74,25 @@ public final class Screen implements WindowListener {
       private Color color;
       private String str;
       
-      public RenderText(String str, Font font, Color color, int x, int y, boolean center) {
-        super(x, y, center);
+      public RenderText(int x, int y, boolean center, float alpha, String str, Font font, Color color) {
+        super(x, y, center, alpha);
         this.str = str;
-        this.font = font;
-        this.color = color;
+        this.font = (font == null ? new Font(Font.MONOSPACED, Font.BOLD, 20) : font);
+        this.color = (color == null ? Color.WHITE : color);
       }
       
       public void render(Graphics2D g2d) {
-        Font font_save;
-        Color color_save;
-        if (font != null) {
-          font_save = g2d.getFont();
-          color_save = g2d.getColor();
-          g2d.setFont(font);
-          g2d.setColor(color != null ? color : Color.WHITE);
-          if (center) {
-            FontMetrics metrics = g2d.getFontMetrics(font);
-            x -= metrics.stringWidth(str)/2;
-            y -= metrics.getHeight()/2;
-          }
-          g2d.drawString(str, x, y);
-          g2d.setFont(font_save);
-          g2d.setColor(color_save);
+        FontMetrics fm = g2d.getFontMetrics(font);
+        if (center) {
+          x -= fm.stringWidth(str)/2;
+          y -= fm.getHeight()/2;
         }
-        else {
-          g2d.setFont(new Font(Font.MONOSPACED, Font.BOLD, 20));
-          g2d.setColor(Color.WHITE);
-          if (center) {
-            FontMetrics metrics = g2d.getFontMetrics(font);
-            x -= metrics.stringWidth(str)/2;
-            y -= metrics.getHeight()/2;
-          }
-          g2d.drawString(str, x, y);
-        }
+        
+        g2d.setFont(font);
+        g2d.setColor(color);
+        g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+        g2d.drawString(str, x, y + (int) (0.69f*fm.getHeight()));
       }
     }
     
@@ -115,18 +104,17 @@ public final class Screen implements WindowListener {
     
     public void paint(Graphics g) {
       Graphics2D g2d = (Graphics2D) g;
-      g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
       while (!render_ops.isEmpty()) {
         render_ops.poll().render(g2d);
       }
     }
     
-    public void renderImage(int x, int y, boolean center, Image src, Rectangle clip_rect) {
-      render_ops.add(new RenderImage(x, y, center, src, clip_rect));
+    public void renderImage(int x, int y, boolean center, float alpha, Image src, Rectangle clip_rect) {
+      render_ops.add(new RenderImage(x, y, center, alpha, src, clip_rect));
     }
     
-    public void renderText(String str, Font font, Color color, int x, int y, boolean center) {
-      render_ops.add(new RenderText(str, font, color, x, y, center));
+    public void renderText(int x, int y, boolean center, float alpha, String str, Font font, Color color) {
+      render_ops.add(new RenderText(x, y, center, alpha, str, font, color));
     }
   }
   
@@ -164,26 +152,36 @@ public final class Screen implements WindowListener {
   
   public void update() {
     if (show_fps)
-      screen.renderText(String.format("%.1f FPS", deltatime.getRealFPS()), null, null, w - 100, 18, false);
+      screen.renderText(w - 100, 0, false, 1.0f, String.format("%.1f FPS", deltatime.getRealFPS()), null, null);
     
     screen.repaint();
   }
 
+  public Dimension getSize() {
+    return screen.getSize();
+  }
+  
   public void setSize(int w, int h) {
     screen.setPreferredSize(new Dimension(w, h));
     window.pack();
+    this.w = w;
   }
   
   public void showFPS(boolean enable) {
     show_fps = enable;
   }
   
-  public void renderImage(int x, int y, boolean center, Image src, Rectangle clip_rect) {
-    screen.renderImage(x, y, center, src, clip_rect);
+  public void renderImage(int x, int y, boolean center, float alpha, Image src, Rectangle clip_rect) {
+    screen.renderImage(x, y, center, alpha, src, clip_rect);
   }
   
-  public void renderText(String text, Font font, Color color, int x, int y, boolean center) {
-    screen.renderText(text, font, color, x, y, center);
+  public void renderText(int x, int y, boolean center, float alpha, String text, Font font, Color color) {
+    screen.renderText(x, y, center, alpha, text, font, color);
+  }
+  
+  public Dimension getTextSize(String text, Font font) {
+    FontMetrics metrics = ((Graphics2D) screen.getGraphics()).getFontMetrics(font);
+    return new Dimension(metrics.stringWidth(text), metrics.getHeight());
   }
   
   public void addKeyListener(KeyListener l) {

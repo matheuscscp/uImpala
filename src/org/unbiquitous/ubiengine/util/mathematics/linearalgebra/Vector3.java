@@ -26,6 +26,14 @@ public class Vector3 {
     x_ = x;
     y_ = y;
     z_ = z;
+    has_set = true;
+  }
+  
+  public Vector3(Vector3 other) {
+    x_ = other.x_;
+    y_ = other.y_;
+    z_ = other.z_;
+    has_set = true;
   }
   
   // getters

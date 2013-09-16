@@ -2,7 +2,6 @@ package org.unbiquitous.ubiengine.resources.time;
 
 import java.lang.reflect.Method;
 
-import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Subject;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
@@ -23,7 +22,7 @@ public class Timer implements Subject {
   public void update() throws Exception {
     if (!done && !paused && System.currentTimeMillis() >= done_ticks) {
       done = true;
-      subject.broadcast(new Event(DONE));
+      subject.broadcast(DONE);
     }
   }
 

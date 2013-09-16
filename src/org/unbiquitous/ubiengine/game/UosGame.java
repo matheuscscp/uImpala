@@ -16,6 +16,7 @@ import org.unbiquitous.ubiengine.resources.input.mouse.MouseManager;
 import org.unbiquitous.ubiengine.resources.time.DeltaTime;
 import org.unbiquitous.ubiengine.resources.video.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
+import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.applicationManager.UosApplication;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyDeploy;
@@ -78,16 +79,16 @@ public abstract class UosGame implements UosApplication {
     screen.close();
   }
   
-  private void run() {
+  private void run() throws Exception {
     boolean quit = false;
     
     while (!quit) {
+      deltatime.start();
+      
       try {
-        deltatime.start();
         input();
         update();
         render();
-        deltatime.finish();
         
         // checking quit
         if (screen.quit_requested) {
@@ -103,12 +104,11 @@ public abstract class UosGame implements UosApplication {
         }
       }
       // checking state changes
-      catch (Exception e) {
-        if (e instanceof ChangeState)
-          handleChangeState((ChangeState) e);
-        else
-          throw new Error(e);
+      catch (ChangeState e) {
+        handleChangeState((ChangeState) e);
       }
+      
+      deltatime.finish();
     }
   }
   
@@ -126,12 +126,9 @@ public abstract class UosGame implements UosApplication {
       try {
         states.element().handleUnstack(cs.getArgs());
       }
-      // checking new state changes
-      catch (Exception e) {
-        if (e instanceof ChangeState)
-          handleChangeState((ChangeState) e);
-        else
-          throw new Error(e);
+      // checking state changes
+      catch (ChangeState e) {
+        handleChangeState((ChangeState) e);
       }
     }
     else if (cs instanceof CommonChange) {
@@ -177,10 +174,12 @@ public abstract class UosGame implements UosApplication {
       run();
       close();
     }
-    catch (Throwable e) {
-      org.unbiquitous.ubiengine.util.Logger.log(new Error(e));
+    catch (Exception e) {
+      Logger.log(new Error(e));
     }
-    System.exit(0);
+    catch (Error e) {
+      Logger.log(e);
+    }
   }
   
   public void stop() {

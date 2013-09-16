@@ -12,8 +12,7 @@ public abstract class InputManager implements Subject {
 
     private InputDevice input_device;
     
-    public DeviceEvent(String event, InputDevice input_device) {
-      super(event);
+    public DeviceEvent(InputDevice input_device) {
       this.input_device = input_device;
     }
     
@@ -21,7 +20,9 @@ public abstract class InputManager implements Subject {
       return input_device;
     }
   }
-
+  
+  public abstract void update() throws Exception;
+  
   public static String NEWDEVICE      = "NEWDEVICE";
   public static String DEVICEPLUGGED  = "DEVICEPLUGGED";
   public static String DEVICEDOWN     = "DEVICEDOWN";
@@ -57,15 +58,15 @@ public abstract class InputManager implements Subject {
   }
   
   protected void broadcastNewDevice(InputDevice input_device) throws Exception {
-    subject.broadcast(new DeviceEvent(NEWDEVICE, input_device));
+    subject.broadcast(NEWDEVICE, new DeviceEvent(input_device));
   }
   
   protected void broadcastDevicePlugged(InputDevice input_device) throws Exception {
-    subject.broadcast(new DeviceEvent (DEVICEPLUGGED, input_device));
+    subject.broadcast(DEVICEPLUGGED, new DeviceEvent (input_device));
   }
   
   protected void broadcastDeviceDown(InputDevice input_device) throws Exception {
-    subject.broadcast(new DeviceEvent(DEVICEDOWN, input_device));
+    subject.broadcast(DEVICEDOWN, new DeviceEvent(input_device));
   }
   
   public abstract void externalRequestAccepted(String transmitter_device);
