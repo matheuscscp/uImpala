@@ -41,7 +41,7 @@ public class Animation extends Sprite {
   }
   
   public void update() {
-    frame += fps*deltatime.getIdealDT();
+    frame += fps*deltatime.getRealDT();
     frame -= frames*Math.floor(frame/frames);
     if ((int) frame != int_frame) {
       int_frame = (int) frame;

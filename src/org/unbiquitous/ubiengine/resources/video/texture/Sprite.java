@@ -36,8 +36,8 @@ public class Sprite {
       clip_rect = new Rectangle(0, 0, w, h);
       alpha = 1.0f;
       angle = 0.0f;
-      scalex = 0.0f;
-      scaley = 0.0f;
+      scalex = 1.0f;
+      scaley = 1.0f;
     }
     catch (Exception e) {
       throw new Error("Image '" + filename + "' not found");
@@ -57,8 +57,8 @@ public class Sprite {
     clip_rect = new Rectangle(0, 0, w, h);
     alpha = 1.0f;
     angle = 0.0f;
-    scalex = 0.0f;
-    scaley = 0.0f;
+    scalex = 1.0f;
+    scaley = 1.0f;
   }
   
   public Sprite(Screen screen, Text other) {
@@ -74,8 +74,8 @@ public class Sprite {
     g2d = sprite.createGraphics();
     alpha = 1.0f;
     angle = 0.0f;
-    scalex = 0.0f;
-    scaley = 0.0f;
+    scalex = 1.0f;
+    scaley = 1.0f;
     
     render(other, 0, 0, false);
   }
