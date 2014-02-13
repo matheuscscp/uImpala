@@ -130,7 +130,7 @@ public final class SubjectDevice {
    * @param event Event data.
    * @throws Exception
    */
-  public void broadcast(String event_type, Event event) throws Exception {
+  public void broadcast(String event_type, Event event) {
     EventObservations subj_event = events.get(event_type);
     
     if (subj_event == null)
@@ -148,9 +148,9 @@ public final class SubjectDevice {
       while (it.hasNext() && !event.stop)
         it.next().notifyEvent(event);
     }
-    catch (InvocationTargetException e) {
+    catch (Exception e) {
       subj_event.broadcasting = false;
-      throw (Exception) e.getCause();
+      throw new Error(e.getMessage());
     }
     subj_event.broadcasting = false;
   }

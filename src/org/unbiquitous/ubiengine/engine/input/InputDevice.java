@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.input;
+package org.unbiquitous.ubiengine.engine.input;
 
 import java.lang.reflect.Method;
 

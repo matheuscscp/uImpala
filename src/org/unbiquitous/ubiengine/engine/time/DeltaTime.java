@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.time;
+package org.unbiquitous.ubiengine.engine.time;
 
 public final class DeltaTime {
   private long begin;            // unit: millisecond

@@ -1,10 +1,10 @@
-package org.unbiquitous.ubiengine.engine.resources.input.keyboard;
+package org.unbiquitous.ubiengine.engine.input.keyboard;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.unbiquitous.ubiengine.engine.resources.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.input.InputDevice;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
@@ -45,7 +45,7 @@ public class KeyboardDevice extends InputDevice {
     subject = new SubjectDevice(KEYDOWN, KEYUP);
   }
   
-  public void update() throws Exception {
+  public void update() {
     if (!plugged) {
       while (!events.isEmpty())
         events.remove();

@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.time;
+package org.unbiquitous.ubiengine.engine.time;
 
 import java.lang.reflect.Method;
 

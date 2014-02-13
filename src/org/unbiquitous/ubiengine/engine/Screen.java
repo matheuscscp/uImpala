@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.video;
+package org.unbiquitous.ubiengine.engine;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -20,7 +20,7 @@ import java.util.Queue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.unbiquitous.ubiengine.engine.resources.time.DeltaTime;
+import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
 public final class Screen implements WindowListener {

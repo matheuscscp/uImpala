@@ -1,14 +1,14 @@
-package org.unbiquitous.ubiengine.engine.resources.video.gui;
+package org.unbiquitous.ubiengine.engine.asset.video.gui;
 
 import java.lang.reflect.Method;
 
-import org.unbiquitous.ubiengine.engine.resources.input.keyboard.KeyboardDevice;
-import org.unbiquitous.ubiengine.engine.resources.input.keyboard.KeyboardDevice.KeyDownEvent;
-import org.unbiquitous.ubiengine.engine.resources.input.mouse.MouseDevice;
-import org.unbiquitous.ubiengine.engine.resources.input.mouse.MouseDevice.MouseDownEvent;
-import org.unbiquitous.ubiengine.engine.resources.input.mouse.MouseDevice.MouseUpEvent;
-import org.unbiquitous.ubiengine.engine.resources.time.Timer;
-import org.unbiquitous.ubiengine.engine.resources.video.texture.Sprite;
+import org.unbiquitous.ubiengine.engine.asset.video.texture.Sprite;
+import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardDevice;
+import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardDevice.KeyDownEvent;
+import org.unbiquitous.ubiengine.engine.input.mouse.MouseDevice;
+import org.unbiquitous.ubiengine.engine.input.mouse.MouseDevice.MouseDownEvent;
+import org.unbiquitous.ubiengine.engine.input.mouse.MouseDevice.MouseUpEvent;
+import org.unbiquitous.ubiengine.engine.time.Timer;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Subject;

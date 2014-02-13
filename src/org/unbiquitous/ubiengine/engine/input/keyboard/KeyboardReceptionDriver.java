@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.input.keyboard;
+package org.unbiquitous.ubiengine.engine.input.keyboard;
 
 import java.util.ArrayList;
 import java.util.List;

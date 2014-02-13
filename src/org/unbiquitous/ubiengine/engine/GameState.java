@@ -1,5 +1,6 @@
 package org.unbiquitous.ubiengine.engine;
 
+import org.unbiquitous.ubiengine.engine.asset.video.texture.Sprite;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 /**
@@ -71,11 +72,23 @@ public abstract class GameState {
   }
   
   /**
+   * Use this method to build assets.
+   * @param key Class of the asset to be created.
+   * @param args Arguments to be passed to the constructor.
+   * @return Asset reference.
+   */
+  protected <T> T build(Class<T> key, Object... args) {
+    T tmp = null;
+    if (key == Sprite.class)
+    return tmp;
+  }
+  
+  /**
    * Don't call this method.
    */
   public GameState setComponents(ComponentContainer coms) {
-    game = coms.get(UosGame.class);
     components = coms;
+    game = coms.get(UosGame.class);
     return this;
   }
   

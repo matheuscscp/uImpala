@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.video.texture;
+package org.unbiquitous.ubiengine.engine.asset.video.texture;
 
 import java.awt.AlphaComposite;
 import java.awt.Font;
@@ -11,7 +11,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import org.unbiquitous.ubiengine.engine.resources.video.Screen;
+import org.unbiquitous.ubiengine.engine.Screen;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
 public class Sprite {

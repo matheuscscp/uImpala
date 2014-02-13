@@ -1,10 +1,10 @@
-package org.unbiquitous.ubiengine.engine.resources.input.mouse;
+package org.unbiquitous.ubiengine.engine.input.mouse;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.unbiquitous.ubiengine.engine.resources.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.input.InputDevice;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
@@ -76,7 +76,7 @@ public class MouseDevice extends InputDevice {
     subject = new SubjectDevice(MOUSEDOWN, MOUSEUP, MOUSEMOTION);
   }
 
-  public void update() throws Exception {
+  public void update() {
     if (!plugged) {
       while (!events.isEmpty())
         events.remove();

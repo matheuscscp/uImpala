@@ -4,11 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.engine.resources.input.keyboard.KeyboardManager;
-import org.unbiquitous.ubiengine.engine.resources.input.keyboard.KeyboardReceptionDriver;
-import org.unbiquitous.ubiengine.engine.resources.input.mouse.MouseManager;
-import org.unbiquitous.ubiengine.engine.resources.time.DeltaTime;
-import org.unbiquitous.ubiengine.engine.resources.video.Screen;
+import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardManager;
+import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardReceptionDriver;
+import org.unbiquitous.ubiengine.engine.input.mouse.MouseManager;
+import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.UOS;
@@ -33,7 +32,23 @@ public abstract class UosGame implements UosApplication {
    */
   @SuppressWarnings("serial")
   public class Settings extends HashMap<String, Object> {
-    
+    /**
+     * Method to set hardcoded default values.
+     * @return This.
+     */
+    public Settings validate() {
+      if (get("root_path") == null)
+        put("root_path", ".");
+      if (get("window_title") == null)
+        put("window_title", "UbiGame");
+      if (get("window_width") == null)
+        put("window_width", 1280);
+      if (get("window_height") == null)
+        put("window_height", 720);
+      if (get("root_path") == null)
+        throw new Error("First game state not defined!");
+      return this;
+    }
   }
   
   /**
@@ -46,7 +61,7 @@ public abstract class UosGame implements UosApplication {
    * Use this method in main() to start the game.
    * @param game Class that extends UosGame.
    */
-  public static void start(final Class<?> game) {
+  public static void run(final Class<?> game) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -71,12 +86,12 @@ public abstract class UosGame implements UosApplication {
   private Settings settings;
   
   private void init(Gateway gateway) {
+    settings = getSettings().validate();
+    components.put(Settings.class, settings);
+    
     components.put(UosGame.class, this);
     
     components.put(Gateway.class, gateway);
-    
-    deltatime = new DeltaTime();
-    components.put(DeltaTime.class, deltatime);
     
     settings = getSettings();
     components.put(Settings.class, settings);
@@ -95,14 +110,14 @@ public abstract class UosGame implements UosApplication {
     mouse_manager = new MouseManager(components);
     components.put(MouseManager.class, mouse_manager);
     
-      try {
-        states.add(
-          ((GameState) Class.forName((String) settings.get("first_state"))
-          .getConstructor().newInstance()).setComponents(components)
-        );
-      } catch (Exception e) {
-        throw new Error(e.getMessage());
-      }
+    try {
+      states.add(
+        ((GameState) Class.forName((String) settings.get("first_state"))
+        .getConstructor().newInstance()).setComponents(components)
+      );
+    } catch (Exception e) {
+      throw new Error(e.getMessage());
+    }
   }
   
   private void close() {
@@ -170,6 +185,7 @@ public abstract class UosGame implements UosApplication {
         break;
     }
     state_change = null;
+    pop_args = null;
     change_option = ChangeOption.NA;
   }
   

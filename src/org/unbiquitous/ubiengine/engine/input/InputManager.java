@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.input;
+package org.unbiquitous.ubiengine.engine.input;
 
 import java.lang.reflect.Method;
 
@@ -57,15 +57,15 @@ public abstract class InputManager implements Subject {
     subject.disconnect(event_type, observer);
   }
   
-  protected void broadcastNewDevice(InputDevice input_device) throws Exception {
+  protected void broadcastNewDevice(InputDevice input_device) {
     subject.broadcast(NEWDEVICE, new DeviceEvent(input_device));
   }
   
-  protected void broadcastDevicePlugged(InputDevice input_device) throws Exception {
+  protected void broadcastDevicePlugged(InputDevice input_device) {
     subject.broadcast(DEVICEPLUGGED, new DeviceEvent (input_device));
   }
   
-  protected void broadcastDeviceDown(InputDevice input_device) throws Exception {
+  protected void broadcastDeviceDown(InputDevice input_device) {
     subject.broadcast(DEVICEDOWN, new DeviceEvent(input_device));
   }
   

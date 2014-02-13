@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.resources.input.keyboard;
+package org.unbiquitous.ubiengine.engine.input.keyboard;
 
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
-import org.unbiquitous.ubiengine.engine.GameSettings;
-import org.unbiquitous.ubiengine.engine.resources.input.InputDevice;
-import org.unbiquitous.ubiengine.engine.resources.input.InputManager;
-import org.unbiquitous.ubiengine.engine.resources.video.Screen;
+import org.unbiquitous.ubiengine.engine.Screen;
+import org.unbiquitous.ubiengine.engine.UosGame;
+import org.unbiquitous.ubiengine.engine.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.input.InputManager;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;
@@ -52,7 +52,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
       request_map.put("receiver_device", gateway.getCurrentDevice().toJSON().toString());
     } catch (JSONException e) {
     }
-    request_map.put("application_name", (String) components.get(GameSettings.class).get("window_title"));
+    request_map.put("application_name", (String) components.get(UosGame.Settings.class).get("window_title"));
   }
   
   public KeyboardDevice getMainKeyboard() {
@@ -85,7 +85,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
       ((DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue()).engine_device.update();
   }
   
-  private void updateDeviceList() throws Exception {
+  private void updateDeviceList() {
     // get all the transmission drivers in the smart space
     List<DriverData> current_drivers = gateway.listDrivers(KeyboardReceptionDriver.TRANSMISSION_DRIVER);
     if (current_drivers == null) {

@@ -1,7 +1,7 @@
-package org.unbiquitous.ubiengine.engine.resources.video.texture;
+package org.unbiquitous.ubiengine.engine.asset.video.texture;
 
-import org.unbiquitous.ubiengine.engine.resources.time.DeltaTime;
-import org.unbiquitous.ubiengine.engine.resources.video.Screen;
+import org.unbiquitous.ubiengine.engine.Screen;
+import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 
 public class Animation extends Sprite {
   protected DeltaTime deltatime;

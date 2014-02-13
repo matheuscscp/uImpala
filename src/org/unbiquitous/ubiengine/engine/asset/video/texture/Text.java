@@ -1,10 +1,10 @@
-package org.unbiquitous.ubiengine.engine.resources.video.texture;
+package org.unbiquitous.ubiengine.engine.asset.video.texture;
 
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.unbiquitous.ubiengine.engine.resources.video.Screen;
+import org.unbiquitous.ubiengine.engine.Screen;
 
 public class Text {
   private Screen screen;
