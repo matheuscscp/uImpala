@@ -68,6 +68,7 @@ public abstract class UosGame implements UosApplication {
   private DeltaTime deltatime;
   private KeyboardManager keyboard_manager;
   private MouseManager mouse_manager;
+  private Settings settings;
   
   private void init(Gateway gateway) {
     components.put(UosGame.class, this);
@@ -77,13 +78,13 @@ public abstract class UosGame implements UosApplication {
     deltatime = new DeltaTime();
     components.put(DeltaTime.class, deltatime);
     
-    Settings initial_settings = getSettings();
-    components.put(Settings.class, initial_settings);
+    settings = getSettings();
+    components.put(Settings.class, settings);
     
     screen = new Screen(
-        (String) initial_settings.get("window_title"),
-        ((Integer) initial_settings.get("window_width")).intValue(),
-        ((Integer) initial_settings.get("window_height")).intValue(),
+        (String)settings.get("window_title"),
+        ((Integer)settings.get("window_width")).intValue(),
+        ((Integer)settings.get("window_height")).intValue(),
         deltatime
     );
     components.put(Screen.class, screen);
@@ -96,7 +97,7 @@ public abstract class UosGame implements UosApplication {
     
       try {
         states.add(
-          ((GameState) Class.forName((String) initial_settings.get("first_state"))
+          ((GameState) Class.forName((String) settings.get("first_state"))
           .getConstructor().newInstance()).setComponents(components)
         );
       } catch (Exception e) {
@@ -192,7 +193,13 @@ public abstract class UosGame implements UosApplication {
       init(gateway);
       run();
     } catch (Error e) {
-      Logger.log(e);
+      String path;
+      try {
+        path = (String)settings.get("root_path");
+      } catch (Throwable e1) {
+        path = ".";
+      }
+      Logger.log(e, path + "/ErrorLog.txt");
     }
   }
   

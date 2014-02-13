@@ -13,7 +13,7 @@ public final class ComponentContainer {
   /** @param key The Class of the object is the key for the single instance. */
   @SuppressWarnings("unchecked")
   public <T> T get(Class<T> key) {
-    return (T) components.get(key);
+    return (T)components.get(key);
   }
   
   /**
@@ -23,8 +23,14 @@ public final class ComponentContainer {
    * @param value The single instance object reference.
    */
   public <T> void put(Class<T> key, T value) {
-    if (components.get(key) != null)
-      throw new Error("Trying to change \"" + key.getName() + "\" single instance");
     components.put(key, value);
+  }
+  
+  /**
+   * Erases the component.
+   * @param key The key to the component.
+   */
+  public <T> void erase(Class<T> key) {
+    components.remove(key);
   }
 }
