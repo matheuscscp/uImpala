@@ -7,7 +7,5 @@ package org.unbiquitous.ubiengine.util.mathematics;
  */
 @SuppressWarnings("serial")
 public final class DivisionByZero extends Exception {
-  public DivisionByZero() {
-    
-  }
+  
 }
