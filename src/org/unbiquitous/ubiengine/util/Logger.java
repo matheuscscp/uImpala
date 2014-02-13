@@ -29,8 +29,7 @@ public final class Logger {
     catch (java.io.IOException e2) {
       e2.printStackTrace();
     }
-    finally {
-      e.printStackTrace();
-    }
+    
+    e.printStackTrace();
   }
 }
