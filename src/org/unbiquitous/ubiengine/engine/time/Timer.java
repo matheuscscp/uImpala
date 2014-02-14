@@ -5,7 +5,11 @@ import java.lang.reflect.Method;
 import org.unbiquitous.ubiengine.util.observer.Subject;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
-/** Time in milliseconds */
+/**
+ * Event approch timer class. Time in milliseconds.
+ * @author Pimenta
+ *
+ */
 public class Timer implements Subject {
 
   protected boolean done;

@@ -1,6 +1,10 @@
 package org.unbiquitous.ubiengine.engine.time;
 
-/** Time in milliseconds */
+/**
+ * Query approch timer class. Time in milliseconds.
+ * @author Pimenta
+ *
+ */
 public class Stopwatch {
   protected long initialtime;
   protected long pausetime;
