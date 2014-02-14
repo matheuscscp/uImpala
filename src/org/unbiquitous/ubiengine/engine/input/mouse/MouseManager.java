@@ -3,7 +3,7 @@ package org.unbiquitous.ubiengine.engine.input.mouse;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import org.unbiquitous.ubiengine.engine.Screen;
+import org.unbiquitous.ubiengine.engine.core.Screen;
 import org.unbiquitous.ubiengine.engine.input.InputDevice;
 import org.unbiquitous.ubiengine.engine.input.InputManager;
 import org.unbiquitous.ubiengine.util.ComponentContainer;

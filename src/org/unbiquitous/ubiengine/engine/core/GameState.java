@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine;
+package org.unbiquitous.ubiengine.engine.core;
 
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 

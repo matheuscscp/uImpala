@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine;
+package org.unbiquitous.ubiengine.engine.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;

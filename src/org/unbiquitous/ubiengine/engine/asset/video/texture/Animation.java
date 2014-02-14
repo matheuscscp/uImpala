@@ -1,6 +1,6 @@
 package org.unbiquitous.ubiengine.engine.asset.video.texture;
 
-import org.unbiquitous.ubiengine.engine.Screen;
+import org.unbiquitous.ubiengine.engine.core.Screen;
 import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 
 public class Animation extends Sprite {
