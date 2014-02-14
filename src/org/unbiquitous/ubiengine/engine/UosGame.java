@@ -93,9 +93,6 @@ public abstract class UosGame implements UosApplication {
     
     components.put(Gateway.class, gateway);
     
-    settings = getSettings();
-    components.put(Settings.class, settings);
-    
     screen = new Screen(
         (String)settings.get("window_title"),
         ((Integer)settings.get("window_width")).intValue(),
@@ -127,19 +124,11 @@ public abstract class UosGame implements UosApplication {
   private void run() {
     while (states.size() > 0) {
       deltatime.start();
-      input();
       update();
       render();
       deltatime.finish();
       checkStateChange();
     }
-  }
-  
-  private void input() {
-    keyboard_manager.update();
-    mouse_manager.update();
-    for (GameState gs : states)
-      gs.input();
   }
   
   private void update() {
@@ -161,13 +150,16 @@ public abstract class UosGame implements UosApplication {
   }
   
   private GameState state_change = null;
-  private GameState.Args pop_args = null;
+  private Object[] pop_args = null;
   private ChangeOption change_option = ChangeOption.NA;
   
   private void checkStateChange() {
     switch (change_option) {
+      case NA:
+        break;
+      
       case CHANGE:
-        states.removeLast();
+        states.removeLast().close();
         states.add(state_change);
         break;
         
@@ -176,13 +168,13 @@ public abstract class UosGame implements UosApplication {
         break;
         
       case POP:
-        states.removeLast();
+        states.removeLast().close();
         if (states.size() > 0)
           states.getLast().wakeup(pop_args);
         break;
         
       default:
-        break;
+        throw new Error("Invalid value for ChangeOption in UosGame!");
     }
     state_change = null;
     pop_args = null;
@@ -199,9 +191,15 @@ public abstract class UosGame implements UosApplication {
     change_option = ChangeOption.PUSH;
   }
   
-  public void pop(GameState.Args args) {
+  public void pop(Object... args) {
     pop_args = args;
     change_option = ChangeOption.POP;
+  }
+  
+  public <T> T build(Class<T> key, Object... args) {
+    T tmp = null;
+    // if (key == Sprite.class) FIXME
+    return tmp;
   }
   
   public void start(Gateway gateway, OntologyStart ontology) {
