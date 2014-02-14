@@ -8,7 +8,7 @@ import org.unbiquitous.ubiengine.util.ComponentContainer;
  * @author Pimenta
  *
  */
-public abstract class AbstractGameState extends GameState {
+public abstract class AbstractState extends GameState {
   /**
    * Create a new game state and pass to this method to change the current
    * game state.

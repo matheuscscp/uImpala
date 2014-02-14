@@ -3,7 +3,7 @@ package org.unbiquitous.ubiengine.engine.core;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 /**
- * Use this class to implement game objects of a ContainerGameState.
+ * Use this class to implement game objects of a ContainerState.
  * @author Pimenta
  *
  */
@@ -84,7 +84,7 @@ public abstract class GameObject {
   // ===========================================================================
   // nothings else matters from here to below
   // ===========================================================================
-  public GameObject setComponents(ComponentContainer coms, ContainerGameState s) {
+  public GameObject setComponents(ComponentContainer coms, ContainerState s) {
     components = coms;
     game = coms.get(UosGame.class);
     state = s;
@@ -92,5 +92,5 @@ public abstract class GameObject {
   }
   
   private UosGame game;
-  private ContainerGameState state;
+  private ContainerState state;
 }

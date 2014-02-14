@@ -10,7 +10,7 @@ import java.util.List;
  * @author Pimenta
  *s
  */
-public abstract class ContainerGameState extends GameState {
+public abstract class ContainerState extends GameState {
   /**
    * Use to add game objects to this game state.
    * @param o GameObject reference.
