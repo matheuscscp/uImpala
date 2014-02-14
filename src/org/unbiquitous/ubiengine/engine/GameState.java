@@ -43,12 +43,9 @@ public abstract class GameState {
   protected <T> T build(Class<T> key, Object... args) {
     return game.build(key, args);
   }
-  
-  /**
-   * Method to set the game components.
-   * @param coms Components reference.
-   * @return This.
-   */
+  // ===========================================================================
+  // nothings else matters from here to below
+  // ===========================================================================
   public GameState setComponents(ComponentContainer coms) {
     components = coms;
     game = coms.get(UosGame.class);

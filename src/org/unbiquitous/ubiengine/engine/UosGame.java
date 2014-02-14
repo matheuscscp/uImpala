@@ -20,37 +20,11 @@ import org.unbiquitous.uos.network.socket.connectionManager.TCPConnectionManager
 import org.unbiquitous.uos.network.socket.radar.PingRadar;
 
 /**
- * The game engine class. Extend it only to implement getSettings().
+ * The game class. Extend it only to implement getSettings().
  * @author Pimenta
  *
  */
 public abstract class UosGame implements UosApplication {
-  /**
-   * Just a "typedef" for HashMap<String, Object>.
-   * @author Pimenta
-   *
-   */
-  @SuppressWarnings("serial")
-  public class Settings extends HashMap<String, Object> {
-    /**
-     * Method to set hardcoded default values.
-     * @return This.
-     */
-    public Settings validate() {
-      if (get("root_path") == null)
-        put("root_path", ".");
-      if (get("window_title") == null)
-        put("window_title", "UbiGame");
-      if (get("window_width") == null)
-        put("window_width", 1280);
-      if (get("window_height") == null)
-        put("window_height", 720);
-      if (get("root_path") == null)
-        throw new Error("First game state not defined!");
-      return this;
-    }
-  }
-  
   /**
    * Must be implemented by the game class.
    * @return Reference to the game initial settings.
@@ -59,7 +33,7 @@ public abstract class UosGame implements UosApplication {
   
   /**
    * Use this method in main() to start the game.
-   * @param game Class that extends UosGame.
+   * @param game Class{@literal <}?{@literal >} that extends UosGame.
    */
   public static void run(final Class<?> game) {
     new UOS().init(new ListResourceBundle() {
@@ -75,6 +49,28 @@ public abstract class UosGame implements UosApplication {
         };
       }
     });
+  }
+  
+  /**
+   * Just a "typedef" for HashMap{@literal <}String, Object{@literal >}.
+   * @author Pimenta
+   *
+   */
+  @SuppressWarnings("serial")
+  public class Settings extends HashMap<String, Object> {
+    private Settings validate() {
+      if (get("root_path") == null)
+        put("root_path", ".");
+      if (get("window_title") == null)
+        put("window_title", "UbiEngine");
+      if (get("window_width") == null)
+        put("window_width", 1280);
+      if (get("window_height") == null)
+        put("window_height", 720);
+      if (get("root_path") == null)
+        throw new Error("First game state not defined!");
+      return this;
+    }
   }
   
   private ComponentContainer components = new ComponentContainer();
@@ -109,8 +105,8 @@ public abstract class UosGame implements UosApplication {
     
     try {
       states.add(
-        ((GameState) Class.forName((String) settings.get("first_state"))
-        .getConstructor().newInstance()).setComponents(components)
+        ((GameState)((Class<?>)settings.get("first_state")).newInstance())
+        .setComponents(components)
       );
     } catch (Exception e) {
       throw new Error(e.getMessage());
