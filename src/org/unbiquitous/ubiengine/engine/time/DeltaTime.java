@@ -1,29 +1,6 @@
 package org.unbiquitous.ubiengine.engine.time;
 
 public final class DeltaTime {
-  private long begin;            // unit: millisecond
-  private float ideal_FPS = 30;  // unit: frame/second
-  private long real_DT = 0;      // unit: millisecond
-  
-  public void start() {
-    begin = System.currentTimeMillis();
-  }
-  
-  public void finish() {
-    real_DT = System.currentTimeMillis() - begin;
-    
-    // delay
-    long diff = 1000/((long) ideal_FPS) - real_DT;
-    if (diff > 0) {
-      try {
-        Thread.sleep(diff);
-      }
-      catch (InterruptedException e) {
-      }
-      real_DT = System.currentTimeMillis() - begin;
-    }
-  }
-  
   /** Time in milliseconds. */
   public long getBegin() {             // unit: millisecond
     return begin;
@@ -60,5 +37,30 @@ public final class DeltaTime {
   public void setIdealDT(float DT) {   // unit: second
     if (DT > 0)
       ideal_FPS = 1/DT;
+  }
+  // ===========================================================================
+  // nothings else matters from here to below
+  // ===========================================================================
+  private long begin;            // unit: millisecond
+  private float ideal_FPS = 30;  // unit: frame/second
+  private long real_DT = 0;      // unit: millisecond
+  
+  public void start() {
+    begin = System.currentTimeMillis();
+  }
+  
+  public void finish() {
+    real_DT = System.currentTimeMillis() - begin;
+    
+    // delay
+    long diff = 1000/((long) ideal_FPS) - real_DT;
+    if (diff > 0) {
+      try {
+        Thread.sleep(diff);
+      }
+      catch (InterruptedException e) {
+      }
+      real_DT = System.currentTimeMillis() - begin;
+    }
   }
 }
