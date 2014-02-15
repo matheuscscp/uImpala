@@ -161,7 +161,7 @@ public final class SubjectDevice {
    * @param event_type Event to broadcast.
    * @throws Exception
    */
-  public void broadcast(String event_type) throws Exception {
+  public void broadcast(String event_type) {
     broadcast(event_type, null);
   }
   

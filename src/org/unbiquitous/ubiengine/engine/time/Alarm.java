@@ -10,21 +10,21 @@ import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
  * @author Pimenta
  *
  */
-public class Timer implements Subject {
-  public Timer() {
-    done = true;
-    paused = false;
-    subject = new SubjectDevice(DONE);
-  }
-
-  public void update() throws Exception {
+public final class Alarm implements Subject {
+  /**
+   * Call this method every frame to awake sleepers!
+   */
+  public void update() {
     if (!done && !paused && System.currentTimeMillis() >= done_ticks) {
       done = true;
-      subject.broadcast(DONE);
+      subject.broadcast(TRRRIMM);
     }
   }
-
-  /** @param ms Time in milliseconds. */
+  
+  /**
+   * Resets and starts counting time.
+   * @param ms Time in milliseconds.
+   */
   public void start(long ms) {
     if (ms > 0) {
       done_ticks = ms + System.currentTimeMillis();
@@ -33,6 +33,9 @@ public class Timer implements Subject {
     }
   }
   
+  /**
+   * Pauses the time counting.
+   */
   public void pause() {
     if (!paused) {
       pausetime = System.currentTimeMillis();
@@ -40,6 +43,9 @@ public class Timer implements Subject {
     }
   }
   
+  /**
+   * Resumes the time counting.
+   */
   public void resume() {
     if (paused) {
       done_ticks += System.currentTimeMillis() - pausetime;
@@ -47,28 +53,37 @@ public class Timer implements Subject {
     }
   }
   
-  public void cancel() {
+  /**
+   * Aborts the alarm.
+   */
+  public void abort() {
     done = true;
   }
-
-  /** Time in milliseconds */
+  
+  /**
+   * Query the counted time.
+   * @return Time in milliseconds.
+   */
   public long time() {
     if (done)
       return 0;
-    
     if (paused)
       return done_ticks - pausetime;
-    
     return done_ticks - System.currentTimeMillis();
   }
   
+  /**
+   * Query if timer is paused.
+   * @return Boolean value.
+   */
   public boolean isPaused() {
     return paused;
   }
   
-  protected SubjectDevice subject;
-  
-  public static final String DONE = "DONE";
+  /**
+   * There is only one event: TRRRIMM!
+   */
+  public static final String TRRRIMM = "TRRRIMM";
   
   public void connect(String event_type, Method handler) {
     subject.connect(event_type, handler);
@@ -94,8 +109,9 @@ public class Timer implements Subject {
     subject.disconnect(event_type, observer);
   }
   
-  protected boolean done;
-  protected boolean paused;
-  protected long done_ticks;
-  protected long pausetime;
+  private SubjectDevice subject = new SubjectDevice(TRRRIMM);
+  private boolean done = true;
+  private boolean paused = false;
+  private long done_ticks;
+  private long pausetime;
 }

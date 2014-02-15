@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.engine.time;
  * @author Pimenta
  *
  */
-public class Stopwatch {
+public final class Stopwatch {
   /**
    * Resets and starts counting time.
    */
