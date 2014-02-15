@@ -207,22 +207,34 @@ public abstract class UosGame implements UosApplication {
     change_option = ChangeOption.NA;
   }
   
+  /**
+   * Engine's private use.
+   */
   protected <T> T build(Class<T> key, Object... args) {
     T tmp = null;
     // if (key == Sprite.class) FIXME
     return tmp;
   }
   
+  /**
+   * Engine's private use.
+   */
   protected void change(GameState state) {
     state_change = state.setComponents(components);
     change_option = ChangeOption.CHANGE;
   }
   
+  /**
+   * Engine's private use.
+   */
   protected void push(GameState state) {
     state_change = state.setComponents(components);
     change_option = ChangeOption.PUSH;
   }
   
+  /**
+   * Engine's private use.
+   */
   protected void pop(Object... args) {
     pop_args = args;
     change_option = ChangeOption.POP;
