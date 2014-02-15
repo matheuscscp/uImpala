@@ -2,11 +2,11 @@ package org.unbiquitous.ubiengine.engine.core;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardManager;
+import org.unbiquitous.ubiengine.engine.input.InputManager;
 import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardReceptionDriver;
-import org.unbiquitous.ubiengine.engine.input.mouse.MouseManager;
 import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.ubiengine.util.Logger;
@@ -35,7 +35,7 @@ public abstract class UosGame implements UosApplication {
    * Use this method in main() to start the game.
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
    */
-  public static void run(final Class<?> game) {
+  protected static void run(final Class<?> game) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -57,7 +57,7 @@ public abstract class UosGame implements UosApplication {
    *
    */
   @SuppressWarnings("serial")
-  public class Settings extends HashMap<String, Object> {
+  public static class Settings extends HashMap<String, Object> {
     private Settings validate() {
       if (get("root_path") == null)
         put("root_path", ".");
@@ -67,18 +67,19 @@ public abstract class UosGame implements UosApplication {
         put("window_width", 1280);
       if (get("window_height") == null)
         put("window_height", 720);
-      if (get("root_path") == null)
+      if (get("first_state") == null)
         throw new Error("First game state not defined!");
       return this;
     }
   }
-  
+//==============================================================================
+//nothings else matters from here to below
+//==============================================================================
   private ComponentContainer components = new ComponentContainer();
   private LinkedList<GameState> states = new LinkedList<GameState>();
+  private List<InputManager> managers = new LinkedList<InputManager>();
   private Screen screen;
   private DeltaTime deltatime;
-  private KeyboardManager keyboard_manager;
-  private MouseManager mouse_manager;
   private Settings settings;
   
   private void init(Gateway gateway) {
@@ -97,17 +98,31 @@ public abstract class UosGame implements UosApplication {
     );
     components.put(Screen.class, screen);
     
-    keyboard_manager = new KeyboardManager(components);
-    components.put(KeyboardManager.class, keyboard_manager);
-    
-    mouse_manager = new MouseManager(components);
-    components.put(MouseManager.class, mouse_manager);
+    initInputManagers();
     
     try {
       states.add(
         ((GameState)((Class<?>)settings.get("first_state")).newInstance())
         .setComponents(components)
       );
+    } catch (Exception e) {
+      throw new Error(e.getMessage());
+    }
+  }
+  
+  @SuppressWarnings("unchecked")
+  private void initInputManagers() {
+    try {
+      Object ims = settings.get("input_managers");
+      if (ims == null)
+        return;
+      for (Class<?> c : (List<Class<?>>)ims) {
+        Object o = c
+        .getConstructor(ComponentContainer.class)
+        .newInstance(components);
+        components.put(c, o);
+        managers.add((InputManager)o);
+      }
     } catch (Exception e) {
       throw new Error(e.getMessage());
     }
@@ -120,11 +135,17 @@ public abstract class UosGame implements UosApplication {
   private void run() {
     while (states.size() > 0) {
       deltatime.start();
+      input();
       update();
       render();
       deltatime.finish();
       checkStateChange();
     }
+  }
+  
+  private void input() {
+    for (InputManager im : managers)
+      im.update();
   }
   
   private void update() {
@@ -177,27 +198,42 @@ public abstract class UosGame implements UosApplication {
     change_option = ChangeOption.NA;
   }
   
+  /**
+   * Engine's private use.
+   */
   public void change(GameState state) {
-    state_change = state;
+    state_change = state.setComponents(components);
     change_option = ChangeOption.CHANGE;
   }
   
+  /**
+   * Engine's private use.
+   */
   public void push(GameState state) {
-    state_change = state;
+    state_change = state.setComponents(components);
     change_option = ChangeOption.PUSH;
   }
   
+  /**
+   * Engine's private use.
+   */
   public void pop(Object... args) {
     pop_args = args;
     change_option = ChangeOption.POP;
   }
   
+  /**
+   * Engine's private use.
+   */
   public <T> T build(Class<T> key, Object... args) {
     T tmp = null;
     // if (key == Sprite.class) FIXME
     return tmp;
   }
   
+  /**
+   * uOS's private use.
+   */
   public void start(Gateway gateway, OntologyStart ontology) {
     try {
       init(gateway);
@@ -213,14 +249,23 @@ public abstract class UosGame implements UosApplication {
     }
   }
   
+  /**
+   * uOS's private use.
+   */
   public void stop() {
     close();
   }
   
+  /**
+   * uOS's private use.
+   */
   public void init(OntologyDeploy ontology, String appId) {
     
   }
   
+  /**
+   * uOS's private use.
+   */
   public void tearDown(OntologyUndeploy ontology) {
     
   }

@@ -42,7 +42,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     gateway = components.get(Gateway.class);
     
     main_keyboard = new KeyboardDevice();
-    main_keyboard.plug(true);
+    main_keyboard.active(true);
     components.get(Screen.class).addKeyListener(this);
     
     KeyboardReceptionDriverManager.init(this, gateway);
@@ -66,14 +66,14 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     while (!plugged_devices.isEmpty()) {
       String transmitter_device = plugged_devices.poll();
       DeviceTuple d_tuple = keyboards.get(transmitter_device);
-      d_tuple.engine_device.plug(true);
+      d_tuple.engine_device.active(true);
       broadcastDevicePlugged(d_tuple.engine_device);
     }
     
     // updating down devices
     while (!down_devices.isEmpty()) {
       KeyboardDevice kdev = keyboards.remove(down_devices.poll()).engine_device;
-      kdev.plug(false);
+      kdev.active(false);
       broadcastDeviceDown(kdev);
     }
     

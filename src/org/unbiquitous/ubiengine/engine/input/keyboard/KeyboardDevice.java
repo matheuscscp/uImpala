@@ -46,7 +46,7 @@ public class KeyboardDevice extends InputDevice {
   }
   
   public void update() {
-    if (!plugged) {
+    if (!active) {
       while (!events.isEmpty())
         events.remove();
       return;

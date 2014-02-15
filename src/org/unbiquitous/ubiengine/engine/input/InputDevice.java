@@ -6,15 +6,14 @@ import org.unbiquitous.ubiengine.util.observer.Subject;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
 public abstract class InputDevice implements Subject {
+  protected boolean active = false;
   
-  protected boolean plugged = false;
-  
-  public boolean isPlugged() {
-    return plugged;
+  public boolean active() {
+    return active;
   }
   
-  public void plug(boolean plug) {
-    plugged = plug;
+  public void active(boolean a) {
+    active = a;
   }
   
   protected SubjectDevice subject;

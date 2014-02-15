@@ -1,10 +1,9 @@
 package org.unbiquitous.ubiengine.engine.core;
 
-import org.unbiquitous.ubiengine.util.ComponentContainer;
-
 /**
- * Class to be extended by implementing logic for operations of input,
- * update and rendering.
+ * Class to be extended by implementing logic for operations of update,
+ * renderization, wakeup (on state pops) and close.
+ * @see ContainerState
  * @author Pimenta
  *
  */
@@ -15,7 +14,7 @@ public abstract class AbstractState extends GameState {
    * @param state The new game state.
    */
   protected void change(GameState state) {
-    game.change(state.setComponents(components));
+    components.get(UosGame.class).change(state);
   }
   
   /**
@@ -23,7 +22,7 @@ public abstract class AbstractState extends GameState {
    * @param state The new game state.
    */
   protected void push(GameState state) {
-    game.push(state.setComponents(components));
+    components.get(UosGame.class).push(state);
   }
   
   /**
@@ -31,16 +30,6 @@ public abstract class AbstractState extends GameState {
    * @param args Args to be passed to the new state in the top of the stack.
    */
   protected void pop(Object... args) {
-    game.pop(args);
+    components.get(UosGame.class).pop(args);
   }
-  // ===========================================================================
-  // nothings else matters from here to below
-  // ===========================================================================
-  public GameState setComponents(ComponentContainer coms) {
-    components = coms;
-    game = coms.get(UosGame.class);
-    return this;
-  }
-  
-  private UosGame game;
 }

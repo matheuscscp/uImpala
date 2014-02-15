@@ -3,7 +3,9 @@ package org.unbiquitous.ubiengine.engine.core;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 /**
- * Abstract class to help the engine manage game states.
+ * Engine's private use. Use one of the two subclasses.
+ * @see AbstractState
+ * @see ContainerState
  * @author Pimenta
  *
  */
@@ -16,23 +18,23 @@ public abstract class GameState {
   /**
    * Method to implement update.
    */
-  public abstract void update();
+  protected abstract void update();
   
   /**
    * Method to implement rendering.
    */
-  public abstract void render();
+  protected abstract void render();
   
   /**
    * Handle a pop from the stack of game states.
    * @param args Arguments passed from the state popped.
    */
-  public abstract void wakeup(Object... args);
+  protected abstract void wakeup(Object... args);
   
   /**
    * Method to close whatever is necessary.
    */
-  public abstract void close();
+  protected abstract void close();
   
   /**
    * Use this method to build assets.
@@ -41,16 +43,14 @@ public abstract class GameState {
    * @return Asset reference.
    */
   protected <T> T build(Class<T> key, Object... args) {
-    return game.build(key, args);
-  }
-  // ===========================================================================
-  // nothings else matters from here to below
-  // ===========================================================================
-  public GameState setComponents(ComponentContainer coms) {
-    components = coms;
-    game = coms.get(UosGame.class);
-    return this;
+    return components.get(UosGame.class).build(key, args);
   }
   
-  private UosGame game;
+  /**
+   * Engine's private use.
+   */
+  protected GameState setComponents(ComponentContainer coms) {
+    components = coms;
+    return this;
+  }
 }
