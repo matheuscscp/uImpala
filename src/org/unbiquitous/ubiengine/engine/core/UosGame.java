@@ -163,7 +163,7 @@ public abstract class UosGame implements UosApplication {
     try {
       Object ims = settings.get("input_managers");
       if (ims != null) {
-        for (Class<?> c : (List<Class<?>>)ims) {
+        for (Class<?> c : (List<Class<? extends InputManager>>)ims) {
           managers.add((InputManager)components.put(c, c
             .getConstructor(ComponentContainer.class).newInstance(components)
           ));

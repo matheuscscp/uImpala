@@ -1,2 +1,3 @@
-refactor asset
 refactor input
+refactor asset
+  consider int z when doing renderization (surface planes)

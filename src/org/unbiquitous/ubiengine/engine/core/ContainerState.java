@@ -16,36 +16,6 @@ import org.unbiquitous.ubiengine.util.ComponentContainer;
  */
 public abstract class ContainerState extends GameState {
   /**
-   * Use to add game objects to ContainerState.
-   * @param o GameObject reference.
-   */
-  protected void add(GameObject o) {
-    objects.add(o.setComponents(components, this));
-  }
-  
-  /**
-   * After creating a <code>GameObject</code> inside a
-   * <code>ContainerState</code>, call this method if you don't want to
-   * call <code>ContainerState.add</code> for the new object. Example:<br />
-   * <br />
-   * Consider that <code>Player</code> extends <code>GameObject</code>.<br />
-   * <br />
-   * Inside a class that extends <code>ContainerState</code>:<br />
-   * <code>
-   * add(new Player());<br />
-   * // or<br />
-   * Player player = new Player();<br />
-   * setComponents(player);
-   * </code>
-   * @param o Game object to be settled.
-   * @return This.
-   * @see ContainerState#add
-   */
-  protected void setComponents(GameObject o) {
-    o.setComponents(components, this);
-  }
-  
-  /**
    * Use this class to implement game objects of a ContainerState.
    * @see ContainerState
    * @author Pimenta
@@ -56,6 +26,32 @@ public abstract class ContainerState extends GameState {
      * Use to manage singleton instances.
      */
     protected ComponentContainer components;
+    
+    /**
+     * Flag to tell the game state if this object must be destroyed.
+     */
+    protected boolean destroy = false;
+    
+    /**
+     * Assignment constructor to be used inside a ContainerState.
+     * @param coms Game components.
+     * @param state Parent game state.
+     */
+    protected GameObject(ComponentContainer coms, ContainerState s) {
+      components = coms;
+      state = s;
+      state.objects.add(this);
+    }
+    
+    /**
+     * Assignment constructor to be used inside a GameObject.
+     * @param other Component source.
+     */
+    protected GameObject(GameObject other) {
+      components = other.components;
+      state = other.state;
+      state.objects.add(this);
+    }
     
     /**
      * Method to implement update.
@@ -112,64 +108,11 @@ public abstract class ContainerState extends GameState {
     protected void pop(Object... args) {
       components.get(UosGame.class).pop(args);
     }
-    
-    /**
-     * Use to add game objects to the parent game state.
-     * @param o GameObject reference.
-     */
-    protected void add(GameObject o) {
-      state.add(o);
-    }
-    
-    /**
-     * After creating a <code>GameObject</code> inside another, call
-     * this method if you don't want to call <code>GameObject.add</code>
-     * for the new object. Example:<br />
-     * <br />
-     * Consider that <code>Player</code> extends <code>GameObject</code>.<br />
-     * <br />
-     * Inside another class that extends <code>GameObject</code>:<br />
-     * <code>
-     * add(new Player());<br />
-     * // or<br />
-     * this.player = new Player().setComponents(this);
-     * </code>
-     * @param other Components' source.
-     * @return This.
-     * @see GameObject#add
-     */
-    protected GameObject setComponents(GameObject other) {
-      components = other.components;
-      state = other.state;
-      return this;
-    }
-    
-    /**
-     * Flag to tell the game state if this object must be destroyed.
-     */
-    protected boolean destroy = false;
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-    /**
-     * Engine's private use.
-     */
-    private GameObject setComponents(ComponentContainer coms, ContainerState s) {
-      components = coms;
-      state = s;
-      return this;
-    }
-    
-    /**
-     * Engine's private use.
-     */
     private ContainerState state;
   }
-  
-  /**
-   * Engine's private use.
-   */
-  private List<GameObject> objects = new LinkedList<GameObject>();
   
   /**
    * Engine's private use.
@@ -212,4 +155,6 @@ public abstract class ContainerState extends GameState {
     for (GameObject o : objects)
       o.destroy();
   }
+  
+  private List<GameObject> objects = new LinkedList<GameObject>();
 }
