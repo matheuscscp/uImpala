@@ -1,7 +1,5 @@
 package org.unbiquitous.ubiengine.util.mathematics.linearalgebra;
 
-import org.unbiquitous.ubiengine.util.mathematics.DivisionByZero;
-
 /**
  * Class to represent a three-dimensional vector.
  * Can also be used as two-dimensional vector, if z coordinate remain null.
@@ -114,9 +112,9 @@ public class Vector3 {
     return this;
   }
   
-  public Vector3 div(float scalar) throws DivisionByZero {
+  public Vector3 div(float scalar) {
     if (scalar == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     has_set = true;
     x_ /= scalar;
@@ -157,9 +155,9 @@ public class Vector3 {
     return v;
   }
   
-  public Vector3 divide(float scalar) throws DivisionByZero {
+  public Vector3 divide(float scalar) {
     if (scalar == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     Vector3 v = new Vector3();
     v.x_ = x_/scalar;
@@ -208,17 +206,17 @@ public class Vector3 {
   }
   
   // angle in degrees between this and other
-  public float angle(Vector3 other) throws DivisionByZero {
+  public float angle(Vector3 other) {
     if (length() == 0 || other.length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     return (float) Math.toDegrees(Math.acos(dot(other)/(length_*other.length_)));
   }
   
   // this unit vector
-  public Vector3 unitvec() throws DivisionByZero {
+  public Vector3 unitvec() {
     if (length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     Vector3 v = new Vector3();
     v.x_ = x_/length_;
@@ -226,9 +224,9 @@ public class Vector3 {
     v.z_ = z_/length_;
     return v;
   }
-  public void setunitvec() throws DivisionByZero {
+  public void setunitvec() {
     if (length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     x_ /= length_;
     y_ /= length_;
@@ -236,9 +234,9 @@ public class Vector3 {
   }
   
   // this projection over other
-  public Vector3 proj(Vector3 other) throws DivisionByZero {
+  public Vector3 proj(Vector3 other) {
     if (other.length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     Vector3 v = new Vector3();
     float scalar = dot(other)/(other.length_*other.length_);
@@ -247,9 +245,9 @@ public class Vector3 {
     v.z_ = other.z_*scalar;
     return v;
   }
-  public void setproj(Vector3 other) throws DivisionByZero {
+  public void setproj(Vector3 other) {
     if (other.length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     float scalar = dot(other)/(other.length_*other.length_);
     x_ = other.x_*scalar;
@@ -258,9 +256,9 @@ public class Vector3 {
   }
   
   // this rejection over other
-  public Vector3 rej(Vector3 other) throws DivisionByZero {
+  public Vector3 rej(Vector3 other) {
     if (other.length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     Vector3 v = new Vector3();
     float scalar = dot(other)/(other.length_*other.length_);
@@ -269,9 +267,9 @@ public class Vector3 {
     v.z_ = z_ - other.z_*scalar;
     return v;
   }
-  public void setrej(Vector3 other) throws DivisionByZero {
+  public void setrej(Vector3 other) {
     if (other.length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     float scalar = dot(other)/(other.length_*other.length_);
     x_ -= other.x_*scalar;
@@ -280,9 +278,9 @@ public class Vector3 {
   }
   
   // this scalar projection over other
-  public float scalarproj(Vector3 other) throws DivisionByZero {
+  public float scalarproj(Vector3 other) {
     if (other.length() == 0)
-      throw new DivisionByZero();
+      throw new Error("Division by zero");
     
     return (x_*other.x_ + y_*other.y_ + z_*other.z_)/other.length_;
   }
@@ -306,7 +304,7 @@ public class Vector3 {
   }
   
   // rotates this around other by angle degrees
-  public Vector3 rotate(float angle, Vector3 other) throws DivisionByZero {
+  public Vector3 rotate(float angle, Vector3 other) {
     Vector3 v = new Vector3();
     Vector3 u = other.unitvec();
     angle = (float) Math.toRadians(angle);
@@ -317,7 +315,7 @@ public class Vector3 {
     v.z_ = x_*(u.x_*u.z_*(1 - cost) - u.y_*sint)  +  y_*(u.y_*u.z_*(1 - cost) + u.x_*sint)  +  z_*(u.z_*u.z_*(1 - cost) +      cost);
     return v;
   }
-  public void setrotate(float angle, Vector3 other) throws DivisionByZero {
+  public void setrotate(float angle, Vector3 other) {
     Vector3 v = new Vector3();
     Vector3 u = other.unitvec();
     angle = (float) Math.toRadians(angle);

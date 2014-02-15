@@ -6,17 +6,11 @@ import org.unbiquitous.ubiengine.util.observer.Subject;
 import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
 /**
- * Event approch timer class. Time in milliseconds.
+ * Timer class with event approach.
  * @author Pimenta
  *
  */
 public class Timer implements Subject {
-
-  protected boolean done;
-  protected boolean paused;
-  protected long done_ticks;
-  protected long pausetime;
-  
   public Timer() {
     done = true;
     paused = false;
@@ -79,24 +73,29 @@ public class Timer implements Subject {
   public void connect(String event_type, Method handler) {
     subject.connect(event_type, handler);
   }
-
+  
   public void connect(String event_type, Object observer, Method handler) {
     subject.connect(event_type, observer, handler);
   }
-
+  
   public void disconnect(Method handler) {
     subject.disconnect(handler);
   }
-
+  
   public void disconnect(String event_type, Method handler) {
     subject.disconnect(event_type, handler);
   }
-
+  
   public void disconnect(Object observer) {
     subject.disconnect(observer);
   }
-
+  
   public void disconnect(String event_type, Object observer) {
     subject.disconnect(event_type, observer);
   }
+  
+  protected boolean done;
+  protected boolean paused;
+  protected long done_ticks;
+  protected long pausetime;
 }
