@@ -76,88 +76,11 @@ public abstract class UosGame implements UosApplication {
 //nothings else matters from here to below
 //==============================================================================
   private ComponentContainer components = new ComponentContainer();
-  private LinkedList<GameState> states = new LinkedList<GameState>();
   private List<InputManager> managers = new LinkedList<InputManager>();
-  private Screen screen;
-  private DeltaTime deltatime;
+  private LinkedList<GameState> states = new LinkedList<GameState>();
   private Settings settings;
-  
-  private void init(Gateway gateway) {
-    settings = getSettings().validate();
-    components.put(Settings.class, settings);
-    
-    components.put(UosGame.class, this);
-    
-    components.put(Gateway.class, gateway);
-    
-    screen = new Screen(
-        (String)settings.get("window_title"),
-        ((Integer)settings.get("window_width")).intValue(),
-        ((Integer)settings.get("window_height")).intValue(),
-        deltatime
-    );
-    components.put(Screen.class, screen);
-    
-    initInputManagers();
-    
-    try {
-      states.add(
-        ((GameState)((Class<?>)settings.get("first_state")).newInstance())
-        .setComponents(components)
-      );
-    } catch (Exception e) {
-      throw new Error(e.getMessage());
-    }
-  }
-  
-  @SuppressWarnings("unchecked")
-  private void initInputManagers() {
-    try {
-      Object ims = settings.get("input_managers");
-      if (ims == null)
-        return;
-      for (Class<?> c : (List<Class<?>>)ims) {
-        Object o = c
-        .getConstructor(ComponentContainer.class)
-        .newInstance(components);
-        components.put(c, o);
-        managers.add((InputManager)o);
-      }
-    } catch (Exception e) {
-      throw new Error(e.getMessage());
-    }
-  }
-  
-  private void close() {
-    screen.close();
-  }
-  
-  private void run() {
-    while (states.size() > 0) {
-      deltatime.start();
-      input();
-      update();
-      render();
-      deltatime.finish();
-      checkStateChange();
-    }
-  }
-  
-  private void input() {
-    for (InputManager im : managers)
-      im.update();
-  }
-  
-  private void update() {
-    for (GameState gs : states)
-      gs.update();
-  }
-  
-  private void render() {
-    for (GameState gs : states)
-      gs.render();
-    screen.update();
-  }
+  private DeltaTime deltatime;
+  private Screen screen;
   
   private enum ChangeOption {
     NA,
@@ -169,6 +92,92 @@ public abstract class UosGame implements UosApplication {
   private GameState state_change = null;
   private Object[] pop_args = null;
   private ChangeOption change_option = ChangeOption.NA;
+  
+  /**
+   * uOS's private use.
+   */
+  public void start(Gateway gateway, OntologyStart ontology) {
+    try {
+      init(gateway);
+      while (states.size() > 0) {
+        deltatime.start();
+        for (InputManager im : managers)
+          im.update();
+        for (GameState gs : states)
+          gs.update();
+        for (GameState gs : states)
+          gs.render();
+        screen.update();
+        deltatime.finish();
+        checkStateChange();
+      }
+    } catch (Error e) {
+      String path;
+      try {
+        path = (String)settings.get("root_path");
+      } catch (Throwable e1) {
+        path = ".";
+      }
+      Logger.log(e, path + "/ErrorLog.txt");
+    }
+  }
+  
+  /**
+   * uOS's private use.
+   */
+  public void stop() {
+    screen.close();
+  }
+  
+  /**
+   * uOS's private use.
+   */
+  public void init(OntologyDeploy ontology, String appId) {
+    
+  }
+  
+  /**
+   * uOS's private use.
+   */
+  public void tearDown(OntologyUndeploy ontology) {
+    
+  }
+  
+  @SuppressWarnings("unchecked")
+  private void init(Gateway gateway) {
+    components.put(Gateway.class, gateway);
+    
+    components.put(UosGame.class, this);
+    
+    components.put(Settings.class, settings = getSettings().validate());
+    
+    components.put(DeltaTime.class, deltatime = new DeltaTime());
+    
+    components.put(Screen.class, screen = new Screen(
+        (String)settings.get("window_title"),
+        ((Integer)settings.get("window_width")).intValue(),
+        ((Integer)settings.get("window_height")).intValue(),
+        deltatime
+    ));
+    
+    try {
+      Object ims = settings.get("input_managers");
+      if (ims != null) {
+        for (Class<?> c : (List<Class<?>>)ims) {
+          managers.add((InputManager)components.put(c, c
+            .getConstructor(ComponentContainer.class).newInstance(components)
+          ));
+        }
+      }
+      
+      states.add(
+        ((GameState)((Class<?>)settings.get("first_state")).newInstance())
+        .setComponents(components)
+      );
+    } catch (Exception e) {
+      throw new Error(e.getMessage());
+    }
+  }
   
   private void checkStateChange() {
     switch (change_option) {
@@ -198,75 +207,24 @@ public abstract class UosGame implements UosApplication {
     change_option = ChangeOption.NA;
   }
   
-  /**
-   * Engine's private use.
-   */
-  public void change(GameState state) {
-    state_change = state.setComponents(components);
-    change_option = ChangeOption.CHANGE;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  public void push(GameState state) {
-    state_change = state.setComponents(components);
-    change_option = ChangeOption.PUSH;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  public void pop(Object... args) {
-    pop_args = args;
-    change_option = ChangeOption.POP;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  public <T> T build(Class<T> key, Object... args) {
+  protected <T> T build(Class<T> key, Object... args) {
     T tmp = null;
     // if (key == Sprite.class) FIXME
     return tmp;
   }
   
-  /**
-   * uOS's private use.
-   */
-  public void start(Gateway gateway, OntologyStart ontology) {
-    try {
-      init(gateway);
-      run();
-    } catch (Error e) {
-      String path;
-      try {
-        path = (String)settings.get("root_path");
-      } catch (Throwable e1) {
-        path = ".";
-      }
-      Logger.log(e, path + "/ErrorLog.txt");
-    }
+  protected void change(GameState state) {
+    state_change = state.setComponents(components);
+    change_option = ChangeOption.CHANGE;
   }
   
-  /**
-   * uOS's private use.
-   */
-  public void stop() {
-    close();
+  protected void push(GameState state) {
+    state_change = state.setComponents(components);
+    change_option = ChangeOption.PUSH;
   }
   
-  /**
-   * uOS's private use.
-   */
-  public void init(OntologyDeploy ontology, String appId) {
-    
-  }
-  
-  /**
-   * uOS's private use.
-   */
-  public void tearDown(OntologyUndeploy ontology) {
-    
+  protected void pop(Object... args) {
+    pop_args = args;
+    change_option = ChangeOption.POP;
   }
 }

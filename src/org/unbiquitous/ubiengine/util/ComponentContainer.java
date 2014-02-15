@@ -3,15 +3,27 @@ package org.unbiquitous.ubiengine.util;
 import java.util.HashMap;
 
 /**
- * Class to hold all single instance objects per application.
+ * Class to hold singletons.
  * 
  * @author Matheus
  */
 @SuppressWarnings("serial")
 public class ComponentContainer extends HashMap<Class<?>, Object> {
-  /** @param key The Class of the object is the key for the single instance. */
+  /**
+   * Overriding to add type cast.
+   * @param key Key object.
+   * @return Casted value object.
+   */
   @SuppressWarnings("unchecked")
   public <T> T get(Class<T> key) {
     return (T)super.get(key);
+  }
+  
+  /**
+   * Overriding to return the new value.
+   */
+  public Object put(Class<?> key, Object value) {
+    super.put(key, value);
+    return value;
   }
 }
