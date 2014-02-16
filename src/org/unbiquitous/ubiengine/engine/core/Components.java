@@ -1,6 +1,6 @@
 package org.unbiquitous.ubiengine.engine.core;
 
-import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
@@ -11,27 +11,29 @@ import org.unbiquitous.ubiengine.util.ComponentContainer;
  */
 public final class Components {
   /**
-   * Use to access a game's components.
-   * @param g Game.
+   * Access to singleton ComponentContainer instance.
    * @return Game's components.
    */
-  public static ComponentContainer get(Class<? extends UosGame> g) {
-    return (ComponentContainer)((HashMap<Class<?>, Object>)games).get(g);
+  public static ComponentContainer get() {
+    return components;
   }
   
   /**
-   * Engine's private use.
+   * Access to the game instance.
+   * @return Game instance.
    */
-  protected static void put(Class<? extends UosGame> g, ComponentContainer c) {
-    games.put(g, c);
+  public static UbiGame getGame() {
+    if (game != null)
+      return game;
+    for (Entry<?, ?> entry : components.entrySet()) {
+      if (entry.getValue() instanceof UbiGame) {
+        game = (UbiGame)entry.getValue();
+        break;
+      }
+    }
+    return game;
   }
   
-  /**
-   * Engine's private use.
-   */
-  protected static void remove(Class<? extends UosGame> g) {
-    games.remove(g);
-  }
-  
-  private static final ComponentContainer games = new ComponentContainer();
+  private static final ComponentContainer components = new ComponentContainer();
+  private static UbiGame game = null;
 }

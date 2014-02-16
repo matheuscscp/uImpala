@@ -25,7 +25,7 @@ import org.unbiquitous.uos.network.socket.radar.PingRadar;
  * @author Pimenta
  *
  */
-public abstract class UosGame implements UosApplication {
+public abstract class UbiGame implements UosApplication {
   /**
    * Must be implemented by the game class.
    * @return Reference to the game initial settings.
@@ -56,9 +56,9 @@ public abstract class UosGame implements UosApplication {
   
   /**
    * Use this method in main() to start the game.
-   * @param game Class{@literal <}?{@literal >} that extends UosGame.
+   * @param ubiGame Class{@literal <}?{@literal >} that extends UosGame.
    */
-  protected static void run(final Class<? extends UosGame> game) {
+  protected static void run(final Class<? extends UbiGame> ubiGame) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -68,7 +68,7 @@ public abstract class UosGame implements UosApplication {
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
           {"ubiquitos.uos.deviceName","compDevice"},
           {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
-          {"ubiquitos.application.deploylist", game.getName()}
+          {"ubiquitos.application.deploylist", ubiGame.getName()}
         };
       }
     });
@@ -115,7 +115,7 @@ public abstract class UosGame implements UosApplication {
 //nothings else matters from here to below
 //==============================================================================
   private String rootpath = ".";
-  private ComponentContainer components = new ComponentContainer();
+  private ComponentContainer components = Components.get();
   private List<InputManager> managers = new ArrayList<InputManager>();
   private LinkedList<GameState> states = new LinkedList<GameState>();
   private DeltaTime deltatime = null;
@@ -137,7 +137,6 @@ public abstract class UosGame implements UosApplication {
    * uOS's private use.
    */
   public void start(Gateway gateway, OntologyStart ontology) {
-    Components.put(getClass(), components);
     try {
       init(gateway);
       while (states.size() > 0) {
@@ -159,7 +158,6 @@ public abstract class UosGame implements UosApplication {
     }
     if (screen != null)
       screen.close();
-    Components.remove(getClass());
   }
   
   /**
@@ -189,7 +187,7 @@ public abstract class UosGame implements UosApplication {
     rootpath = (String)settings.get("root_path");
     components.put(Settings.class, settings);
     
-    components.put(UosGame.class, this);
+    components.put(UbiGame.class, this);
     
     components.put(Gateway.class, gateway);
     
@@ -201,10 +199,10 @@ public abstract class UosGame implements UosApplication {
         ((Integer)settings.get("window_height")).intValue()
     ));
     
-    Object ims = settings.get("input_managers");
+    List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");
     if (ims != null) {
-      for (Class<?> c : (List<Class<? extends InputManager>>)ims) {
-        managers.add((InputManager)components.put(c, c
+      for (Class<?> im : ims) {
+        managers.add((InputManager)components.put(im, im
           .getConstructor(ComponentContainer.class).newInstance(components)
         ));
       }
