@@ -20,7 +20,6 @@ import java.util.Queue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
 public final class Screen implements WindowListener {
@@ -121,15 +120,13 @@ public final class Screen implements WindowListener {
   private JFrame window;
   private ScreenJPanel screen;
   private boolean show_fps;
-  private DeltaTime deltatime;
   private boolean window_closing;
   private int w;
   
-  public Screen(String title, int width, int height, DeltaTime dt) {
+  public Screen(String title, int width, int height) {
     window = new JFrame();
     screen = new ScreenJPanel();
     show_fps = false;
-    deltatime = dt;
     window_closing = false;
     w = width;
     
@@ -150,9 +147,9 @@ public final class Screen implements WindowListener {
     window = null;
   }
   
-  public void update() {
+  public void update(float dt) {
     if (show_fps)
-      screen.renderText(w - 100, 0, false, 1.0f, String.format("%.1f FPS", deltatime.getRealFPS()), null, null);
+      screen.renderText(w - 100, 0, false, 1.0f, String.format("%.1f FPS", dt), null, null);
     
     screen.repaint();
   }

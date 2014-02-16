@@ -1,5 +1,6 @@
 package org.unbiquitous.ubiengine.engine.core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,26 +33,6 @@ public abstract class UosGame implements UosApplication {
   protected abstract Settings getSettings();
   
   /**
-   * Use this method in main() to start the game.
-   * @param game Class{@literal <}?{@literal >} that extends UosGame.
-   */
-  protected static void run(final Class<?> game) {
-    new UOS().init(new ListResourceBundle() {
-      protected Object[][] getContents() {
-        return new Object[][] {
-          {"ubiquitos.connectionManager", TCPConnectionManager.class.getName()},
-          {"ubiquitos.radar", PingRadar.class.getName()},
-          {"ubiquitos.eth.tcp.port", "14984"},
-          {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.uos.deviceName","compDevice"},
-          {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
-          {"ubiquitos.application.deploylist", game.getName()}
-        };
-      }
-    });
-  }
-  
-  /**
    * Just a "typedef" for HashMap{@literal <}String, Object{@literal >}.
    * @author Pimenta
    *
@@ -72,21 +53,80 @@ public abstract class UosGame implements UosApplication {
       return this;
     }
   }
+  
+  /**
+   * Use this method in main() to start the game.
+   * @param game Class{@literal <}?{@literal >} that extends UosGame.
+   */
+  protected static void run(final Class<? extends UosGame> game) {
+    new UOS().init(new ListResourceBundle() {
+      protected Object[][] getContents() {
+        return new Object[][] {
+          {"ubiquitos.connectionManager", TCPConnectionManager.class.getName()},
+          {"ubiquitos.radar", PingRadar.class.getName()},
+          {"ubiquitos.eth.tcp.port", "14984"},
+          {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
+          {"ubiquitos.uos.deviceName","compDevice"},
+          {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
+          {"ubiquitos.application.deploylist", game.getName()}
+        };
+      }
+    });
+  }
+  
+  /**
+   * Call to change the current game state.
+   * @param state New game state.
+   */
+  public void change(GameState state) {
+    if (state == null)
+      throw new Error("Trying to change to null GameState!");
+    state_change = state;
+    change_option = ChangeOption.CHANGE;
+  }
+  
+  /**
+   * Call to push a game state.
+   * @param state Game state to be pushed.
+   */
+  public void push(GameState state) {
+    if (state == null)
+      throw new Error("Trying to push null GameState!");
+    state_change = state;
+    change_option = ChangeOption.PUSH;
+  }
+  
+  /**
+   * Call to pop the current game state.
+   * @param args Arguments to be passed to the new current game state.
+   */
+  public void pop(Object... args) {
+    pop_args = args;
+    change_option = ChangeOption.POP;
+  }
+  
+  /**
+   * Call to shutdown.
+   */
+  public void quit() {
+    change_option = ChangeOption.QUIT;
+  }
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
+  private String rootpath = ".";
   private ComponentContainer components = new ComponentContainer();
-  private List<InputManager> managers = new LinkedList<InputManager>();
+  private List<InputManager> managers = new ArrayList<InputManager>();
   private LinkedList<GameState> states = new LinkedList<GameState>();
-  private Settings settings;
-  private DeltaTime deltatime;
-  private Screen screen;
+  private DeltaTime deltatime = null;
+  private Screen screen = null;
   
   private enum ChangeOption {
     NA,
     CHANGE,
     PUSH,
-    POP
+    POP,
+    QUIT
   }
   
   private GameState state_change = null;
@@ -97,6 +137,7 @@ public abstract class UosGame implements UosApplication {
    * uOS's private use.
    */
   public void start(Gateway gateway, OntologyStart ontology) {
+    Components.put(getClass(), components);
     try {
       init(gateway);
       while (states.size() > 0) {
@@ -107,26 +148,25 @@ public abstract class UosGame implements UosApplication {
           gs.update();
         for (GameState gs : states)
           gs.render();
-        screen.update();
-        deltatime.finish();
+        screen.update(deltatime.getRealDT());
         checkStateChange();
+        deltatime.finish();
       }
     } catch (Error e) {
-      String path;
-      try {
-        path = (String)settings.get("root_path");
-      } catch (Throwable e1) {
-        path = ".";
-      }
-      Logger.log(e, path + "/ErrorLog.txt");
+      Logger.log(e, rootpath + "/ErrorLog.txt");
+    } catch (Exception e) {
+      Logger.log(new Error(e), rootpath + "/ErrorLog.txt");
     }
+    if (screen != null)
+      screen.close();
+    Components.remove(getClass());
   }
   
   /**
    * uOS's private use.
    */
   public void stop() {
-    screen.close();
+    
   }
   
   /**
@@ -144,39 +184,33 @@ public abstract class UosGame implements UosApplication {
   }
   
   @SuppressWarnings("unchecked")
-  private void init(Gateway gateway) {
-    components.put(Gateway.class, gateway);
+  private void init(Gateway gateway) throws Exception {
+    Settings settings = getSettings().validate();
+    rootpath = (String)settings.get("root_path");
+    components.put(Settings.class, settings);
     
     components.put(UosGame.class, this);
     
-    components.put(Settings.class, settings = getSettings().validate());
+    components.put(Gateway.class, gateway);
     
     components.put(DeltaTime.class, deltatime = new DeltaTime());
     
     components.put(Screen.class, screen = new Screen(
         (String)settings.get("window_title"),
         ((Integer)settings.get("window_width")).intValue(),
-        ((Integer)settings.get("window_height")).intValue(),
-        deltatime
+        ((Integer)settings.get("window_height")).intValue()
     ));
     
-    try {
-      Object ims = settings.get("input_managers");
-      if (ims != null) {
-        for (Class<?> c : (List<Class<? extends InputManager>>)ims) {
-          managers.add((InputManager)components.put(c, c
-            .getConstructor(ComponentContainer.class).newInstance(components)
-          ));
-        }
+    Object ims = settings.get("input_managers");
+    if (ims != null) {
+      for (Class<?> c : (List<Class<? extends InputManager>>)ims) {
+        managers.add((InputManager)components.put(c, c
+          .getConstructor(ComponentContainer.class).newInstance(components)
+        ));
       }
-      
-      states.add(
-        ((GameState)((Class<?>)settings.get("first_state")).newInstance())
-        .setComponents(components)
-      );
-    } catch (Exception e) {
-      throw new Error(e.getMessage());
     }
+    
+    states.add(((GameState)((Class<?>)settings.get("first_state")).newInstance()));
   }
   
   private void checkStateChange() {
@@ -199,44 +233,15 @@ public abstract class UosGame implements UosApplication {
           states.getLast().wakeup(pop_args);
         break;
         
+      case QUIT:
+        states.clear();
+        break;
+        
       default:
         throw new Error("Invalid value for ChangeOption in UosGame!");
     }
     state_change = null;
     pop_args = null;
     change_option = ChangeOption.NA;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  protected <T> T build(Class<T> key, Object... args) {
-    T tmp = null;
-    // if (key == Sprite.class) FIXME
-    return tmp;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  protected void change(GameState state) {
-    state_change = state.setComponents(components);
-    change_option = ChangeOption.CHANGE;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  protected void push(GameState state) {
-    state_change = state.setComponents(components);
-    change_option = ChangeOption.PUSH;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  protected void pop(Object... args) {
-    pop_args = args;
-    change_option = ChangeOption.POP;
   }
 }
