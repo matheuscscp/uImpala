@@ -17,7 +17,9 @@ public final class GameComponents {
   public static ComponentContainer get() {
     return games.get(Thread.currentThread().getId());
   }
-  
+//==============================================================================
+//nothings else matters from here to below
+//==============================================================================
   protected static void create() {
     games.put(Thread.currentThread().getId(), new ComponentContainer());
   }
