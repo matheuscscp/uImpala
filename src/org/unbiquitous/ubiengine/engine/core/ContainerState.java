@@ -41,7 +41,7 @@ public abstract class ContainerState extends GameState {
     /**
      * Method to implement rendering.
      */
-    protected abstract void render();
+    protected abstract void render(RendererContainer renderers);
     
     /**
      * Handle a pop from the stack of game states.
@@ -58,56 +58,46 @@ public abstract class ContainerState extends GameState {
      * Add a child game object.
      * @param o Game object.
      */
-    protected void addChild(GameObject o) {
-      if (o != this)
-        objects.add(o);
+    protected void add(GameObject o) {
+      objects.add(o);
     }
-    
-    /**
-     * Update all children game objects.
-     */
-    protected void updateChildren() {
+//==============================================================================
+//nothings else matters from here to below
+//==============================================================================
+    private void updateTree() {
+      update();
       for (GameObject o : objects) {
         if (!o.destroy)
-          o.update();
+          o.updateTree();
       }
     }
     
-    /**
-     * Render all children game objects.
-     */
-    protected void renderChildren() {
+    private void renderTree(RendererContainer renderers) {
+      render(renderers);
       Iterator<GameObject> i = objects.iterator();
       while (i.hasNext()) {
         GameObject o = i.next();
         if (!o.destroy)
-          o.render();
+          o.renderTree(renderers);
         else {
-          o.destroy();
+          o.destroyTree();
           i.remove();
         }
       }
     }
     
-    /**
-     * Handle a pop from the stack of game states in all children game objects.
-     * @param args Arguments passed from the state popped.
-     */
-    protected void wakeupChildren(Object... args) {
+    private void wakeupTree(Object... args) {
+      wakeup(args);
       for (GameObject o : objects)
-        o.wakeup(args);
+        o.wakeupTree(args);
     }
     
-    /**
-     * Destroy all children game objects.
-     */
-    protected void destroyChildren() {
+    private void destroyTree() {
+      destroy();
       for (GameObject o : objects)
-        o.destroy();
+        o.destroyTree();
     }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
+    
     private List<GameObject> objects = new LinkedList<GameObject>();
   }
   
@@ -117,7 +107,7 @@ public abstract class ContainerState extends GameState {
   protected void update() {
     for (GameObject o : objects) {
       if (!o.destroy)
-        o.update();
+        o.updateTree();
     }
   }
   
@@ -125,16 +115,18 @@ public abstract class ContainerState extends GameState {
    * Engine's private use.
    */
   protected void render() {
+    RendererContainer renderers = new RendererContainer();
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {
       GameObject o = i.next();
       if (!o.destroy)
-        o.render();
+        o.renderTree(renderers);
       else {
-        o.destroy();
+        o.destroyTree();
         i.remove();
       }
     }
+    renderers.render();
   }
   
   /**
@@ -142,7 +134,7 @@ public abstract class ContainerState extends GameState {
    */
   protected void wakeup(Object... args) {
     for (GameObject o : objects)
-      o.wakeup(args);
+      o.wakeupTree(args);
   }
   
   /**
@@ -150,7 +142,7 @@ public abstract class ContainerState extends GameState {
    */
   protected void close() {
     for (GameObject o : objects)
-      o.destroy();
+      o.destroyTree();
   }
   
   private List<GameObject> objects = new LinkedList<GameObject>();

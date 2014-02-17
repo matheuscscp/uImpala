@@ -1,3 +1,5 @@
-refactor input
-refactor asset
-  consider int z when doing renderization (surface planes)
+refactor input  (devices abstraction)
+refactor screen (lwjgl)
+refactor input  (lwjgl)
+refactor time   (lwjgl)
+refactor asset  (lwjgl)
