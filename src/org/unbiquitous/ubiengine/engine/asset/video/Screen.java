@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.core;
+package org.unbiquitous.ubiengine.engine.asset.video;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -121,20 +121,20 @@ public final class Screen implements WindowListener {
   private ScreenJPanel screen;
   private boolean show_fps;
   private boolean window_closing;
-  private int w;
+  private int width;
   
-  public Screen(String title, int width, int height) {
+  public Screen(String title, int w, int h) {
     window = new JFrame();
     screen = new ScreenJPanel();
     show_fps = false;
     window_closing = false;
-    w = width;
+    width = w;
     
-    screen.setPreferredSize(new Dimension(width, height));
+    screen.setPreferredSize(new Dimension(w, h));
     window.add(screen);
     window.setResizable(false);
     window.pack();
-    window.setDefaultCloseOperation(javax.swing.JFrame.DO_NOTHING_ON_CLOSE);
+    window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
     window.setLocationRelativeTo(null);
     window.setTitle(title);
     window.addWindowListener(this);
@@ -142,14 +142,14 @@ public final class Screen implements WindowListener {
   }
   
   public void close() {
-    screen = null;
     window.dispose();
+    screen = null;
     window = null;
   }
   
-  public void update(float dt) {
+  public void update() {
     if (show_fps)
-      screen.renderText(w - 100, 0, false, 1.0f, String.format("%.1f FPS", dt), null, null);
+      screen.renderText(width - 100, 0, false, 1.0f, String.format("%.1f FPS", dt), null, null);
     
     screen.repaint();
   }
@@ -161,7 +161,7 @@ public final class Screen implements WindowListener {
   public void setSize(int w, int h) {
     screen.setPreferredSize(new Dimension(w, h));
     window.pack();
-    this.w = w;
+    this.width = w;
   }
   
   public void showFPS(boolean enable) {

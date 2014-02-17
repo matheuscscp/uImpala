@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
 
+import org.unbiquitous.ubiengine.engine.asset.video.Screen;
 import org.unbiquitous.ubiengine.engine.input.InputManager;
 import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.engine.time.DeltaTime;
@@ -56,9 +57,9 @@ public abstract class UbiGame implements UosApplication {
   
   /**
    * Use this method in main() to start the game.
-   * @param ubiGame Class{@literal <}?{@literal >} that extends UosGame.
+   * @param game Class{@literal <}?{@literal >} that extends UosGame.
    */
-  protected static void run(final Class<? extends UbiGame> ubiGame) {
+  protected static void run(final Class<? extends UbiGame> game) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -68,7 +69,7 @@ public abstract class UbiGame implements UosApplication {
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
           {"ubiquitos.uos.deviceName","compDevice"},
           {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
-          {"ubiquitos.application.deploylist", ubiGame.getName()}
+          {"ubiquitos.application.deploylist", game.getName()}
         };
       }
     });
@@ -115,10 +116,9 @@ public abstract class UbiGame implements UosApplication {
 //nothings else matters from here to below
 //==============================================================================
   private String rootpath = ".";
-  private ComponentContainer components = Components.get();
   private List<InputManager> managers = new ArrayList<InputManager>();
   private LinkedList<GameState> states = new LinkedList<GameState>();
-  private DeltaTime deltatime = null;
+  private DeltaTime deltatime = new DeltaTime();
   private Screen screen = null;
   
   private enum ChangeOption {
@@ -137,6 +137,7 @@ public abstract class UbiGame implements UosApplication {
    * uOS's private use.
    */
   public void start(Gateway gateway, OntologyStart ontology) {
+    GameComponents.create();
     try {
       init(gateway);
       while (states.size() > 0) {
@@ -147,17 +148,16 @@ public abstract class UbiGame implements UosApplication {
           gs.update();
         for (GameState gs : states)
           gs.render();
-        screen.update(deltatime.getRealDT());
+        screen.update();
         checkStateChange();
         deltatime.finish();
       }
-    } catch (Error e) {
-      Logger.log(e, rootpath + "/ErrorLog.txt");
-    } catch (Exception e) {
+    } catch (Throwable e) {
       Logger.log(new Error(e), rootpath + "/ErrorLog.txt");
     }
     if (screen != null)
       screen.close();
+    GameComponents.remove();
   }
   
   /**
@@ -183,6 +183,8 @@ public abstract class UbiGame implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) throws Exception {
+    ComponentContainer components = GameComponents.get();
+    
     Settings settings = getSettings().validate();
     rootpath = (String)settings.get("root_path");
     components.put(Settings.class, settings);
@@ -191,7 +193,7 @@ public abstract class UbiGame implements UosApplication {
     
     components.put(Gateway.class, gateway);
     
-    components.put(DeltaTime.class, deltatime = new DeltaTime());
+    components.put(DeltaTime.class, deltatime);
     
     components.put(Screen.class, screen = new Screen(
         (String)settings.get("window_title"),

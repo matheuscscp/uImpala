@@ -11,7 +11,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import org.unbiquitous.ubiengine.engine.core.Screen;
+import org.unbiquitous.ubiengine.engine.asset.video.Screen;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
 public class Sprite {

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.unbiquitous.ubiengine.engine.core.Screen;
+import org.unbiquitous.ubiengine.engine.asset.video.Screen;
 
 public class Text {
   private Screen screen;

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
-import org.unbiquitous.ubiengine.engine.core.Screen;
+import org.unbiquitous.ubiengine.engine.asset.video.Screen;
 import org.unbiquitous.ubiengine.engine.core.UbiGame;
 import org.unbiquitous.ubiengine.engine.input.InputDevice;
 import org.unbiquitous.ubiengine.engine.input.InputManager;
