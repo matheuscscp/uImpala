@@ -14,27 +14,21 @@ public final class Logger {
   /**
    * Logs an error into a file and prints the stack trace.
    * 
-   * @param e Error descriptor.
+   * @param error Error descriptor.
    */
-  public static void log(Error e, final String fn) {
+  public static void log(Error error, String fn) {
+    error.printStackTrace();
     try {
-      // open ErrorLog.txt to append
-      PrintWriter pw = new PrintWriter(
-        new FileWriter(fn, true)
-      );
+      PrintWriter pw = new PrintWriter(new FileWriter(fn, true));
       
-      // logs the error by printing the date, error message and stack trace
-      pw.println(new Date().toString() + ": " + e.getMessage());
-      for (StackTraceElement elem : e.getStackTrace())
+      pw.println(new Date().toString() + ": " + error.getMessage());
+      for (StackTraceElement elem : error.getStackTrace())
         pw.println("  " + elem);
       pw.println();
       
       pw.close();
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    catch (IOException e2) {
-      e2.printStackTrace();
-    }
-    
-    e.printStackTrace();
   }
 }

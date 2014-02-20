@@ -17,18 +17,18 @@ public final class SubjectDevice {
     private Object observer;
     private Method handler;
     
-    private Observation(Object observer, Method handler) {
-      this.observer = observer;
-      this.handler = handler;
+    private Observation(Object o, Method h) {
+      observer = o;
+      handler = h;
       if (handler != null)
-        this.handler.setAccessible(true);
+        handler.setAccessible(true);
     }
     
     private void notifyEvent(Event event) {
       try {
         handler.invoke(observer, event);
       } catch (Exception e) {
-        throw new Error(e.getMessage());
+        throw new Error(e);
       }
     }
     

@@ -81,7 +81,7 @@ public abstract class UbiGame implements UosApplication {
    */
   public void change(GameState state) {
     if (state == null)
-      throw new Error("Trying to change to null GameState!");
+      return;
     state_change = state;
     change_option = ChangeOption.CHANGE;
   }
@@ -92,7 +92,7 @@ public abstract class UbiGame implements UosApplication {
    */
   public void push(GameState state) {
     if (state == null)
-      throw new Error("Trying to push null GameState!");
+      return;
     state_change = state;
     change_option = ChangeOption.PUSH;
   }
@@ -152,8 +152,8 @@ public abstract class UbiGame implements UosApplication {
         checkStateChange();
         deltatime.finish();
       }
-    } catch (Throwable e) {
-      Logger.log(new Error(e), rootpath + "/ErrorLog.txt");
+    } catch (Error e) {
+      Logger.log(e, rootpath + "/ErrorLog.txt");
     }
     if (screen != null)
       screen.close();
@@ -182,7 +182,7 @@ public abstract class UbiGame implements UosApplication {
   }
   
   @SuppressWarnings("unchecked")
-  private void init(Gateway gateway) throws Exception {
+  private void init(Gateway gateway) {
     ComponentContainer components = GameComponents.get();
     
     Settings settings = getSettings().validate();
@@ -204,13 +204,23 @@ public abstract class UbiGame implements UosApplication {
     List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");
     if (ims != null) {
       for (Class<?> im : ims) {
-        managers.add((InputManager)components.put(im, im
-          .getConstructor(ComponentContainer.class).newInstance(components)
-        ));
+        try {
+          managers.add((InputManager)components.put(im, im
+            .getConstructor(ComponentContainer.class).newInstance(components)
+          ));
+        } catch (Exception e) {
+          throw new Error(e);
+        }
       }
     }
     
-    states.add(((GameState)((Class<?>)settings.get("first_state")).newInstance()));
+    try {
+      states.add((
+        (GameState)((Class<?>)settings.get("first_state")).newInstance()
+      ));
+    } catch (Exception e) {
+      throw new Error(e);
+    }
   }
   
   private void checkStateChange() {

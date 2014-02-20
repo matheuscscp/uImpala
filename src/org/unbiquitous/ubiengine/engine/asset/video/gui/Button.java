@@ -211,7 +211,7 @@ public class Button implements Subject {
     }*/
   }
   
-  protected void handleMouseUp(Event event) throws Exception {
+  protected void handleMouseUp(Event event) {
     if (
       ((MouseUpEvent) event).getButton() == MouseDevice.LEFT_BUTTON &&
       mouse_device.isMouseDownInside(rect) &&
@@ -230,7 +230,7 @@ public class Button implements Subject {
     }
   }
   
-  protected void handleTimerDone(Event event) throws Exception {
+  protected void handleTimerDone(Event event) {
     subject.broadcast(CLICKED);
   }
   

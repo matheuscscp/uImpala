@@ -8,6 +8,7 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -25,23 +26,22 @@ public class Sprite {
   protected float angle;
   protected float scalex, scaley;
 
-  public Sprite(Screen screen, String filename) {
+  public Sprite(Screen scr, String filename) {
+    screen = scr;
     try {
-      this.screen = screen;
       sprite = ImageIO.read(new File(filename));
-      rotozoomed = null;
-      g2d = sprite.createGraphics();
-      w = sprite.getWidth();
-      h = sprite.getHeight();
-      clip_rect = new Rectangle(0, 0, w, h);
-      alpha = 1.0f;
-      angle = 0.0f;
-      scalex = 1.0f;
-      scaley = 1.0f;
+    } catch (IOException e) {
+      throw new Error(e);
     }
-    catch (Exception e) {
-      throw new Error("Image '" + filename + "' not found");
-    }
+    rotozoomed = null;
+    g2d = sprite.createGraphics();
+    w = sprite.getWidth();
+    h = sprite.getHeight();
+    clip_rect = new Rectangle(0, 0, w, h);
+    alpha = 1.0f;
+    angle = 0.0f;
+    scalex = 1.0f;
+    scaley = 1.0f;
   }
 
   public Sprite(Screen screen, int w, int h, boolean use_alpha) {
