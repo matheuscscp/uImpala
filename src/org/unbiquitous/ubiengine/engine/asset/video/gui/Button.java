@@ -12,7 +12,7 @@ import org.unbiquitous.ubiengine.engine.time.Alarm;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Subject;
-import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
+import org.unbiquitous.ubiengine.util.observer.Observations;
 
 public class Button implements Subject {
 
@@ -66,7 +66,7 @@ public class Button implements Subject {
     play_sounds = true;
     center = false;
     
-    subject = new SubjectDevice(CLICKED);
+    subject = new Observations(CLICKED);
     rect = new Rectangle(0, 0, (float) sprite.getWidth(), (float) sprite.getHeight()/4);
     enable(true);
 
@@ -234,7 +234,7 @@ public class Button implements Subject {
     subject.broadcast(CLICKED);
   }
   
-  protected SubjectDevice subject;
+  protected Observations subject;
   
   public static final String CLICKED = "CLICKED";
   

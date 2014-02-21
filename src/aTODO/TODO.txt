@@ -3,4 +3,4 @@ refactor screen (lwjgl)
 refactor input  (lwjgl)
 refactor time   (lwjgl)
 refactor asset  (lwjgl)
-refactor ubigame with new game components
+refactor UbiGame class with new game components

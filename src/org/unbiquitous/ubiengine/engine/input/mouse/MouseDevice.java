@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.unbiquitous.ubiengine.engine.input.InputDevice;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
-import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
+import org.unbiquitous.ubiengine.util.observer.Observations;
 
 public class MouseDevice extends InputDevice {
   
@@ -73,7 +73,7 @@ public class MouseDevice extends InputDevice {
     mouse_y = 0;
     mousedown_x = 0;
     mousedown_y = 0;
-    subject = new SubjectDevice(MOUSEDOWN, MOUSEUP, MOUSEMOTION);
+    subject = new Observations(MOUSEDOWN, MOUSEUP, MOUSEMOTION);
   }
 
   public void update() {

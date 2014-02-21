@@ -1,77 +1,36 @@
 package org.unbiquitous.ubiengine.util.observer;
 
-import java.lang.reflect.Method;
-
 /**
- * Interface that all subject classes must implement.
- * A SubjectDevice must be created in the subject class, like this:<br>
- * protected SubjectDevice subject = new SubjectDevice(stack, events);
- * 
- * @author Matheus
+ * Interface to be implemented by a class that triggers events. The class must
+ * also declare an object of Observations class, since the implementation of
+ * this interface must be calls to the methods of the Observations class.
+ * @author Pimenta
+ *
  */
 public interface Subject {
   /**
-   * Method to create an observation for an observer method.
-   * The implementation of this method must be something like this:<br>
-   * subject.connect(event_type, handler);<br>
-   * <br>
-   * Example of how to get a Method:<br>
-   * {ClassName}.class.getDeclaredMethod("{MethodName}", Event.class))
-   * 
-   * @param event_type String that describes the event type.
-   * @param handler Observer method.
+   * Add an observation to an event. If eventType is null, the observation
+   * will be added to all events.<br />
+   * <br />
+   * Implementation example:<br />
+   * <code>
+   * observations.connect(eventType, obs);
+   * </code>
+   * @param eventType Event type.
+   * @param obs Observation to be connected.
    */
-  public void connect(String event_type, Method handler);
+  public void connect(Integer eventType, Observation obs);
   
   /**
-   * Method to create an observation for an observer object.
-   * The implementation of this method must be something like this:<br>
-   * subject.connect(event_type, observer, handler);<br>
-   * <br>
-   * Example of how to get a Method:<br>
-   * {ClassName}.class.getDeclaredMethod("{MethodName}", Event.class))
-   * 
-   * @param event_type String to describe the event type.
-   * @param observer Observer object.
-   * @param handler Handler method for notification.
+   * Remove an observation from an event. If eventType is null, the observation
+   * will be removed from all events.<br />
+   * <br />
+   * Implementation example:<br />
+   * <code>
+   * observations.disconnect(eventType, obs);
+   * </code>
+   * @param eventType Event type.
+   * @param obs Observation to be disconnected.
    */
-  public void connect(String event_type, Object observer, Method handler);
-  
-  /**
-   * Destroys all observations of the observer method in the current stack level.
-   * The implementation of this method must be something like this:<br>
-   * subject.disconnect(handler);
-   * 
-   * @param handler Observer method.
-   */
-  public void disconnect(Method handler);
-  
-  /**
-   * Destroy the observation of the observer method for the given event type in the current stack level.
-   * The implementation of this method must be something like this:<br>
-   * subject.disconnect(event_type, handler);
-   * 
-   * @param event_type String to describe the event type.
-   * @param handler Observer method.
-   */
-  public void disconnect(String event_type, Method handler);
-  
-  /**
-   * Destroys all observations of the observer object in the current stack level.
-   * The implementation of this method must be something like this:<br>
-   * subject.disconnect(observer);
-   * 
-   * @param observer Observer object.
-   */
-  public void disconnect(Object observer);
-  
-  /**
-   * Destroy the observation of the observer object for the given event type in the current stack level.
-   * The implementation of this method must be something like this:<br>
-   * subject.disconnect(event_type, observer);
-   * 
-   * @param event_type String to describe the event type.
-   * @param observer Observer object.
-   */
-  public void disconnect(String event_type, Object observer);
+  public void disconnect(Integer eventType, Observation obs);
 }

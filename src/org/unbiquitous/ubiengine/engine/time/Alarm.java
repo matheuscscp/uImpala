@@ -3,7 +3,7 @@ package org.unbiquitous.ubiengine.engine.time;
 import java.lang.reflect.Method;
 
 import org.unbiquitous.ubiengine.util.observer.Subject;
-import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
+import org.unbiquitous.ubiengine.util.observer.Observations;
 
 /**
  * Timer class with event approach.
@@ -83,13 +83,13 @@ public final class Alarm implements Subject {
   /**
    * There is only one event: TRRRIMM!
    */
-  public static final String TRRRIMM = "TRRRIMM";
+  public static final Integer TRRRIMM = 0;
   
-  public void connect(String event_type, Method handler) {
+  public void connect(Integer event_type, Method handler) {
     subject.connect(event_type, handler);
   }
   
-  public void connect(String event_type, Object observer, Method handler) {
+  public void connect(Integer event_type, Object observer, Method handler) {
     subject.connect(event_type, observer, handler);
   }
   
@@ -97,7 +97,7 @@ public final class Alarm implements Subject {
     subject.disconnect(handler);
   }
   
-  public void disconnect(String event_type, Method handler) {
+  public void disconnect(Integer event_type, Method handler) {
     subject.disconnect(event_type, handler);
   }
   
@@ -105,11 +105,11 @@ public final class Alarm implements Subject {
     subject.disconnect(observer);
   }
   
-  public void disconnect(String event_type, Object observer) {
+  public void disconnect(Integer event_type, Object observer) {
     subject.disconnect(event_type, observer);
   }
   
-  private SubjectDevice subject = new SubjectDevice(TRRRIMM);
+  private Observations subject = new Observations(TRRRIMM);
   private boolean done = true;
   private boolean paused = false;
   private long done_ticks;

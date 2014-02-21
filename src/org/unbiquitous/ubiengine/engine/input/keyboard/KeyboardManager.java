@@ -11,7 +11,7 @@ import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
 import org.unbiquitous.ubiengine.engine.asset.video.Screen;
-import org.unbiquitous.ubiengine.engine.core.UbiGame;
+import org.unbiquitous.ubiengine.engine.core.UbiGame.Settings;
 import org.unbiquitous.ubiengine.engine.input.InputDevice;
 import org.unbiquitous.ubiengine.engine.input.InputManager;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
@@ -52,7 +52,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
       request_map.put("receiver_device", gateway.getCurrentDevice().toJSON().toString());
     } catch (JSONException e) {
     }
-    request_map.put("application_name", (String) components.get(UbiGame.Settings.class).get("window_title"));
+    request_map.put("application_name", (String) components.get(Settings.class).get("window_title"));
   }
   
   public KeyboardDevice getMainKeyboard() {
