@@ -1,9 +1,8 @@
 package org.unbiquitous.ubiengine.engine.time;
 
-import java.lang.reflect.Method;
-
-import org.unbiquitous.ubiengine.util.observer.Subject;
+import org.unbiquitous.ubiengine.util.observer.Observation;
 import org.unbiquitous.ubiengine.util.observer.Observations;
+import org.unbiquitous.ubiengine.util.observer.Subject;
 
 /**
  * Timer class with event approach.
@@ -17,7 +16,7 @@ public final class Alarm implements Subject {
   public void update() {
     if (!done && !paused && System.currentTimeMillis() >= done_ticks) {
       done = true;
-      subject.broadcast(TRRRIMM);
+      observations.broadcast(TRRRIMM, null);
     }
   }
   
@@ -85,31 +84,15 @@ public final class Alarm implements Subject {
    */
   public static final Integer TRRRIMM = 0;
   
-  public void connect(Integer event_type, Method handler) {
-    subject.connect(event_type, handler);
+  public void connect(Integer eventType, Observation obs) {
+    observations.connect(eventType, obs);
   }
   
-  public void connect(Integer event_type, Object observer, Method handler) {
-    subject.connect(event_type, observer, handler);
+  public void disconnect(Integer eventType, Observation obs) {
+    observations.disconnect(eventType, obs);
   }
   
-  public void disconnect(Method handler) {
-    subject.disconnect(handler);
-  }
-  
-  public void disconnect(Integer event_type, Method handler) {
-    subject.disconnect(event_type, handler);
-  }
-  
-  public void disconnect(Object observer) {
-    subject.disconnect(observer);
-  }
-  
-  public void disconnect(Integer event_type, Object observer) {
-    subject.disconnect(event_type, observer);
-  }
-  
-  private Observations subject = new Observations(TRRRIMM);
+  private Observations observations = new Observations(TRRRIMM);
   private boolean done = true;
   private boolean paused = false;
   private long done_ticks;
