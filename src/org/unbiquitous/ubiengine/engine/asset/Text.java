@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.unbiquitous.ubiengine.engine.system.screen.Window;
+import org.unbiquitous.ubiengine.engine.system.Window;
 
 public class Text {
   private Window window;

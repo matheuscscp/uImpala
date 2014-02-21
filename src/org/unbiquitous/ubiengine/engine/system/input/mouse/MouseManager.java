@@ -3,9 +3,9 @@ package org.unbiquitous.ubiengine.engine.system.input.mouse;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
+import org.unbiquitous.ubiengine.engine.system.Window;
 import org.unbiquitous.ubiengine.engine.system.input.InputDevice;
 import org.unbiquitous.ubiengine.engine.system.input.InputManager;
-import org.unbiquitous.ubiengine.engine.system.screen.Window;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
 public final class MouseManager extends InputManager implements MouseListener, MouseMotionListener {

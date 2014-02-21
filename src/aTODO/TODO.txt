@@ -1,5 +1,8 @@
-refactor time   (lwjgl)
-refactor asset  (slick)
-refactor screen (lwjgl)
-refactor input  (lwjgl)
-refactor UbiGame class with new game components
+refactor system.time (lwjgl)
+make asset.* (slick) (load image, sound and font)
+refactor system.* (lwjgl)
+refator asset.* (using system) (play, render)
+refactor class UbiGame to deal with the new libraries
+refactor gui.Button
+make asset.TileSet
+make asset.TileMap

@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.screen;
+package org.unbiquitous.ubiengine.engine.system;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

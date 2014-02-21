@@ -1,6 +1,6 @@
 package org.unbiquitous.ubiengine.engine.asset;
 
-import org.unbiquitous.ubiengine.engine.system.screen.Window;
+import org.unbiquitous.ubiengine.engine.system.Window;
 import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 
 public class Animation extends Sprite {
