@@ -39,6 +39,15 @@ public final class Observations {
   }
   
   /**
+   * Method to add events.
+   * @param evs Events to be added.
+   */
+  public void addEvents(int... evs) {
+    for (int event : evs)
+      events.put(event, new EventObservations());
+  }
+  
+  /**
    * Method to list all events currently registered.
    * @return List of events.
    */

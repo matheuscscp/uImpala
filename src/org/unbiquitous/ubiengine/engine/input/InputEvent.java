@@ -1,15 +1,23 @@
 package org.unbiquitous.ubiengine.engine.input;
 
 /**
- * Base class for input events
+ * Base class for input events.
  * @author Pimenta
  *
  */
 public abstract class InputEvent {
+  /**
+   * Assignment constructor.
+   * @param t Event type.
+   */
   public InputEvent(int t) {
     type = t;
   }
   
+  /**
+   * Access method to event type.
+   * @return Event type.
+   */
   public int type() {
     return type;
   }

@@ -42,7 +42,7 @@ public abstract class InputManager {
    * Tries to allocate an available device.
    * @return Device's reference, or null if no device is available.
    */
-  public InputDevice create() {
+  public InputDevice alloc() {
     if (availableDevices.size() > 0)
       return null;
     InputDevice dev = availableDevices.removeFirst();
@@ -55,7 +55,7 @@ public abstract class InputManager {
    * Release a device.
    * @param dev Device to be released.
    */
-  public void release(InputDevice dev) {
+  public void free(InputDevice dev) {
     if (!busyDevices.remove(dev))
       return;
     stop(dev);
@@ -67,7 +67,9 @@ public abstract class InputManager {
    */
   public void update() {
     updateLists();
-    for (InputDevice id : busyDevices)
-      id.update();
+    for (InputDevice id : busyDevices) {
+      if (id.isUpdating())
+        id.update();
+    }
   }
 }

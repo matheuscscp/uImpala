@@ -1,17 +1,53 @@
 package org.unbiquitous.ubiengine.engine.input;
 
-import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import org.unbiquitous.ubiengine.util.observer.Event;
+import org.unbiquitous.ubiengine.util.observer.Observation;
+import org.unbiquitous.ubiengine.util.observer.Observations;
 import org.unbiquitous.ubiengine.util.observer.Subject;
-import org.unbiquitous.ubiengine.util.observer.SubjectDevice;
 
+/**
+ * An interface for an input device class.
+ * @author Pimenta
+ *
+ */
 public abstract class InputDevice implements Subject {
   /**
-   * Flag to tell if the device is ready for use.
+   * Data for UPDATE_STARTED and UPDATE_STOPPED events.
+   * @author Pimenta
+   *
    */
-  protected boolean ready = false;
+  public static final class UpdateEvent extends Event {
+    /**
+     * Assignment constructor.
+     * @param dev The input device.
+     */
+    public UpdateEvent(InputDevice dev) {
+      device = dev;
+    }
+    
+    /**
+     * Access method to the device that triggered the event.
+     * @return The input device.
+     */
+    public InputDevice device() {
+      return device;
+    }
+    
+    private InputDevice device;
+  }
+  
+  /**
+   * Event to notify that the device update started.
+   */
+  public static final int UPDATE_STARTED = 0;
+  
+  /**
+   * Event to notify that the device update stopped.
+   */
+  public static final int UPDATE_STOPPED = 1;
   
   /**
    * Event queue to be polled in <code>update()</code>.
@@ -19,19 +55,9 @@ public abstract class InputDevice implements Subject {
   protected Queue<InputEvent> events = new LinkedList<InputEvent>();
   
   /**
-   * Query if the device is ready for use.
-   * @return Returns true if is ready.
+   * Use to broadcast events.
    */
-  public boolean ready() {
-    return ready;
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  public void ready(boolean r) {
-    ready = r;
-  }
+  protected Observations observations = new Observations(UPDATE_STARTED, UPDATE_STOPPED);
   
   /**
    * Method to update the device state and broadcast events.
@@ -39,31 +65,16 @@ public abstract class InputDevice implements Subject {
   protected abstract void update();
   
   /**
-   * Use to broadcast events.
+   * Query if this device is currently updating.
+   * @return Returns true if the device is currently updating.
    */
-  protected SubjectDevice subject;
+  public abstract boolean isUpdating();
   
-  public void connect(Integer event_type, Method handler) {
-    subject.connect(event_type, handler);
+  public void connect(Integer eventType, Observation obs) {
+    observations.connect(eventType, obs);
   }
   
-  public void connect(Integer event_type, Object observer, Method handler) {
-    subject.connect(event_type, observer, handler);
-  }
-  
-  public void disconnect(Method handler) {
-    subject.disconnect(handler);
-  }
-  
-  public void disconnect(Integer event_type, Method handler) {
-    subject.disconnect(event_type, handler);
-  }
-  
-  public void disconnect(Object observer) {
-    subject.disconnect(observer);
-  }
-  
-  public void disconnect(Integer event_type, Object observer) {
-    subject.disconnect(event_type, observer);
+  public void disconnect(Integer eventType, Observation obs) {
+    observations.disconnect(eventType, obs);
   }
 }
