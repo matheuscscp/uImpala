@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.time;
+package org.unbiquitous.ubiengine.engine.system.time;
 
 import org.unbiquitous.ubiengine.util.observer.Observation;
 import org.unbiquitous.ubiengine.util.observer.Observations;

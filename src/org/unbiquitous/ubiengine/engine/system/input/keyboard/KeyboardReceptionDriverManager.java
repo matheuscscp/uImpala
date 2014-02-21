@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.input.keyboard;
+package org.unbiquitous.ubiengine.engine.system.input.keyboard;
 
 import java.util.HashMap;
 import java.util.Map;

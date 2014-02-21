@@ -1,7 +1,7 @@
-package org.unbiquitous.ubiengine.engine.asset.video.texture;
+package org.unbiquitous.ubiengine.engine.asset;
 
-import org.unbiquitous.ubiengine.engine.asset.video.Screen;
-import org.unbiquitous.ubiengine.engine.time.DeltaTime;
+import org.unbiquitous.ubiengine.engine.system.screen.Window;
+import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 
 public class Animation extends Sprite {
   protected DeltaTime deltatime;
@@ -12,8 +12,8 @@ public class Animation extends Sprite {
   protected int int_frame;
   protected int frame_w, frame_h;
 
-  public Animation(Screen screen, String filename, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
-    super(screen, filename);
+  public Animation(Window window, String filename, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
+    super(window, filename);
     this.deltatime = deltatime;
     this.rows = (rows > 0 ? rows : 1);
     this.cols = (cols > 0 ? cols : 1);
@@ -26,8 +26,8 @@ public class Animation extends Sprite {
     clip((int_frame%cols)*frame_w, (int_frame/cols)*frame_h, frame_w, frame_h);
   }
 
-  public Animation(Screen screen, int w, int h, boolean use_alpha, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
-    super(screen, w, h, use_alpha);
+  public Animation(Window window, int w, int h, boolean use_alpha, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
+    super(window, w, h, use_alpha);
     this.deltatime = deltatime;
     this.rows = (rows > 0 ? rows : 1);
     this.cols = (cols > 0 ? cols : 1);

@@ -1,5 +1,5 @@
+refactor time   (lwjgl)
+refactor asset  (slick)
 refactor screen (lwjgl)
 refactor input  (lwjgl)
-refactor time   (lwjgl)
-refactor asset  (lwjgl)
 refactor UbiGame class with new game components

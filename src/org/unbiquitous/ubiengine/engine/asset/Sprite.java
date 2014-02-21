@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.asset.video.texture;
+package org.unbiquitous.ubiengine.engine.asset;
 
 import java.awt.AlphaComposite;
 import java.awt.Font;
@@ -12,11 +12,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.unbiquitous.ubiengine.engine.asset.video.Screen;
+import org.unbiquitous.ubiengine.engine.system.screen.Window;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
 public class Sprite {
-  protected Screen screen;
+  protected Window window;
   protected BufferedImage sprite;
   protected BufferedImage rotozoomed;
   protected Graphics2D g2d;
@@ -26,8 +26,8 @@ public class Sprite {
   protected float angle;
   protected float scalex, scaley;
 
-  public Sprite(Screen scr, String filename) {
-    screen = scr;
+  public Sprite(Window scr, String filename) {
+    window = scr;
     try {
       sprite = ImageIO.read(new File(filename));
     } catch (IOException e) {
@@ -44,8 +44,8 @@ public class Sprite {
     scaley = 1.0f;
   }
 
-  public Sprite(Screen screen, int w, int h, boolean use_alpha) {
-    this.screen = screen;
+  public Sprite(Window window, int w, int h, boolean use_alpha) {
+    this.window = window;
     sprite = new BufferedImage(
       w, h,
       use_alpha ? BufferedImage.TYPE_INT_ARGB : BufferedImage.TYPE_INT_RGB
@@ -61,8 +61,8 @@ public class Sprite {
     scaley = 1.0f;
   }
   
-  public Sprite(Screen screen, Text other) {
-    this.screen = screen;
+  public Sprite(Window window, Text other) {
+    this.window = window;
     FontMetrics fm =
       new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
       .createGraphics().getFontMetrics(other.getFont());
@@ -81,7 +81,7 @@ public class Sprite {
   }
   
   public void render() {
-    screen.renderImage(0, 0, false, alpha, sprite, clip_rect);
+    window.renderImage(0, 0, false, alpha, sprite, clip_rect);
   }
   
   public void render(int x, int y, boolean center) {
@@ -103,9 +103,9 @@ public class Sprite {
     }
     
     if (rotozoomed == null)
-      screen.renderImage(x, y, false, alpha, sprite, clip_rect);
+      window.renderImage(x, y, false, alpha, sprite, clip_rect);
     else
-      screen.renderImage(
+      window.renderImage(
         x, y, false, alpha, rotozoomed,
         new Rectangle(0, 0, rotozoomed.getWidth(), rotozoomed.getHeight())
       );
@@ -181,7 +181,7 @@ public class Sprite {
     tmp_g2d.drawString(text, 0, (int) (0.69f*h));
     
     // create a temporary sprite with the temporary BufferedImage
-    Sprite tmpspr = new Sprite(screen, w, h, true);
+    Sprite tmpspr = new Sprite(window, w, h, true);
     tmpspr.sprite = tmp;
     tmpspr.alpha = other.getAlpha();
     

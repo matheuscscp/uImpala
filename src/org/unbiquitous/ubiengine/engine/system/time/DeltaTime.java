@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.time;
+package org.unbiquitous.ubiengine.engine.system.time;
 
 /**
  * Class to handle frame rate.

@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.input.keyboard;
+package org.unbiquitous.ubiengine.engine.system.input.keyboard;
 
 import java.awt.event.KeyListener;
 import java.util.HashMap;
@@ -10,10 +10,10 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
-import org.unbiquitous.ubiengine.engine.asset.video.Screen;
 import org.unbiquitous.ubiengine.engine.core.UbiGame.Settings;
-import org.unbiquitous.ubiengine.engine.input.InputDevice;
-import org.unbiquitous.ubiengine.engine.input.InputManager;
+import org.unbiquitous.ubiengine.engine.system.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.system.input.InputManager;
+import org.unbiquitous.ubiengine.engine.system.screen.Window;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;
@@ -43,7 +43,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     
     main_keyboard = new KeyboardDevice();
     main_keyboard.active(true);
-    components.get(Screen.class).addKeyListener(this);
+    components.get(Window.class).addKeyListener(this);
     
     KeyboardReceptionDriverManager.init(this, gateway);
     

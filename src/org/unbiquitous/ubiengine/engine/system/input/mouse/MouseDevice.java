@@ -1,10 +1,10 @@
-package org.unbiquitous.ubiengine.engine.input.mouse;
+package org.unbiquitous.ubiengine.engine.system.input.mouse;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.unbiquitous.ubiengine.engine.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.system.input.InputDevice;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Observations;

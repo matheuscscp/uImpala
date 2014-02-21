@@ -6,10 +6,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.engine.asset.video.Screen;
-import org.unbiquitous.ubiengine.engine.input.InputManager;
-import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardReceptionDriver;
-import org.unbiquitous.ubiengine.engine.time.DeltaTime;
+import org.unbiquitous.ubiengine.engine.system.input.InputManager;
+import org.unbiquitous.ubiengine.engine.system.input.keyboard.KeyboardReceptionDriver;
+import org.unbiquitous.ubiengine.engine.system.screen.Window;
+import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.UOS;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
@@ -118,7 +118,7 @@ public abstract class UbiGame implements UosApplication {
   private List<InputManager> managers = new ArrayList<InputManager>();
   private LinkedList<GameState> states = new LinkedList<GameState>();
   private DeltaTime deltatime = new DeltaTime();
-  private Screen screen = null;
+  private Window window = null;
   
   private enum ChangeOption {
     NA,
@@ -146,15 +146,15 @@ public abstract class UbiGame implements UosApplication {
           gs.update();
         for (GameState gs : states)
           gs.render();
-        screen.update();
+        window.update();
         checkStateChange();
         deltatime.finish();
       }
     } catch (Error e) {
       Logger.log(e, rootpath + "/ErrorLog.txt");
     }
-    if (screen != null)
-      screen.close();
+    if (window != null)
+      window.close();
   }
   
   /**
@@ -190,7 +190,7 @@ public abstract class UbiGame implements UosApplication {
     
     GameComponents.put(DeltaTime.class, deltatime);
     
-    GameComponents.put(Screen.class, screen = new Screen(
+    GameComponents.put(Window.class, window = new Window(
         (String)settings.get("window_title"),
         ((Integer)settings.get("window_width")).intValue(),
         ((Integer)settings.get("window_height")).intValue()
