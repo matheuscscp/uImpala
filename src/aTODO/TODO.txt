@@ -1,4 +1,3 @@
-refactor component factory with InheritableThreadLocal
 refactor screen (lwjgl)
 refactor input  (lwjgl)
 refactor time   (lwjgl)

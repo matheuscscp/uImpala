@@ -10,7 +10,6 @@ import org.unbiquitous.ubiengine.engine.asset.video.Screen;
 import org.unbiquitous.ubiengine.engine.input.InputManager;
 import org.unbiquitous.ubiengine.engine.input.keyboard.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.engine.time.DeltaTime;
-import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.UOS;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
@@ -137,7 +136,6 @@ public abstract class UbiGame implements UosApplication {
    * uOS's private use.
    */
   public void start(Gateway gateway, OntologyStart ontology) {
-    GameComponents.create();
     try {
       init(gateway);
       while (states.size() > 0) {
@@ -157,7 +155,6 @@ public abstract class UbiGame implements UosApplication {
     }
     if (screen != null)
       screen.close();
-    GameComponents.remove();
   }
   
   /**
@@ -183,41 +180,33 @@ public abstract class UbiGame implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
-    ComponentContainer components = GameComponents.get();
-    
     Settings settings = getSettings().validate();
     rootpath = (String)settings.get("root_path");
-    components.put(Settings.class, settings);
+    GameComponents.put(Settings.class, settings);
     
-    components.put(UbiGame.class, this);
+    GameComponents.put(UbiGame.class, this);
     
-    components.put(Gateway.class, gateway);
+    GameComponents.put(Gateway.class, gateway);
     
-    components.put(DeltaTime.class, deltatime);
+    GameComponents.put(DeltaTime.class, deltatime);
     
-    components.put(Screen.class, screen = new Screen(
+    GameComponents.put(Screen.class, screen = new Screen(
         (String)settings.get("window_title"),
         ((Integer)settings.get("window_width")).intValue(),
         ((Integer)settings.get("window_height")).intValue()
     ));
     
-    List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");
-    if (ims != null) {
-      for (Class<?> im : ims) {
-        try {
-          managers.add((InputManager)components.put(im, im
-            .getConstructor(ComponentContainer.class).newInstance(components)
-          ));
-        } catch (Exception e) {
-          throw new Error(e);
+    try {
+      List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");
+      if (ims != null) {
+        for (Class<?> imc : ims) {
+          InputManager im = (InputManager)imc.newInstance();
+          GameComponents.put(imc, im);
+          managers.add(im);
         }
       }
-    }
-    
-    try {
-      states.add((
-        (GameState)((Class<?>)settings.get("first_state")).newInstance()
-      ));
+      
+      states.add(((GameState)((Class<?>)settings.get("first_state")).newInstance()));
     } catch (Exception e) {
       throw new Error(e);
     }

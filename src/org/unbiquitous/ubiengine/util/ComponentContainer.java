@@ -18,12 +18,4 @@ public class ComponentContainer extends HashMap<Class<?>, Object> {
   public <T> T get(Class<T> key) {
     return (T)super.get(key);
   }
-  
-  /**
-   * Overriding to return the new value.
-   */
-  public Object put(Class<?> key, Object value) {
-    super.put(key, value);
-    return value;
-  }
 }
