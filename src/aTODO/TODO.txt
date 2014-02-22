@@ -1,4 +1,3 @@
-refactor system.time (lwjgl)
 make asset.* (slick) (load image, sound and font)
 refactor system.* (lwjgl)
 refator asset.* (using system) (play, render)

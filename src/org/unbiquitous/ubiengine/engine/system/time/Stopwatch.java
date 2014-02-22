@@ -10,7 +10,7 @@ public final class Stopwatch {
    * Resets and starts counting time.
    */
   public void start() {
-    initialtime = System.currentTimeMillis();
+    initialtime = Time.get();
     paused = false;
   }
   
@@ -19,7 +19,7 @@ public final class Stopwatch {
    */
   public void pause() {
     if (!paused && initialtime != -1) {
-      pausetime = System.currentTimeMillis();
+      pausetime = Time.get();
       paused = true;
     }
   }
@@ -29,7 +29,7 @@ public final class Stopwatch {
    */
   public void resume() {
     if (paused) {
-      initialtime += System.currentTimeMillis() - pausetime;
+      initialtime += Time.get() - pausetime;
       paused = false;
     }
   }
@@ -43,7 +43,7 @@ public final class Stopwatch {
       return -1;
     if (paused)
       return pausetime - initialtime;
-    return System.currentTimeMillis() - initialtime;
+    return Time.get() - initialtime;
   }
   
   /**

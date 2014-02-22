@@ -78,14 +78,14 @@ public final class DeltaTime {
    * Engine's private use.
    */
   public void start() {
-    begin = System.currentTimeMillis();
+    begin = Time.get();
   }
   
   /**
    * Engine's private use.
    */
   public void finish() {
-    real_DT = System.currentTimeMillis() - begin;
+    real_DT = Time.get() - begin;
     long diff = 1000/((long) ideal_FPS) - real_DT;
     if (diff <= 0) // frame bigger than desired
       return;
@@ -94,6 +94,6 @@ public final class DeltaTime {
     }
     catch (InterruptedException e) {
     }
-    real_DT = System.currentTimeMillis() - begin;
+    real_DT = Time.get() - begin;
   }
 }

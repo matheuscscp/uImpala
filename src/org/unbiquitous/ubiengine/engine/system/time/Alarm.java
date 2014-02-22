@@ -14,7 +14,7 @@ public final class Alarm implements Subject {
    * Call this method every frame to awake sleepers!
    */
   public void update() {
-    if (!done && !paused && System.currentTimeMillis() >= done_ticks) {
+    if (!done && !paused && Time.get() >= done_ticks) {
       done = true;
       observations.broadcast(TRRRIMM, null);
     }
@@ -26,7 +26,7 @@ public final class Alarm implements Subject {
    */
   public void start(long ms) {
     if (ms > 0) {
-      done_ticks = ms + System.currentTimeMillis();
+      done_ticks = ms + Time.get();
       done = false;
       paused = false;
     }
@@ -37,7 +37,7 @@ public final class Alarm implements Subject {
    */
   public void pause() {
     if (!paused) {
-      pausetime = System.currentTimeMillis();
+      pausetime = Time.get();
       paused = true;
     }
   }
@@ -47,7 +47,7 @@ public final class Alarm implements Subject {
    */
   public void resume() {
     if (paused) {
-      done_ticks += System.currentTimeMillis() - pausetime;
+      done_ticks += Time.get() - pausetime;
       paused = false;
     }
   }
@@ -68,7 +68,7 @@ public final class Alarm implements Subject {
       return 0;
     if (paused)
       return done_ticks - pausetime;
-    return done_ticks - System.currentTimeMillis();
+    return done_ticks - Time.get();
   }
   
   /**
