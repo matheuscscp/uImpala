@@ -45,6 +45,6 @@ Tags for pom.xml
 Links
 =====
 
-ubiengine(https://github.com/matheuscscp/ubiengine)
-uos_socket_plugin(https://github.com/unbiquitous/uos_socket_plugin)
-uos_core(https://github.com/UnBiquitous/uos_core)
+* [ubiengine](https://github.com/matheuscscp/ubiengine)
+* [uos_socket_plugin](https://github.com/unbiquitous/uos_socket_plugin)
+* [uos_core](https://github.com/UnBiquitous/uos_core)
