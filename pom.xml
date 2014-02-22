@@ -7,7 +7,7 @@
   <packaging>jar</packaging>
   
   <build>
-    <sourceDirectory>src/</sourceDirectory>
+    <sourceDirectory>src</sourceDirectory>
   </build>
   
   <dependencies>
@@ -29,7 +29,7 @@
       <artifactId>slick-util</artifactId>
       <scope>system</scope>
       <version>237</version>
-      <systemPath>${basedir}\lib\slick-util.jar</systemPath>
+      <systemPath>${basedir}/lib/slick-util.jar</systemPath>
     </dependency>
     
     <dependency>
@@ -37,7 +37,7 @@
       <artifactId>jorbis</artifactId>
       <scope>system</scope>
       <version>0.0.15</version>
-      <systemPath>${basedir}\lib\jorbis-0.0.15.jar</systemPath>
+      <systemPath>${basedir}/lib/jorbis-0.0.15.jar</systemPath>
     </dependency>
     
     <dependency>
@@ -45,7 +45,7 @@
       <artifactId>jogg</artifactId>
       <scope>system</scope>
       <version>0.0.7</version>
-      <systemPath>${basedir}\lib\jogg-0.0.7.jar</systemPath>
+      <systemPath>${basedir}/lib/jogg-0.0.7.jar</systemPath>
     </dependency>
     
     <dependency>
@@ -53,7 +53,7 @@
       <artifactId>ibxm</artifactId>
       <scope>system</scope>
       <version>1.0</version>
-      <systemPath>${basedir}\lib\ibxm.jar</systemPath>
+      <systemPath>${basedir}/lib/ibxm.jar</systemPath>
     </dependency>
     
   </dependencies>
