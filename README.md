@@ -6,7 +6,7 @@ Four steps to create an Eclipse Maven project with this library:
 * Clone ubiengine, uos_socket_plugin and uos_core (links below);
 * Import these three existing Maven projects;
 * Create a Maven project and add the tags below in the pom.xml;
-* Right-click on project -> Properties -> Java Build Path -> Libraries -> Maven Dependencies arrow -> Native library location -> Edit... -> Insert Location path as ${project-name}/target/natives -> OK -> OK.
+* Right-click on project -> Properties -> Java Build Path -> Libraries -> Maven Dependencies arrow -> Native library location -> Edit... -> Insert Location path as replace-with-project-name/target/natives -> OK -> OK.
 
 Links
 =====
