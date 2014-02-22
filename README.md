@@ -15,8 +15,8 @@ Links
 * [uos_socket_plugin](https://github.com/UnBiquitous/uos_socket_plugin)
 * [uos_core](https://github.com/UnBiquitous/uos_core)
 
-Tags for pom.xml
-================
+pom.xml
+=======
 
 ```xml
   <dependencies>
