@@ -8,6 +8,13 @@ Four steps to create an Eclipse Maven project with this library:
 * Create a Maven project and add the tags below in the pom.xml;
 * Right-click on project -> Properties -> Java Build Path -> Libraries -> Maven Dependencies arrow -> Native library location -> Edit... -> Insert Location path as ${project-name}/target/natives -> OK -> OK.
 
+Links
+=====
+
+* [ubiengine](https://github.com/matheuscscp/ubiengine)
+* [uos_socket_plugin](https://github.com/UnBiquitous/uos_socket_plugin)
+* [uos_core](https://github.com/UnBiquitous/uos_core)
+
 Tags for pom.xml
 ================
 
@@ -41,10 +48,3 @@ Tags for pom.xml
     </plugins>
   </build>
 ```
-
-Links
-=====
-
-* [ubiengine](https://github.com/matheuscscp/ubiengine)
-* [uos_socket_plugin](https://github.com/UnBiquitous/uos_socket_plugin)
-* [uos_core](https://github.com/UnBiquitous/uos_core)
