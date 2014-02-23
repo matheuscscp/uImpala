@@ -1,5 +1,5 @@
 refactor system abstraction (system.* and core.UbiGame)
-implement lwjgl context creation (system.*)
 implement asset.*
 implement asset creation (asset.AssetManager)
+implement lwjgl context creation (system.*)
 refactor gui.Button
