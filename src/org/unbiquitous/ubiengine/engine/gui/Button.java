@@ -2,7 +2,7 @@ package org.unbiquitous.ubiengine.engine.gui;
 
 import java.lang.reflect.Method;
 
-import org.unbiquitous.ubiengine.engine.asset.Sprite;
+import org.unbiquitous.ubiengine.engine.asset.SpriteOld;
 import org.unbiquitous.ubiengine.engine.system.input.keyboard.KeyboardDevice;
 import org.unbiquitous.ubiengine.engine.system.input.keyboard.KeyboardDevice.KeyDownEvent;
 import org.unbiquitous.ubiengine.engine.system.input.mouse.MouseDevice;
@@ -20,7 +20,7 @@ public class Button implements Subject {
   
   protected KeyboardDevice keyboard_device;
   protected MouseDevice mouse_device;
-  protected Sprite sprite;
+  protected SpriteOld spriteOld;
   protected Rectangle rect;
   protected int clip_y;
   protected boolean clicked;
@@ -42,8 +42,8 @@ public class Button implements Subject {
 
   public void setPos(int x, int y) {
     if (center) {
-      rect.setX((float) (x - sprite.getWidth()/2));
-      rect.setY((float) (y - sprite.getHeight()/8));
+      rect.setX((float) (x - spriteOld.getWidth()/2));
+      rect.setY((float) (y - spriteOld.getHeight()/8));
     }
     else {
       rect.setX((float) x);
@@ -51,10 +51,10 @@ public class Button implements Subject {
     }
   }
   
-  public Button(KeyboardDevice keyboard_device, MouseDevice mouse_device, Sprite sprite) {
+  public Button(KeyboardDevice keyboard_device, MouseDevice mouse_device, SpriteOld spriteOld) {
     this.keyboard_device = keyboard_device;
     this.mouse_device = mouse_device;
-    this.sprite = sprite;
+    this.spriteOld = spriteOld;
     clip_y = 0;
     clicked = false;
     hover = false;
@@ -67,7 +67,7 @@ public class Button implements Subject {
     center = false;
     
     subject = new Observations(CLICKED);
-    rect = new Rectangle(0, 0, (float) sprite.getWidth(), (float) sprite.getHeight()/4);
+    rect = new Rectangle(0, 0, (float) spriteOld.getWidth(), (float) spriteOld.getHeight()/4);
     enable(true);
 
     try {
@@ -99,7 +99,7 @@ public class Button implements Subject {
     // update
     if (clicked) {
       clicked = false;
-      clip_y = 2*sprite.getHeight()/4;
+      clip_y = 2*spriteOld.getHeight()/4;
       hover = false;
     }
     else if (!mouse_device.isMouseInside(rect)) {
@@ -108,7 +108,7 @@ public class Button implements Subject {
       just_hit = false;
     }
     else if (!mouse_device.isMousePressed(MouseDevice.LEFT_BUTTON)) {
-      clip_y = sprite.getHeight()/4;
+      clip_y = spriteOld.getHeight()/4;
       
       // play sound
       /*FIXME if ((sound_hover) && (!hover)) {
@@ -124,7 +124,7 @@ public class Button implements Subject {
       just_hit = false;
     }
     else if (mouse_device.isMouseDownInside(rect)) {
-      clip_y = 2*sprite.getHeight()/4;
+      clip_y = 2*spriteOld.getHeight()/4;
       hover = false;
     }
     else {
@@ -138,29 +138,29 @@ public class Button implements Subject {
       if (alarm.time() != 0) {
         toggle = (!toggle);
         if (toggle)
-          clip_y = sprite.getHeight()/4;
+          clip_y = spriteOld.getHeight()/4;
         else
-          clip_y = 2*sprite.getHeight()/4;
+          clip_y = 2*spriteOld.getHeight()/4;
       }
       else if (!mouse_device.isMouseInside(rect))
-        clip_y = sprite.getHeight()/4;
+        clip_y = spriteOld.getHeight()/4;
     }
     
-    sprite.clip(0, clip_y, sprite.getWidth(), sprite.getHeight()/4);
+    spriteOld.clip(0, clip_y, spriteOld.getWidth(), spriteOld.getHeight()/4);
   }
   
   public void render() {
-    sprite.render((int) rect.getX(), (int) rect.getY(), false);
+    spriteOld.render((int) rect.getX(), (int) rect.getY(), false);
   }
 
   public void renderByCenter(boolean center) {
     if (center && !this.center) {
-      rect.setX((float) (rect.getX() - sprite.getWidth()/2));
-      rect.setY((float) (rect.getY() - sprite.getHeight()/8));
+      rect.setX((float) (rect.getX() - spriteOld.getWidth()/2));
+      rect.setY((float) (rect.getY() - spriteOld.getHeight()/8));
     }
     else if (!center && this.center) {
-      rect.setX((float) (rect.getX() + sprite.getWidth()/2));
-      rect.setY((float) (rect.getY() + sprite.getHeight()/8));
+      rect.setX((float) (rect.getX() + spriteOld.getWidth()/2));
+      rect.setY((float) (rect.getY() + spriteOld.getHeight()/8));
     }
     this.center = center;
   }
@@ -168,7 +168,7 @@ public class Button implements Subject {
   public void enable(boolean enable) {
     enabled = enable;
     if (!enable)
-      sprite.clip(0, 3*sprite.getHeight()/4, sprite.getWidth(), sprite.getHeight()/4);
+      spriteOld.clip(0, 3*spriteOld.getHeight()/4, spriteOld.getWidth(), spriteOld.getHeight()/4);
   }
   
   public boolean isEnabled() {

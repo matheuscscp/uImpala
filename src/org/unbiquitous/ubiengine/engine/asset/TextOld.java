@@ -6,7 +6,7 @@ import java.awt.Font;
 
 import org.unbiquitous.ubiengine.engine.system.Window;
 
-public class Text {
+public class TextOld {
   private Window window;
   private String text;
   private Font font;
@@ -14,7 +14,7 @@ public class Text {
   private Dimension dimension;
   private float alpha;
 
-  public Text(Window window, String text, Font font, Color color) {
+  public TextOld(Window window, String text, Font font, Color color) {
     this.window = window;
     this.text = text;
     this.font = (font == null ? new Font(Font.MONOSPACED, Font.BOLD, 20) : font);

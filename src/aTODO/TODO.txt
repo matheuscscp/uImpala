@@ -1,7 +1,4 @@
-make asset.* (slick) (load image, sound and font)
-refactor system.* (lwjgl)
-refator asset.* (using system) (play, render)
-refactor class UbiGame to deal with the new libraries
+finish font loading
+refactor system.* and core.UbiGame for lwjgl contexts
+refactor asset.* (using system) (play, render, etc.)
 refactor gui.Button
-make asset.TileSet
-make asset.TileMap
