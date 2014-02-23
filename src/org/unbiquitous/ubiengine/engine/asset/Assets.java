@@ -1,12 +1,12 @@
 package org.unbiquitous.ubiengine.engine.asset;
 
+import java.awt.Font;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.opengl.Texture;
@@ -33,6 +33,7 @@ public final class Assets {
       asset.refCount++;
       return (Texture)asset.object;
     }
+    
     try {
       asset = new Asset(TextureLoader.getTexture(getFormat(fn),
         ResourceLoader.getResourceAsStream(
@@ -42,6 +43,7 @@ public final class Assets {
     } catch (IOException e) {
       throw new Error(e);
     }
+    
     instance.assets.put(fn, asset);
     asset.refCount++;
     return (Texture)asset.object;
@@ -59,6 +61,7 @@ public final class Assets {
       asset.refCount++;
       return (Audio)asset.object;
     }
+    
     try {
       asset = new Asset(AudioLoader.getAudio(getFormat(fn),
         ResourceLoader.getResourceAsStream(
@@ -68,6 +71,7 @@ public final class Assets {
     } catch (IOException e) {
       throw new Error(e);
     }
+    
     instance.assets.put(fn, asset);
     asset.refCount++;
     return (Audio)asset.object;
@@ -85,6 +89,7 @@ public final class Assets {
       asset.refCount++;
       return (Audio)asset.object;
     }
+    
     try {
       asset = new Asset(AudioLoader.getStreamingAudio(getFormat(fn),
         ResourceLoader.getResource(
@@ -94,14 +99,38 @@ public final class Assets {
     } catch (IOException e) {
       throw new Error(e);
     }
+    
     instance.assets.put(fn, asset);
     asset.refCount++;
     return (Audio)asset.object;
   }
   
-  public static TrueTypeFont loadTrueTypeFont(String fn) {
-    //FIXME
-    return null;
+  /**
+   * Load font.
+   * @param fn Font path.
+   * @return Font loaded.
+   */
+  public static Font loadFont(String fn) {
+    Assets instance = GameComponents.get(Assets.class);
+    Asset asset = instance.assets.get(fn);
+    if (asset != null) {
+      asset.refCount++;
+      return (Font)asset.object;
+    }
+    
+    try {
+      asset = new Asset(Font.createFont(Font.TRUETYPE_FONT,
+        ResourceLoader.getResourceAsStream(
+          GameComponents.get(Settings.class).get("root_path") + "/" + fn
+        )
+      ));
+    } catch (Exception e) {
+      throw new Error(e);
+    }
+    
+    instance.assets.put(fn, asset);
+    asset.refCount++;
+    return (Font)asset.object;
   }
   
   /**
@@ -116,6 +145,7 @@ public final class Assets {
       asset.refCount++;
       return (int[][])asset.object;
     }
+    
     Scanner sc;
     try {
       sc = new Scanner(new FileReader(
@@ -136,6 +166,7 @@ public final class Assets {
     }
     sc.close();
     asset = new Asset(map);
+    
     instance.assets.put(fn, asset);
     asset.refCount++;
     return (int[][])asset.object;

@@ -216,7 +216,7 @@ public abstract class UbiGame implements UosApplication {
     switch (change_option) {
       case NA:
         break;
-      
+        
       case CHANGE:
         states.removeLast().close();
         states.add(state_change);

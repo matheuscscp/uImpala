@@ -1,4 +1,4 @@
-finish font loading
+refactor Assets life cycle management
 refactor system abstraction (system.* and core.UbiGame)
 openGL context creation
 refactor asset.* (using system) (play, render, etc.)
