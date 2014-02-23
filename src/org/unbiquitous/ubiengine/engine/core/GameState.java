@@ -1,5 +1,7 @@
 package org.unbiquitous.ubiengine.engine.core;
 
+import org.unbiquitous.ubiengine.engine.asset.AssetManager;
+
 /**
  * Interface for a game state.
  * @see ContainerState
@@ -7,6 +9,11 @@ package org.unbiquitous.ubiengine.engine.core;
  *
  */
 public abstract class GameState {
+  /**
+   * Use to load assets.
+   */
+  protected AssetManager assets = new AssetManager();
+  
   /**
    * Method to implement update.
    */

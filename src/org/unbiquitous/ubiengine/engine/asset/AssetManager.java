@@ -16,37 +16,33 @@ import org.unbiquitous.ubiengine.engine.core.GameComponents;
 import org.unbiquitous.ubiengine.engine.core.UbiGame.Settings;
 
 /**
- * Class to manage assets.
+ * Class to manage assets of a game state.
  * @author Pimenta
  *
  */
-public final class Assets {
+public final class AssetManager {
   /**
    * Load a texture.
    * @param fn Texture path.
    * @return Texture loaded.
    */
-  public static Texture loadTexture(String fn) {
-    Assets instance = GameComponents.get(Assets.class);
-    Asset asset = instance.assets.get(fn);
-    if (asset != null) {
-      asset.refCount++;
-      return (Texture)asset.object;
-    }
+  public Texture getTexture(String fn) {
+    Texture asset = (Texture)assets.get(fn);
+    if (asset != null)
+      return asset;
     
     try {
-      asset = new Asset(TextureLoader.getTexture(getFormat(fn),
+      asset = TextureLoader.getTexture(getFormat(fn),
         ResourceLoader.getResourceAsStream(
           GameComponents.get(Settings.class).get("root_path") + "/" + fn
         )
-      ));
+      );
     } catch (IOException e) {
       throw new Error(e);
     }
     
-    instance.assets.put(fn, asset);
-    asset.refCount++;
-    return (Texture)asset.object;
+    assets.put(fn, asset);
+    return asset;
   }
   
   /**
@@ -54,27 +50,23 @@ public final class Assets {
    * @param fn Audio path.
    * @return Audio loaded.
    */
-  public static Audio loadAudio(String fn) {
-    Assets instance = GameComponents.get(Assets.class);
-    Asset asset = instance.assets.get(fn);
-    if (asset != null) {
-      asset.refCount++;
-      return (Audio)asset.object;
-    }
+  public Audio getAudio(String fn) {
+    Audio asset = (Audio)assets.get(fn);
+    if (asset != null)
+      return asset;
     
     try {
-      asset = new Asset(AudioLoader.getAudio(getFormat(fn),
+      asset = AudioLoader.getAudio(getFormat(fn),
         ResourceLoader.getResourceAsStream(
           GameComponents.get(Settings.class).get("root_path") + "/" + fn
         )
-      ));
+      );
     } catch (IOException e) {
       throw new Error(e);
     }
     
-    instance.assets.put(fn, asset);
-    asset.refCount++;
-    return (Audio)asset.object;
+    assets.put(fn, asset);
+    return asset;
   }
   
   /**
@@ -82,27 +74,23 @@ public final class Assets {
    * @param fn Audio path.
    * @return Audio loaded.
    */
-  public static Audio loadStreamingAudio(String fn) {
-    Assets instance = GameComponents.get(Assets.class);
-    Asset asset = instance.assets.get(fn);
-    if (asset != null) {
-      asset.refCount++;
-      return (Audio)asset.object;
-    }
+  public Audio getStreamingAudio(String fn) {
+    Audio asset = (Audio)assets.get(fn);
+    if (asset != null)
+      return asset;
     
     try {
-      asset = new Asset(AudioLoader.getStreamingAudio(getFormat(fn),
+      asset = AudioLoader.getStreamingAudio(getFormat(fn),
         ResourceLoader.getResource(
           GameComponents.get(Settings.class).get("root_path") + "/" + fn
         )
-      ));
+      );
     } catch (IOException e) {
       throw new Error(e);
     }
     
-    instance.assets.put(fn, asset);
-    asset.refCount++;
-    return (Audio)asset.object;
+    assets.put(fn, asset);
+    return asset;
   }
   
   /**
@@ -110,27 +98,23 @@ public final class Assets {
    * @param fn Font path.
    * @return Font loaded.
    */
-  public static Font loadFont(String fn) {
-    Assets instance = GameComponents.get(Assets.class);
-    Asset asset = instance.assets.get(fn);
-    if (asset != null) {
-      asset.refCount++;
-      return (Font)asset.object;
-    }
+  public Font getFont(String fn) {
+    Font asset = (Font)assets.get(fn);
+    if (asset != null)
+      return asset;
     
     try {
-      asset = new Asset(Font.createFont(Font.TRUETYPE_FONT,
+      asset = Font.createFont(Font.TRUETYPE_FONT,
         ResourceLoader.getResourceAsStream(
           GameComponents.get(Settings.class).get("root_path") + "/" + fn
         )
-      ));
+      );
     } catch (Exception e) {
       throw new Error(e);
     }
     
-    instance.assets.put(fn, asset);
-    asset.refCount++;
-    return (Font)asset.object;
+    assets.put(fn, asset);
+    return asset;
   }
   
   /**
@@ -138,13 +122,10 @@ public final class Assets {
    * @param fn Text file path.
    * @return Map loaded.
    */
-  public static int[][] loadMap(String fn) {
-    Assets instance = GameComponents.get(Assets.class);
-    Asset asset = instance.assets.get(fn);
-    if (asset != null) {
-      asset.refCount++;
-      return (int[][])asset.object;
-    }
+  public int[][] getMap(String fn) {
+    int[][] asset = (int[][])assets.get(fn);
+    if (asset != null)
+      return asset;
     
     Scanner sc;
     try {
@@ -158,30 +139,16 @@ public final class Assets {
     int rows = sc.nextInt();
     int cols = sc.nextInt();
     sc.nextLine();
-    int[][] map = new int[rows][cols];
+    asset = new int[rows][cols];
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++)
-        map[i][j] = sc.nextInt();
+        asset[i][j] = sc.nextInt();
       sc.nextLine();
     }
     sc.close();
-    asset = new Asset(map);
     
-    instance.assets.put(fn, asset);
-    asset.refCount++;
-    return (int[][])asset.object;
-  }
-  
-  /**
-   * Release an asset.
-   * @param fn Asset path.
-   */
-  public static void free(String fn) {
-    HashMap<String, Asset> assets = GameComponents.get(Assets.class).assets;
-    Asset asset = assets.get(fn);
-    asset.refCount--;
-    if (asset.refCount == 0)
-      assets.remove(fn);
+    assets.put(fn, asset);
+    return asset;
   }
 //==============================================================================
 //nothings else matters from here to below
@@ -197,13 +164,5 @@ public final class Assets {
     return fmt.toUpperCase();
   }
   
-  private static final class Asset {
-    private Object object;
-    private int refCount = 0;
-    private Asset(Object a) {
-      object = a;
-    }
-  }
-  
-  private HashMap<String, Asset> assets = new HashMap<String, Asset>();
+  private HashMap<String, Object> assets = new HashMap<String, Object>();
 }

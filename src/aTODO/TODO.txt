@@ -1,5 +1,5 @@
-refactor management of assets life cycle
 refactor system abstraction (system.* and core.UbiGame)
-lwjgl context creation (system.*)
-implement asset.* (play, render, etc.)
+implement lwjgl context creation (system.*)
+implement asset.*
+implement asset creation (asset.AssetManager)
 refactor gui.Button
