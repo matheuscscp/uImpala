@@ -12,8 +12,8 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-import org.unbiquitous.ubiengine.engine.system.output.Screen;
-import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
+import org.unbiquitous.ubiengine.engine.system.io.Screen;
+import org.unbiquitous.ubiengine.util.mathematics.Rectangle;
 
 public class SpriteOld {
   protected Screen screen;

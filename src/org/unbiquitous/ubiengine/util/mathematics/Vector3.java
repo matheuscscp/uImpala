@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.util.mathematics.linearalgebra;
+package org.unbiquitous.ubiengine.util.mathematics;
 
 /**
  * Class to represent a three-dimensional vector.

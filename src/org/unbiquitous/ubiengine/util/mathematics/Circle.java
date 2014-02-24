@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.util.mathematics.geometry;
+package org.unbiquitous.ubiengine.util.mathematics;
 
 public class Circle {
   private float x, y, r;

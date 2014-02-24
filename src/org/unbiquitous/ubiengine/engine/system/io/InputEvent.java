@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.input;
+package org.unbiquitous.ubiengine.engine.system.io;
 
 /**
  * Base class for input events.

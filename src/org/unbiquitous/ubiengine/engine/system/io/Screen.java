@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.output;
+package org.unbiquitous.ubiengine.engine.system.io;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -20,7 +20,7 @@ import java.util.Queue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
+import org.unbiquitous.ubiengine.util.mathematics.Rectangle;
 
 public final class Screen implements WindowListener {
   @SuppressWarnings("serial")

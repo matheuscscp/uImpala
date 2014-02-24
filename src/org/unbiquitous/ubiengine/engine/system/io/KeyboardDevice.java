@@ -1,14 +1,13 @@
-package org.unbiquitous.ubiengine.engine.system.input.keyboard;
+package org.unbiquitous.ubiengine.engine.system.io;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.unbiquitous.ubiengine.engine.system.input.InputSource;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Observations;
 
-public class KeyboardDevice extends InputSource {
+public class KeyboardDevice extends InputResource {
   
   public static final String KEYDOWN  = "KEYDOWN";
   public static final String KEYUP    = "KEYUP";

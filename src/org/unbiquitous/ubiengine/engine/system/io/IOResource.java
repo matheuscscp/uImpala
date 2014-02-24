@@ -1,0 +1,46 @@
+package org.unbiquitous.ubiengine.engine.system.io;
+
+import org.unbiquitous.ubiengine.util.observer.Observation;
+import org.unbiquitous.ubiengine.util.observer.Observations;
+import org.unbiquitous.ubiengine.util.observer.Subject;
+
+/**
+ * Interface for an IO resource.
+ * @author Pimenta
+ *
+ */
+public abstract class IOResource implements Subject {
+  /**
+   * Event to notify that the resource update started.
+   */
+  public static final int EVENT_STARTED_UPDATING = 0;
+  
+  /**
+   * Event to notify that the resource update stopped.
+   */
+  public static final int EVENT_STOPPED_UPDATING = 1;
+  
+  /**
+   * Use to broadcast events.
+   */
+  protected Observations observations = new Observations(0, 1);
+  
+  /**
+   * Method to update the resource state and/or broadcast events.
+   */
+  protected abstract void update();
+  
+  /**
+   * Query if this resource is currently updating.
+   * @return Returns true if the resource is currently updating.
+   */
+  public abstract boolean isUpdating();
+  
+  public void connect(Integer eventType, Observation obs) {
+    observations.connect(eventType, obs);
+  }
+  
+  public void disconnect(Integer eventType, Observation obs) {
+    observations.disconnect(eventType, obs);
+  }
+}

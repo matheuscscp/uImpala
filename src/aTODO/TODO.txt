@@ -1,6 +1,8 @@
 refactor system abstraction (system.* and core.UbiGame)
-refactor system.input.mouse.*
-refactor system.input.keyboard.*
+refactor system.io.Screen*
+refactor system.io.Speaker*
+refactor system.io.Mouse*
+refactor system.io.Keyboard*
 implement asset.*
 implement asset creation (asset.AssetManager)
 implement lwjgl context creation (system.*)
