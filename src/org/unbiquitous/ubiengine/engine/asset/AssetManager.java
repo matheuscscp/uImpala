@@ -13,7 +13,7 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 import org.unbiquitous.ubiengine.engine.core.GameComponents;
-import org.unbiquitous.ubiengine.engine.core.UbiGame.Settings;
+import org.unbiquitous.ubiengine.engine.core.GameSettings;
 
 /**
  * Class to manage assets of a game state.
@@ -34,7 +34,7 @@ public final class AssetManager {
     try {
       asset = TextureLoader.getTexture(getFormat(fn),
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(Settings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
         )
       );
     } catch (IOException e) {
@@ -58,7 +58,7 @@ public final class AssetManager {
     try {
       asset = AudioLoader.getAudio(getFormat(fn),
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(Settings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
         )
       );
     } catch (IOException e) {
@@ -82,7 +82,7 @@ public final class AssetManager {
     try {
       asset = AudioLoader.getStreamingAudio(getFormat(fn),
         ResourceLoader.getResource(
-          GameComponents.get(Settings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
         )
       );
     } catch (IOException e) {
@@ -106,7 +106,7 @@ public final class AssetManager {
     try {
       asset = Font.createFont(Font.TRUETYPE_FONT,
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(Settings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
         )
       );
     } catch (Exception e) {
@@ -130,7 +130,7 @@ public final class AssetManager {
     Scanner sc;
     try {
       sc = new Scanner(new FileReader(
-        GameComponents.get(Settings.class).get("root_path") + "/" + fn
+        GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
       ));
     } catch (FileNotFoundException e) {
       throw new Error(e);
