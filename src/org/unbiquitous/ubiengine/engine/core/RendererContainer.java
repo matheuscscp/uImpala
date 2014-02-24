@@ -3,7 +3,6 @@ package org.unbiquitous.ubiengine.engine.core;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
-import java.util.Map.Entry;
 
 /**
  * Container for all rendering operations in a frame.
@@ -27,12 +26,13 @@ public class RendererContainer {
   }
   
   /**
-   * Method to render everything.
+   * Method to render everything. Also clears the container.
    */
   public void render() {
-    for (Entry<?, List<Renderer>> e : renderers.entrySet()) {
-      for (Renderer r : e.getValue())
-        r.render();
+    while (renderers.size() > 0) {
+      LinkedList<Renderer> tmp = (LinkedList<Renderer>)renderers.pollFirstEntry().getValue();
+      while (tmp.size() > 0)
+        tmp.removeFirst().render();
     }
   }
 //==============================================================================
