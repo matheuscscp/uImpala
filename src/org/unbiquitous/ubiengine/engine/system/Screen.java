@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 
-public final class Window implements WindowListener {
+public final class Screen implements WindowListener {
   @SuppressWarnings("serial")
   private static final class ScreenJPanel extends JPanel {
     private static abstract class RenderOperation {
@@ -123,7 +123,7 @@ public final class Window implements WindowListener {
   private boolean window_closing;
   private int width;
   
-  public Window(String title, int w, int h) {
+  public Screen(String title, int w, int h) {
     window = new JFrame();
     screen = new ScreenJPanel();
     show_fps = false;

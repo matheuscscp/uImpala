@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Queue;
 
-import org.unbiquitous.ubiengine.engine.system.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.system.input.InputSource;
 import org.unbiquitous.ubiengine.util.mathematics.geometry.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Observations;
 
-public class MouseDevice extends InputDevice {
+public class MouseDevice extends InputSource {
   
   public static final String MOUSEDOWN    = "MOUSEDOWN";
   public static final String MOUSEUP      = "MOUSEUP";

@@ -6,7 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.engine.system.Window;
+import org.unbiquitous.ubiengine.engine.system.Screen;
 import org.unbiquitous.ubiengine.engine.system.input.InputManager;
 import org.unbiquitous.ubiengine.engine.system.input.keyboard.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
@@ -66,7 +66,7 @@ public abstract class UbiGame implements UosApplication {
           {"ubiquitos.radar", PingRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.uos.deviceName","compDevice"},
+          //{"ubiquitos.uos.deviceName","compDevice"},FIXME
           {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
           {"ubiquitos.application.deploylist", game.getName()}
         };
@@ -118,7 +118,7 @@ public abstract class UbiGame implements UosApplication {
   private List<InputManager> managers = new ArrayList<InputManager>();
   private LinkedList<GameState> states = new LinkedList<GameState>();
   private DeltaTime deltatime = new DeltaTime();
-  private Window window = null;
+  private Screen screen = null;
   
   private enum ChangeOption {
     NA,
@@ -139,22 +139,22 @@ public abstract class UbiGame implements UosApplication {
     try {
       init(gateway);
       while (states.size() > 0) {
-        deltatime.start();
+        deltatime.update();
         for (InputManager im : managers)
           im.update();
         for (GameState gs : states)
           gs.update();
         for (GameState gs : states)
           gs.render();
-        window.update();
-        checkStateChange();
-        deltatime.finish();
+        screen.update();
+        updateStack();
+        deltatime.sync();
       }
     } catch (Error e) {
       Logger.log(e, rootpath + "/ErrorLog.txt");
     }
-    if (window != null)
-      window.close();
+    if (screen != null)
+      screen.close();
   }
   
   /**
@@ -190,7 +190,7 @@ public abstract class UbiGame implements UosApplication {
     
     GameComponents.put(DeltaTime.class, deltatime);
     
-    GameComponents.put(Window.class, window = new Window(
+    GameComponents.put(Screen.class, screen = new Screen(
         (String)settings.get("window_title"),
         ((Integer)settings.get("window_width")).intValue(),
         ((Integer)settings.get("window_height")).intValue()
@@ -212,7 +212,7 @@ public abstract class UbiGame implements UosApplication {
     }
   }
   
-  private void checkStateChange() {
+  private void updateStack() {
     switch (change_option) {
       case NA:
         break;

@@ -1,5 +1,6 @@
 package org.unbiquitous.ubiengine.engine.system.time;
 
+
 /**
  * Class to handle frame rate.
  * @author Pimenta
@@ -10,16 +11,16 @@ public final class DeltaTime {
    * Can be used as frame's unique id.
    * @return Time in milliseconds.
    */
-  public long getBegin() {
-    return begin;
+  public long frameID() {
+    return before;
   }
   
   /**
    * The fixed value of frame rate.
    * @return Frequency in frames per second.
    */
-  public float getIdealFPS() {
-    return ideal_FPS;
+  public float getFPS() {
+    return idealFPS;
   }
   
   /**
@@ -27,19 +28,19 @@ public final class DeltaTime {
    * @return Frequency in frames per second.
    */
   public float getRealFPS() {
-    if (real_DT == 0)
+    if (realDT == 0)
       return 0;
-    return 1000.0f/real_DT;
+    return 1000.0f/realDT;
   }
   
   /**
    * The desired value of frame's duration.
    * @return Time in seconds.
    */
-  public float getIdealDT() {
-    if (real_DT == 0)
+  public float getDT() {
+    if (realDT == 0)
       return 0;
-    return 1/ideal_FPS;
+    return 1/idealFPS;
   }
   
   /**
@@ -47,53 +48,52 @@ public final class DeltaTime {
    * @return Time in seconds.
    */
   public float getRealDT() {
-    return real_DT/1000.0f;
+    return realDT/1000.0f;
   }
   
   /**
    * Sets the fixed value of frame rate.
    * @param FPS Frequency in frames per second.
    */
-  public void setIdealFPS(float FPS) {
+  public void setFPS(float FPS) {
     if (FPS > 0)
-      ideal_FPS = FPS;
+      idealFPS = FPS;
   }
   
   /**
    * Sets the desired value of frame's duration.
    * @param DT Time in seconds.
    */
-  public void setIdealDT(float DT) {
+  public void setDT(float DT) {
     if (DT > 0)
-      ideal_FPS = 1/DT;
+      idealFPS = 1/DT;
   }
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private long begin;            // unit: millisecond
-  private float ideal_FPS = 30;  // unit: frame/second
-  private long real_DT = 0;      // unit: millisecond
+  private long before;            // unit: millisecond
+  private float idealFPS = 30;  // unit: frame/second
+  private long realDT = 0;      // unit: millisecond
   
   /**
    * Engine's private use.
    */
-  public void start() {
-    begin = Time.get();
+  public void update() {
+    long now = Time.get();
+    realDT = now - before;
+    before = now;
   }
   
   /**
    * Engine's private use.
    */
-  public void finish() {
-    real_DT = Time.get() - begin;
-    long diff = 1000/((long) ideal_FPS) - real_DT;
-    if (diff <= 0) // frame bigger than desired
+  public void sync() {
+    long diff = 1000/((long)idealFPS) - (Time.get() - before);
+    if (diff <= 0)
       return;
     try {
       Thread.sleep(diff);
+    } catch (InterruptedException e) {
     }
-    catch (InterruptedException e) {
-    }
-    real_DT = Time.get() - begin;
   }
 }

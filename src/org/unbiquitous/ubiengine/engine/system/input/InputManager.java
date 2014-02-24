@@ -4,62 +4,62 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 /**
- * An interface for an input device manager class.
+ * An interface for an input source manager class.
  * @author Pimenta
  *
  */
 public abstract class InputManager {
   /**
-   * A collection of all available devices. The user game is not using
-   * these devices.
+   * A collection of all available sources. The user game is not using
+   * these sources.
    */
-  protected LinkedList<InputDevice> availableDevices = new LinkedList<InputDevice>();
+  protected LinkedList<InputSource> availableSources = new LinkedList<InputSource>();
   
   /**
-   * A collection of all busy devices. These are all the devices the user
+   * A collection of all busy sources. These are all the sources the user
    * game requested.
    */
-  protected HashSet<InputDevice> busyDevices = new HashSet<InputDevice>();
+  protected HashSet<InputSource> busySources = new HashSet<InputSource>();
   
   /**
-   * This method must be implemented to fill and manage the device collections.
+   * This method must be implemented to fill and manage the source collections.
    */
   protected abstract void updateLists();
   
   /**
-   * This method must be implemented to start an input device's events.
-   * @param dev The input device.
+   * This method must be implemented to start an input source's events.
+   * @param src The input source.
    */
-  protected abstract void start(InputDevice dev);
+  protected abstract void start(InputSource src);
   
   /**
-   * This method must be implemented to stop an input device's events.
-   * @param dev The input device.
+   * This method must be implemented to stop an input source's events.
+   * @param src The input source.
    */
-  protected abstract void stop(InputDevice dev);
+  protected abstract void stop(InputSource src);
   
   /**
-   * Tries to allocate an available device.
-   * @return Device's reference, or null if no device is available.
+   * Tries to allocate an available source.
+   * @return Source's reference, or null if no source is available.
    */
-  public InputDevice alloc() {
-    if (availableDevices.size() > 0)
+  public InputSource alloc() {
+    if (availableSources.size() > 0)
       return null;
-    InputDevice dev = availableDevices.removeFirst();
-    busyDevices.add(dev);
-    start(dev);
-    return dev;
+    InputSource src = availableSources.removeFirst();
+    busySources.add(src);
+    start(src);
+    return src;
   }
   
   /**
-   * Release a device.
-   * @param dev Device to be released.
+   * Release a source.
+   * @param src Source to be released.
    */
-  public void free(InputDevice dev) {
-    if (!busyDevices.remove(dev))
+  public void free(InputSource src) {
+    if (!busySources.remove(src))
       return;
-    stop(dev);
-    availableDevices.addFirst(dev);
+    stop(src);
+    availableSources.addFirst(src);
   }
   
   /**
@@ -67,7 +67,7 @@ public abstract class InputManager {
    */
   public void update() {
     updateLists();
-    for (InputDevice id : busyDevices) {
+    for (InputSource id : busySources) {
       if (id.isUpdating())
         id.update();
     }

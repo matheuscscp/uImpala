@@ -11,8 +11,8 @@ import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
 import org.unbiquitous.ubiengine.engine.core.UbiGame.Settings;
-import org.unbiquitous.ubiengine.engine.system.Window;
-import org.unbiquitous.ubiengine.engine.system.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.system.Screen;
+import org.unbiquitous.ubiengine.engine.system.input.InputSource;
 import org.unbiquitous.ubiengine.engine.system.input.InputManager;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
@@ -43,7 +43,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     
     main_keyboard = new KeyboardDevice();
     main_keyboard.active(true);
-    components.get(Window.class).addKeyListener(this);
+    components.get(Screen.class).addKeyListener(this);
     
     KeyboardReceptionDriverManager.init(this, gateway);
     
@@ -149,11 +149,11 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     keyboards.get(transmitter_device).engine_device.forceKeyReleased(unicode_char);
   }
 
-  public void sendRequest(InputDevice input_device) {
+  public void sendRequest(InputSource input_device) {
     Iterator<?> it = keyboards.entrySet().iterator();
     while (it.hasNext()) {
       DeviceTuple device_tuple = (DeviceTuple) ((Map.Entry<?, ?>) it.next()).getValue();
-      if ((InputDevice) device_tuple.engine_device == input_device) {
+      if ((InputSource) device_tuple.engine_device == input_device) {
         try {
           gateway.callService(device_tuple.uos_device, "receiveRequest", KeyboardReceptionDriver.TRANSMISSION_DRIVER, null, null, request_map);
         } catch (ServiceCallException e) {

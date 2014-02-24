@@ -3,8 +3,8 @@ package org.unbiquitous.ubiengine.engine.system.input.mouse;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-import org.unbiquitous.ubiengine.engine.system.Window;
-import org.unbiquitous.ubiengine.engine.system.input.InputDevice;
+import org.unbiquitous.ubiengine.engine.system.Screen;
+import org.unbiquitous.ubiengine.engine.system.input.InputSource;
 import org.unbiquitous.ubiengine.engine.system.input.InputManager;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 
@@ -15,9 +15,9 @@ public final class MouseManager extends InputManager implements MouseListener, M
   public MouseManager(ComponentContainer components) {
     main_mouse = new MouseDevice();
     main_mouse.active(true);
-    Window window = components.get(Window.class);
-    window.addMouseListener(this);
-    window.addMouseMotionListener(this);
+    Screen screen = components.get(Screen.class);
+    screen.addMouseListener(this);
+    screen.addMouseMotionListener(this);
   }
 
   public MouseDevice getMainMouse() {
@@ -64,7 +64,7 @@ public final class MouseManager extends InputManager implements MouseListener, M
     
   }
   
-  public void sendRequest(InputDevice input_device) {
+  public void sendRequest(InputSource input_device) {
     
   }
 }

@@ -4,31 +4,31 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.unbiquitous.ubiengine.engine.system.Window;
+import org.unbiquitous.ubiengine.engine.system.Screen;
 
 public class TextOld {
-  private Window window;
+  private Screen screen;
   private String text;
   private Font font;
   private Color color;
   private Dimension dimension;
   private float alpha;
 
-  public TextOld(Window window, String text, Font font, Color color) {
-    this.window = window;
+  public TextOld(Screen screen, String text, Font font, Color color) {
+    this.screen = screen;
     this.text = text;
     this.font = (font == null ? new Font(Font.MONOSPACED, Font.BOLD, 20) : font);
     this.color = (color == null ? Color.WHITE : color);
-    dimension = window.getTextSize(this.text, this.font);
+    dimension = screen.getTextSize(this.text, this.font);
     alpha = 1.0f;
   }
   
   public void render() {
-    window.renderText(0, 0, false, alpha, text, font, color);
+    screen.renderText(0, 0, false, alpha, text, font, color);
   }
   
   public void render(int x, int y, boolean center) {
-    window.renderText(x, y, center, alpha, text, font, color);
+    screen.renderText(x, y, center, alpha, text, font, color);
   }
   
   public String getText() {
@@ -37,7 +37,7 @@ public class TextOld {
 
   public void setText(String text) {
     this.text = text;
-    dimension = window.getTextSize(this.text, this.font);
+    dimension = screen.getTextSize(this.text, this.font);
   }
 
   public Font getFont() {
@@ -46,7 +46,7 @@ public class TextOld {
 
   public void setFont(Font font) {
     this.font = (font == null ? new Font(Font.MONOSPACED, Font.BOLD, 20) : font);
-    dimension = window.getTextSize(this.text, this.font);
+    dimension = screen.getTextSize(this.text, this.font);
   }
 
   public Color getColor() {
