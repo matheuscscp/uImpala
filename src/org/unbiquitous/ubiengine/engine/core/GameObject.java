@@ -5,16 +5,40 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Class to automatically update and render game objects.
- * Extend only to implement a constructor, to add game objects.
- * @see GameObject
- * @see GameState
+ * Use this class to implement game objects of a ContainerState.
+ * @see ContainerState
  * @author Pimenta
  *
  */
-public abstract class ContainerState extends GameState {
+public abstract class GameObject {
   /**
-   * Add a game object to the game state.
+   * Flag to tell the game state if this object must be destroyed.
+   */
+  protected boolean destroy = false;
+  
+  /**
+   * Method to implement update.
+   */
+  protected abstract void update();
+  
+  /**
+   * Method to implement rendering.
+   */
+  protected abstract void render(RendererContainer renderers);
+  
+  /**
+   * Handle a pop from the stack of game states.
+   * @param args Arguments passed from the state popped.
+   */
+  protected abstract void wakeup(Object... args);
+  
+  /**
+   * Method to close whatever is necessary.
+   */
+  protected abstract void destroy();
+  
+  /**
+   * Add a child game object.
    * @param o Game object.
    */
   protected void add(GameObject o) {
@@ -26,7 +50,8 @@ public abstract class ContainerState extends GameState {
   /**
    * Engine's private use.
    */
-  protected void update() {
+  protected void updateTree() {
+    update();
     for (GameObject o : objects) {
       if (!o.destroy)
         o.updateTree();
@@ -36,8 +61,8 @@ public abstract class ContainerState extends GameState {
   /**
    * Engine's private use.
    */
-  protected void render() {
-    RendererContainer renderers = new RendererContainer();
+  protected void renderTree(RendererContainer renderers) {
+    render(renderers);
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {
       GameObject o = i.next();
@@ -48,13 +73,13 @@ public abstract class ContainerState extends GameState {
         i.remove();
       }
     }
-    renderers.render();
   }
   
   /**
    * Engine's private use.
    */
-  protected void wakeup(Object... args) {
+  protected void wakeupTree(Object... args) {
+    wakeup(args);
     for (GameObject o : objects)
       o.wakeupTree(args);
   }
@@ -62,7 +87,8 @@ public abstract class ContainerState extends GameState {
   /**
    * Engine's private use.
    */
-  protected void close() {
+  protected void destroyTree() {
+    destroy();
     for (GameObject o : objects)
       o.destroyTree();
   }

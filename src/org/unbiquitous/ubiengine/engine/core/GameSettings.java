@@ -9,7 +9,7 @@ import java.util.HashMap;
  *
  */
 @SuppressWarnings("serial")
-public final class GameSettings extends HashMap<String, Object> {
+public class GameSettings extends HashMap<String, Object> {
   /**
    * Engine's private use.
    */
@@ -18,6 +18,10 @@ public final class GameSettings extends HashMap<String, Object> {
       put("root_path", ".");
     if (get("first_state") == null)
       throw new Error("First game state not defined!");
+    if (get("input_managers") == null)
+      throw new Error("Cannot start game with no input managers!");
+    if (get("output_managers") == null)
+      throw new Error("Cannot start game with no output managers!");
     return this;
   }
 }

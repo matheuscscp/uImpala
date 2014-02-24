@@ -7,6 +7,7 @@ import java.util.ListResourceBundle;
 
 import org.unbiquitous.ubiengine.engine.system.io.InputManager;
 import org.unbiquitous.ubiengine.engine.system.io.KeyboardReceptionDriver;
+import org.unbiquitous.ubiengine.engine.system.io.OutputManager;
 import org.unbiquitous.ubiengine.engine.system.io.Screen;
 import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
@@ -92,17 +93,13 @@ public abstract class UbiGame implements UosApplication {
 //nothings else matters from here to below
 //==============================================================================
   private String rootpath = ".";
-  private List<InputManager> managers = new ArrayList<InputManager>();
   private LinkedList<GameState> states = new LinkedList<GameState>();
+  private List<InputManager> inputs = new ArrayList<InputManager>();
+  private List<OutputManager> outputs = new ArrayList<OutputManager>();
   private DeltaTime deltatime = new DeltaTime();
-  private Screen screen = null;
   
   private enum ChangeOption {
-    NA,
-    CHANGE,
-    PUSH,
-    POP,
-    QUIT
+    NA, CHANGE, PUSH, POP, QUIT
   }
   
   private GameState state_change = null;
@@ -117,13 +114,14 @@ public abstract class UbiGame implements UosApplication {
       init(gateway);
       while (states.size() > 0) {
         deltatime.update();
-        for (InputManager im : managers)
+        for (InputManager im : inputs)
           im.update();
         for (GameState gs : states)
           gs.update();
         for (GameState gs : states)
           gs.render();
-        screen.update();
+        for (OutputManager om : outputs)
+          om.update();
         updateStack();
         deltatime.sync();
       }
@@ -167,19 +165,22 @@ public abstract class UbiGame implements UosApplication {
     
     GameComponents.put(DeltaTime.class, deltatime);
     
-    GameComponents.put(Screen.class, screen = new Screen(
-        (String)settings.get("window_title"),
-        ((Integer)settings.get("window_width")).intValue(),
-        ((Integer)settings.get("window_height")).intValue()
-    ));
-    
     try {
       List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");
       if (ims != null) {
         for (Class<?> imc : ims) {
           InputManager im = (InputManager)imc.newInstance();
           GameComponents.put(imc, im);
-          managers.add(im);
+          inputs.add(im);
+        }
+      }
+      
+      List<Class<?>> oms = (List<Class<?>>)settings.get("input_managers");
+      if (oms != null) {
+        for (Class<?> omc : oms) {
+          OutputManager om = (OutputManager)omc.newInstance();
+          GameComponents.put(omc, om);
+          outputs.add(om);
         }
       }
       
