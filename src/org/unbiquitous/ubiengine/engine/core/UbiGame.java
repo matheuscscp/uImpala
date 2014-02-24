@@ -1,7 +1,6 @@
 package org.unbiquitous.ubiengine.engine.core;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
@@ -30,29 +29,7 @@ public abstract class UbiGame implements UosApplication {
    * Must be implemented by the game class.
    * @return Reference to the game initial settings.
    */
-  protected abstract Settings getSettings();
-  
-  /**
-   * Just a "typedef" for HashMap{@literal <}String, Object{@literal >}.
-   * @author Pimenta
-   *
-   */
-  @SuppressWarnings("serial")
-  public static class Settings extends HashMap<String, Object> {
-    private Settings validate() {
-      if (get("root_path") == null)
-        put("root_path", ".");
-      if (get("window_title") == null)
-        put("window_title", "UbiEngine");
-      if (get("window_width") == null)
-        put("window_width", 1280);
-      if (get("window_height") == null)
-        put("window_height", 720);
-      if (get("first_state") == null)
-        throw new Error("First game state not defined!");
-      return this;
-    }
-  }
+  protected abstract GameSettings getSettings();
   
   /**
    * Use this method in main() to start the game.
@@ -180,9 +157,9 @@ public abstract class UbiGame implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
-    Settings settings = getSettings().validate();
+    GameSettings settings = getSettings().validate();
     rootpath = (String)settings.get("root_path");
-    GameComponents.put(Settings.class, settings);
+    GameComponents.put(GameSettings.class, settings);
     
     GameComponents.put(UbiGame.class, this);
     
