@@ -11,9 +11,9 @@ import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
 import org.unbiquitous.ubiengine.engine.core.UbiGame.Settings;
-import org.unbiquitous.ubiengine.engine.system.Screen;
 import org.unbiquitous.ubiengine.engine.system.input.InputSource;
 import org.unbiquitous.ubiengine.engine.system.input.InputManager;
+import org.unbiquitous.ubiengine.engine.system.output.Screen;
 import org.unbiquitous.ubiengine.util.ComponentContainer;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;

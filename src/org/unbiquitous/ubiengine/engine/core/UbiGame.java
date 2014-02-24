@@ -6,9 +6,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.engine.system.Screen;
 import org.unbiquitous.ubiengine.engine.system.input.InputManager;
 import org.unbiquitous.ubiengine.engine.system.input.keyboard.KeyboardReceptionDriver;
+import org.unbiquitous.ubiengine.engine.system.output.Screen;
 import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.UOS;

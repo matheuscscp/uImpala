@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.unbiquitous.ubiengine.engine.system.Screen;
+import org.unbiquitous.ubiengine.engine.system.output.Screen;
 
 public class TextOld {
   private Screen screen;
