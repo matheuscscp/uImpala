@@ -16,10 +16,10 @@ public class RendererContainer {
    * in ascending order.
    * @param renderer Renderer to be called.
    */
-  public void put(int z, Renderer renderer) {
-    List<Renderer> l = renderers.get(z);
+  public void put(int z, GameRenderer renderer) {
+    List<GameRenderer> l = renderers.get(z);
     if (l == null) {
-      l = new LinkedList<Renderer>();
+      l = new LinkedList<GameRenderer>();
       renderers.put(z, l);
     }
     l.add(renderer);
@@ -30,7 +30,7 @@ public class RendererContainer {
    */
   public void render() {
     while (renderers.size() > 0) {
-      LinkedList<Renderer> tmp = (LinkedList<Renderer>)renderers.pollFirstEntry().getValue();
+      LinkedList<GameRenderer> tmp = (LinkedList<GameRenderer>)renderers.pollFirstEntry().getValue();
       while (tmp.size() > 0)
         tmp.removeFirst().render();
     }
@@ -38,5 +38,5 @@ public class RendererContainer {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private TreeMap<Integer, List<Renderer>> renderers = new TreeMap<Integer, List<Renderer>>();
+  private TreeMap<Integer, List<GameRenderer>> renderers = new TreeMap<Integer, List<GameRenderer>>();
 }

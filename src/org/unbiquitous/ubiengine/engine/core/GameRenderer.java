@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.engine.core;
  * @author Pimenta
  *
  */
-public interface Renderer {
+public interface GameRenderer {
   /**
    * Method to render something.
    */
