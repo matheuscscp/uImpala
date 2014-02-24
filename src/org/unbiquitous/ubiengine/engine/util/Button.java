@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.gui;
+package org.unbiquitous.ubiengine.engine.util;
 
 import java.lang.reflect.Method;
 
