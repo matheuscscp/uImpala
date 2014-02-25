@@ -4,31 +4,31 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 
-import org.unbiquitous.ubiengine.engine.system.io.Screen;
+import org.unbiquitous.ubiengine.engine.system.io.ScreenOld;
 
 public class TextOld {
-  private Screen screen;
+  private ScreenOld screenOld;
   private String text;
   private Font font;
   private Color color;
   private Dimension dimension;
   private float alpha;
 
-  public TextOld(Screen screen, String text, Font font, Color color) {
-    this.screen = screen;
+  public TextOld(ScreenOld screenOld, String text, Font font, Color color) {
+    this.screenOld = screenOld;
     this.text = text;
     this.font = (font == null ? new Font(Font.MONOSPACED, Font.BOLD, 20) : font);
     this.color = (color == null ? Color.WHITE : color);
-    dimension = screen.getTextSize(this.text, this.font);
+    dimension = screenOld.getTextSize(this.text, this.font);
     alpha = 1.0f;
   }
   
   public void render() {
-    screen.renderText(0, 0, false, alpha, text, font, color);
+    screenOld.renderText(0, 0, false, alpha, text, font, color);
   }
   
   public void render(int x, int y, boolean center) {
-    screen.renderText(x, y, center, alpha, text, font, color);
+    screenOld.renderText(x, y, center, alpha, text, font, color);
   }
   
   public String getText() {
@@ -37,7 +37,7 @@ public class TextOld {
 
   public void setText(String text) {
     this.text = text;
-    dimension = screen.getTextSize(this.text, this.font);
+    dimension = screenOld.getTextSize(this.text, this.font);
   }
 
   public Font getFont() {
@@ -46,7 +46,7 @@ public class TextOld {
 
   public void setFont(Font font) {
     this.font = (font == null ? new Font(Font.MONOSPACED, Font.BOLD, 20) : font);
-    dimension = screen.getTextSize(this.text, this.font);
+    dimension = screenOld.getTextSize(this.text, this.font);
   }
 
   public Color getColor() {

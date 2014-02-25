@@ -1,6 +1,6 @@
 package org.unbiquitous.ubiengine.engine.asset;
 
-import org.unbiquitous.ubiengine.engine.system.io.Screen;
+import org.unbiquitous.ubiengine.engine.system.io.ScreenOld;
 import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 
 public class AnimationOld extends SpriteOld {
@@ -12,8 +12,8 @@ public class AnimationOld extends SpriteOld {
   protected int int_frame;
   protected int frame_w, frame_h;
 
-  public AnimationOld(Screen screen, String filename, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
-    super(screen, filename);
+  public AnimationOld(ScreenOld screenOld, String filename, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
+    super(screenOld, filename);
     this.deltatime = deltatime;
     this.rows = (rows > 0 ? rows : 1);
     this.cols = (cols > 0 ? cols : 1);
@@ -26,8 +26,8 @@ public class AnimationOld extends SpriteOld {
     clip((int_frame%cols)*frame_w, (int_frame/cols)*frame_h, frame_w, frame_h);
   }
 
-  public AnimationOld(Screen screen, int w, int h, boolean use_alpha, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
-    super(screen, w, h, use_alpha);
+  public AnimationOld(ScreenOld screenOld, int w, int h, boolean use_alpha, DeltaTime deltatime, int rows, int cols, float fps, int frames) {
+    super(screenOld, w, h, use_alpha);
     this.deltatime = deltatime;
     this.rows = (rows > 0 ? rows : 1);
     this.cols = (cols > 0 ? cols : 1);

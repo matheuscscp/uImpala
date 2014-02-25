@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.engine.system.io;
  * @author Pimenta
  *
  */
-public class Speaker extends OutputResource {
+public final class Speaker extends OutputResource {
   protected void update() {
     // TODO Auto-generated method stub
   }

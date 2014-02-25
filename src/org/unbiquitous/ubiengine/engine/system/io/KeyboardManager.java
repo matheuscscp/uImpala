@@ -40,7 +40,7 @@ public final class KeyboardManager extends InputManager implements KeyListener {
     
     main_keyboard = new KeyboardDevice();
     main_keyboard.active(true);
-    components.get(Screen.class).addKeyListener(this);
+    components.get(ScreenOld.class).addKeyListener(this);
     
     KeyboardReceptionDriverManager.init(this, gateway);
     

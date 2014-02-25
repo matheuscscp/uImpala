@@ -8,7 +8,7 @@ import org.unbiquitous.ubiengine.util.mathematics.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Observations;
 
-public class MouseDevice extends InputResource {
+public final class MouseSource extends InputResource {
   
   public static final String MOUSEDOWN    = "MOUSEDOWN";
   public static final String MOUSEUP      = "MOUSEUP";
@@ -67,7 +67,7 @@ public class MouseDevice extends InputResource {
   private int mousedown_x;
   private int mousedown_y;
   
-  public MouseDevice() {
+  public MouseSource() {
     mouse_x = 0;
     mouse_y = 0;
     mousedown_x = 0;
