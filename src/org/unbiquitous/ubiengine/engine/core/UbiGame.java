@@ -8,7 +8,6 @@ import java.util.ListResourceBundle;
 import org.unbiquitous.ubiengine.engine.system.io.InputManager;
 import org.unbiquitous.ubiengine.engine.system.io.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.engine.system.io.OutputManager;
-import org.unbiquitous.ubiengine.engine.system.io.Screen;
 import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.UOS;
@@ -125,11 +124,11 @@ public abstract class UbiGame implements UosApplication {
         updateStack();
         deltatime.sync();
       }
+      close();
     } catch (Error e) {
       Logger.log(e, rootpath + "/ErrorLog.txt");
+      throw e;
     }
-    if (screen != null)
-      screen.close();
   }
   
   /**
@@ -188,6 +187,13 @@ public abstract class UbiGame implements UosApplication {
     } catch (Exception e) {
       throw new Error(e);
     }
+  }
+  
+  private void close() {
+    for (InputManager im : inputs)
+      im.close();
+    for (OutputManager om : outputs)
+      om.close();
   }
   
   private void updateStack() {

@@ -1,4 +1,3 @@
-refactor system abstraction (system.* and core.UbiGame)
 refactor system.io.Screen*
 refactor system.io.Speaker*
 refactor system.io.Mouse*

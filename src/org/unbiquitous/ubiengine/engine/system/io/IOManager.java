@@ -1,7 +1,8 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
-import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.TreeSet;
 
 /**
  * Class for IO resources management.
@@ -19,7 +20,7 @@ public abstract class IOManager {
    * A collection of all busy resources. These are all the resources the user
    * game requested.
    */
-  protected HashSet<IOResource> busyResources = new HashSet<IOResource>();
+  protected TreeSet<IOResource> busyResources = new TreeSet<IOResource>();
   
   /**
    * This method must be implemented to fill and manage the resource
@@ -71,6 +72,18 @@ public abstract class IOManager {
     for (IOResource rsc : busyResources) {
       if (rsc.isUpdating())
         rsc.update();
+    }
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void close() {
+    while (availableResources.size() > 0)
+      availableResources.removeFirst().close();
+    for (Iterator<IOResource> i = busyResources.iterator(); i.hasNext();) {
+      i.next().close();
+      i.remove();
     }
   }
 }

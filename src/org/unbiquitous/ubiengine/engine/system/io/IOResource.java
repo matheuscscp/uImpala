@@ -31,6 +31,11 @@ public abstract class IOResource implements Subject {
   protected abstract void update();
   
   /**
+   * Method to close the resource.
+   */
+  public abstract void close();
+  
+  /**
    * Query if this resource is currently updating.
    * @return Returns true if the resource is currently updating.
    */
