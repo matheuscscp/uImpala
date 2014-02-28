@@ -1,7 +1,7 @@
 ubiengine
 =========
 
-An engine for ubiquitous games, made with the uOS middleware.
+A Java engine for ubiquitous games, made with the uOS middleware.
 
 Four steps to create an Eclipse Maven project with this library:
 * Clone ubiengine, uos_socket_plugin and uos_core (**links** below);
