@@ -6,11 +6,11 @@ import java.util.Map;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;
 
-public class KeyboardReceptionDriverManager {
+class KeyboardReceptionDriverManager {
   
-  private KeyboardManager keyboard_manager = null;
+  private KeyboardManagerOld keyboard_manager = null;
   
-  public static void init(KeyboardManager keyboard_manager, Gateway gateway) {
+  public static void init(KeyboardManagerOld keyboard_manager, Gateway gateway) {
     Map<String, Object> map = new HashMap<String, Object>();
     map.put("manager", new KeyboardReceptionDriverManager(keyboard_manager));
     try {
@@ -20,7 +20,7 @@ public class KeyboardReceptionDriverManager {
     }
   }
   
-  public KeyboardReceptionDriverManager(KeyboardManager keyboard_manager) {
+  public KeyboardReceptionDriverManager(KeyboardManagerOld keyboard_manager) {
     this.keyboard_manager = keyboard_manager;
   }
   

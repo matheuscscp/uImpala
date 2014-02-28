@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.engine.system.io;
  * @author Pimenta
  *
  */
-public abstract class InputEvent {
+abstract class InputEvent {
   /**
    * Assignment constructor.
    * @param t Event type.

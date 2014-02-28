@@ -1,5 +1,7 @@
 package org.unbiquitous.ubiengine.engine.util;
 
-public class StringInput {
+import org.unbiquitous.ubiengine.engine.core.GameObject;
+
+public class StringInput extends GameObject {
   private QUEBRACODIGO;
 }

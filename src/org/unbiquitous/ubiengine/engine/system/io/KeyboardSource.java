@@ -7,7 +7,7 @@ import java.util.Queue;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Observations;
 
-public class KeyboardDevice extends InputResource {
+public final class KeyboardSource extends InputResource {
   
   public static final String KEYDOWN  = "KEYDOWN";
   public static final String KEYUP    = "KEYUP";
@@ -40,7 +40,7 @@ public class KeyboardDevice extends InputResource {
   
   private HashMap<Integer, Boolean> key_pressed = new HashMap<Integer, Boolean>();
 
-  public KeyboardDevice() {
+  public KeyboardSource() {
     subject = new Observations(KEYDOWN, KEYUP);
   }
   

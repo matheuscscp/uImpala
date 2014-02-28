@@ -91,7 +91,7 @@ public abstract class UbiGame implements UosApplication {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private String rootpath = ".";
+  private GameSettings settings;
   private LinkedList<GameState> states = new LinkedList<GameState>();
   private List<InputManager> inputs = new ArrayList<InputManager>();
   private List<OutputManager> outputs = new ArrayList<OutputManager>();
@@ -126,7 +126,14 @@ public abstract class UbiGame implements UosApplication {
       }
       close();
     } catch (Error e) {
-      Logger.log(e, rootpath + "/ErrorLog.txt");
+      String root_path;
+      try {
+        root_path = (String)settings.get("root_path");
+      } catch (Exception e1) {
+        root_path = ".";
+        Logger.log(new Error("Root path not reachable"), root_path + "/ErrorLog.txt");
+      }
+      Logger.log(e, root_path + "/ErrorLog.txt");
       throw e;
     }
   }
@@ -154,14 +161,9 @@ public abstract class UbiGame implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
-    GameSettings settings = getSettings().validate();
-    rootpath = (String)settings.get("root_path");
-    GameComponents.put(GameSettings.class, settings);
-    
+    GameComponents.put(GameSettings.class, settings = getSettings().validate());
     GameComponents.put(UbiGame.class, this);
-    
     GameComponents.put(Gateway.class, gateway);
-    
     GameComponents.put(DeltaTime.class, deltatime);
     
     try {
@@ -174,7 +176,7 @@ public abstract class UbiGame implements UosApplication {
         }
       }
       
-      List<Class<?>> oms = (List<Class<?>>)settings.get("input_managers");
+      List<Class<?>> oms = (List<Class<?>>)settings.get("output_managers");
       if (oms != null) {
         for (Class<?> omc : oms) {
           OutputManager om = (OutputManager)omc.newInstance();

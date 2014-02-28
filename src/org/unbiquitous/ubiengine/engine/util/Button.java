@@ -3,9 +3,9 @@ package org.unbiquitous.ubiengine.engine.util;
 import java.lang.reflect.Method;
 
 import org.unbiquitous.ubiengine.engine.asset.SpriteOld;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardDevice;
+import org.unbiquitous.ubiengine.engine.system.io.KeyboardSource;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSource;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardDevice.KeyDownEvent;
+import org.unbiquitous.ubiengine.engine.system.io.KeyboardSource.KeyDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSource.MouseDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSource.MouseUpEvent;
 import org.unbiquitous.ubiengine.engine.system.time.Alarm;
@@ -18,7 +18,7 @@ public class Button implements Subject {
 
   private static final long ENTER_DELAY = 200;
   
-  protected KeyboardDevice keyboard_device;
+  protected KeyboardSource keyboard_device;
   protected MouseSource mouse_device;
   protected SpriteOld spriteOld;
   protected Rectangle rect;
@@ -51,7 +51,7 @@ public class Button implements Subject {
     }
   }
   
-  public Button(KeyboardDevice keyboard_device, MouseSource mouse_device, SpriteOld spriteOld) {
+  public Button(KeyboardSource keyboard_device, MouseSource mouse_device, SpriteOld spriteOld) {
     this.keyboard_device = keyboard_device;
     this.mouse_device = mouse_device;
     this.spriteOld = spriteOld;
@@ -71,7 +71,7 @@ public class Button implements Subject {
     enable(true);
 
     try {
-      keyboard_device.connect(KeyboardDevice.KEYDOWN, this, Button.class.getDeclaredMethod("handleKeyDown", Event.class));
+      keyboard_device.connect(KeyboardSource.KEYDOWN, this, Button.class.getDeclaredMethod("handleKeyDown", Event.class));
       mouse_device.connect(MouseSource.MOUSEDOWN, this, Button.class.getDeclaredMethod("handleMouseDown", Event.class));
       mouse_device.connect(MouseSource.MOUSEUP, this, Button.class.getDeclaredMethod("handleMouseUp", Event.class));
       

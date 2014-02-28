@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.engine.system.io;
  * @author Pimenta
  *
  */
-public class SpeakerManager extends OutputManager {
+public final class SpeakerManager extends OutputManager {
   /**
    * Constructor to add the default speaker in availableResources.
    */

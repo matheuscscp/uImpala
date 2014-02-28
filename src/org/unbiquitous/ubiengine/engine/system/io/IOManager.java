@@ -58,6 +58,7 @@ public abstract class IOManager {
    * @param rsc Resource to be released.
    */
   public void free(IOResource rsc) {
+    rsc.close();
     if (!busyResources.remove(rsc))
       return;
     stop(rsc);
