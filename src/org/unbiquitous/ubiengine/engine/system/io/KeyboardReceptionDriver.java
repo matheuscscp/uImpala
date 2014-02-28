@@ -11,7 +11,7 @@ import org.unbiquitous.uos.core.messageEngine.dataType.UpService.ParameterType;
 import org.unbiquitous.uos.core.messageEngine.messages.Call;
 import org.unbiquitous.uos.core.messageEngine.messages.Response;
 
-class KeyboardReceptionDriver implements UosDriver {
+public class KeyboardReceptionDriver implements UosDriver {
 
   public static final String TRANSMISSION_DRIVER  = "KeyboardTransmissionDriver";
   public static final String RECEPTION_DRIVER     = "KeyboardReceptionDriver";
