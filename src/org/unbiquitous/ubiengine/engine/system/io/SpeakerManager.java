@@ -9,19 +9,19 @@ public final class SpeakerManager extends OutputManager {
   /**
    * Constructor to add the default speaker in availableResources.
    */
-  public SpeakerManager() {//FIXME
+  public SpeakerManager() {
     availableResources.add(new Speaker());
   }
   
   protected void updateLists() {
-    // TODO Auto-generated method stub
+    
   }
   
   protected void start(IOResource rsc) {
-    // TODO Auto-generated method stub
+    
   }
   
   protected void stop(IOResource rsc) {
-    // TODO Auto-generated method stub
+    
   }
 }

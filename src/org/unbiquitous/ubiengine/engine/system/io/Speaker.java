@@ -7,14 +7,14 @@ package org.unbiquitous.ubiengine.engine.system.io;
  */
 public final class Speaker extends OutputResource {
   protected void update() {
-    // TODO Auto-generated method stub
+    
   }
   
   public void close() {
-    // TODO Auto-generated method stub
+    
   }
   
-  public boolean isUpdating() {//FIXME
+  public boolean isUpdating() {
     return true;
   }
 }

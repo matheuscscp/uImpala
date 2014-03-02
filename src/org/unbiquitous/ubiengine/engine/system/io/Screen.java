@@ -1,5 +1,7 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
+import java.util.Arrays;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -9,7 +11,7 @@ import org.lwjgl.opengl.DisplayMode;
  * @author Pimenta
  *
  */
-public final class Screen extends IOResource {
+public final class Screen extends OutputResource {
   /**
    * Open the screen.
    * @param t Title.
@@ -19,23 +21,16 @@ public final class Screen extends IOResource {
    * @param i Icon path.
    */
   public void open(String t, int w, int h, boolean f, String i) {
+    open = true;
     try {
-      Display.setDisplayMode(new DisplayMode(w, h));
-      Display.setTitle(t);
-      Display.setFullscreen(f);
-      if (i != null)
-        Display.setIcon(IconLoader.load(i));
-      if (!open)
-        Display.create();
-    } catch (LWJGLException e) {
+      setTitle(t);
+      setDisplayMode(w, h, f);
+      setIcon(i);
+      Display.create();
+    } catch (Throwable e) {
+      open = false;
       throw new Error(e);
     }
-    title = t;
-    width = w;
-    height = h;
-    fullscreen = f;
-    icon = i;
-    open = true;
   }
   
   public String getTitle() {
@@ -43,8 +38,8 @@ public final class Screen extends IOResource {
   }
   
   public void setTitle(String title) {
-    if (!open)
-      return;
+    if (!open || title == null || title.length() == 0)
+      throw new Error("Impossible to set title. Screen not open or invalid title");
     Display.setTitle(title);
     this.title = title;
   }
@@ -58,15 +53,7 @@ public final class Screen extends IOResource {
   }
   
   public void setSize(int width, int height) {
-    if (!open || (width == this.width && height == this.height))
-      return;
-    try {
-      Display.setDisplayMode(new DisplayMode(width, height));
-    } catch (LWJGLException e) {
-      throw new Error(e);
-    }
-    this.width = width;
-    this.height = height;
+    setDisplayMode(width, height, fullscreen);
   }
   
   public boolean isFullscreen() {
@@ -74,14 +61,41 @@ public final class Screen extends IOResource {
   }
   
   public void setFullscreen(boolean fullscreen) {
+    setDisplayMode(width, height, fullscreen);
+  }
+  
+  private void setDisplayMode(int w, int h, boolean full) {
     if (!open)
-      return;
+      throw new Error("Cannot set size or fullscreen if screen is not open");
+    
+    DisplayMode mode = new DisplayMode(w, h);
+    
+    // if fullscreen, determines the closer available display mode
+    if (full) {
+      DisplayMode[] dms = null;
+      try {
+        dms = Display.getAvailableDisplayModes();
+      } catch (LWJGLException e) {
+        throw new Error(e);
+      }
+      ComparableDisplayMode[] cdms = new ComparableDisplayMode[dms.length];
+      int i = 0;
+      for (DisplayMode dm : dms)
+        cdms[i++] = new ComparableDisplayMode(dm, w, h);
+      Arrays.sort(cdms);
+      mode = cdms[0].displayMode;
+    }
+    
     try {
-      Display.setFullscreen(fullscreen);
+      Display.setDisplayMode(mode);
+      Display.setFullscreen(full);
     } catch (LWJGLException e) {
       throw new Error(e);
     }
-    this.fullscreen = fullscreen;
+    
+    width = w;
+    height = h;
+    fullscreen = full;
   }
   
   public String getIcon() {
@@ -89,26 +103,27 @@ public final class Screen extends IOResource {
   }
   
   public void setIcon(String icon) {
-    if (!open)
-      return;
-    if (icon != null)
-      Display.setIcon(IconLoader.load(icon));
+    if (!open || icon == null || icon.length() == 0)
+      throw new Error("Impossible to set icon. Screen not open or invalid icon path");
+    Display.setIcon(IconLoader.load(icon));
     this.icon = icon;
   }
   
-  protected void update() {//FIXME
+  protected void update() {
+    if (!open)
+      return;
     //TODO
     Display.update();
   }
   
-  public void close() {//FIXME
-    if (open) {
-      Display.destroy();
-      open = false;
-    }
+  public void close() {
+    if (!open)
+      return;
+    Display.destroy();
+    open = false;
   }
   
-  public boolean isUpdating() {//FIXME
+  public boolean isUpdating() {
     return true;
   }
   
@@ -122,11 +137,11 @@ public final class Screen extends IOResource {
    */
   protected KeyboardSource keyboard = new KeyboardSource();
   
-  private String title;
-  private int width;
-  private int height;
-  private boolean fullscreen;
-  private String icon;
+  private String title = null;
+  private int width = 0;
+  private int height = 0;
+  private boolean fullscreen = false;
+  private String icon = null;
   
   private boolean open = false;
 }

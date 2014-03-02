@@ -1,7 +1,7 @@
-refactor system.io.Screen* (fullscreen)
 refactor system.io.Mouse*
+refactor system.io.Screen* (push mouse events)
 refactor system.io.Keyboard*
-refactor system.io.Screen* (push mouse and keyboard events)
+refactor system.io.Screen* (push keyboard events)
 implement asset.Music and asset.SoundEffect
 implement asset.*
 implement asset creation (asset.AssetManager)

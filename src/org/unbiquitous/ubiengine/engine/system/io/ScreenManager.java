@@ -11,20 +11,20 @@ public final class ScreenManager extends OutputManager {
   /**
    * Constructor to add the default screen in availableResources.
    */
-  public ScreenManager() {//FIXME
+  public ScreenManager() {
     availableResources.add(new Screen());
   }
   
   protected void updateLists() {
-    // TODO Auto-generated method stub
+    
   }
   
   protected void start(IOResource rsc) {
-    // TODO Auto-generated method stub
+    
   }
   
   protected void stop(IOResource rsc) {
-    // TODO Auto-generated method stub
+    
   }
   
   public IOResource alloc() {
