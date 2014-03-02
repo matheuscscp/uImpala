@@ -14,15 +14,15 @@ public final class MouseManager extends InputManager {
   protected HashSet<MouseSource> screenMouses = new HashSet<MouseSource>();
   
   protected void updateLists() {
-    // TODO Auto-generated method stub
+    
   }
   
   protected void start(IOResource rsc) {
-    // TODO Auto-generated method stub
+    
   }
   
   protected void stop(IOResource rsc) {
-    // TODO Auto-generated method stub
+    
   }
   
   public void update() {

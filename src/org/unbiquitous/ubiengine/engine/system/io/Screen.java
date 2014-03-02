@@ -137,6 +137,14 @@ public final class Screen extends OutputResource {
    */
   protected KeyboardSource keyboard = new KeyboardSource();
   
+  public MouseSource getMouse() {
+    return mouse;
+  }
+  
+  public KeyboardSource getKeyboard() {
+    return keyboard;
+  }
+  
   private String title = null;
   private int width = 0;
   private int height = 0;
