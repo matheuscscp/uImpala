@@ -156,7 +156,7 @@ public final class Screen extends OutputResource {
     
     // keyboard
     while (Keyboard.next()) {
-      KeyboardEvent event = new KeyboardEvent(0, Keyboard.getEventKey());
+      KeyboardEvent event = new KeyboardEvent(0, Keyboard.getEventKey(), Keyboard.getEventCharacter());
       if (Keyboard.getEventKeyState())
         event.type = KeyboardSource.EVENT_KEY_DOWN;
       else
