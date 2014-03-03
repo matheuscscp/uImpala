@@ -19,7 +19,7 @@ public final class Observation {
     if (object == null)
       throw new Error("Cannot create object observation with null object");
     try {
-      this.method = object.getClass().getDeclaredMethod(method, Event.class);
+      this.method = object.getClass().getDeclaredMethod(method, Event.class, Subject.class);
     } catch (Exception e) {
       throw new Error(e);
     }
@@ -38,7 +38,7 @@ public final class Observation {
     if (clazz == null)
       throw new Error("Cannot create method observation with null class");
     try {
-      this.method = clazz.getDeclaredMethod(method, Event.class);
+      this.method = clazz.getDeclaredMethod(method, Event.class, Subject.class);
     } catch (Exception e) {
       throw new Error(e);
     }
@@ -53,9 +53,9 @@ public final class Observation {
   private Object object;
   private Method method;
   
-  protected void notifyEvent(Event event) {
+  protected void notifyEvent(Event event, Subject subject) {
     try {
-      method.invoke(object, event);
+      method.invoke(object, event, subject);
     } catch (Exception e) {
       throw new Error(e);
     }

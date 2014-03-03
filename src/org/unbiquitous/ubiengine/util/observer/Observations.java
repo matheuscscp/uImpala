@@ -16,7 +16,8 @@ public final class Observations {
    * Initializes the observation container for each event passed.
    * @param evs List of events.
    */
-  public Observations(int... evs) {
+  public Observations(Subject sub, int... evs) {
+    subject = sub;
     setEvents(evs);
   }
   
@@ -24,7 +25,8 @@ public final class Observations {
    * Copy constructor.
    * @param other Source.
    */
-  public Observations(Observations other) {
+  public Observations(Subject sub, Observations other) {
+    subject = sub;
     events = new Events(other.events);
   }
   
@@ -81,7 +83,7 @@ public final class Observations {
     // process queue
     broadcasting = true;
     while (queue.size() > 0) // process
-      queue.poll().notifyObservers();
+      queue.poll().notifyObservers(subject);
     broadcasting = false;
   }
   
@@ -152,9 +154,9 @@ public final class Observations {
       data = d != null ? d : new Event();
       observations = new EventObservations(obs);
     }
-    private void notifyObservers() {
+    private void notifyObservers(Subject subject) {
       for (Observation obs : observations) {
-        obs.notifyEvent(data);
+        obs.notifyEvent(data, subject);
         if (data.stop)
           return;
       }
@@ -164,4 +166,5 @@ public final class Observations {
   private Events events;
   private Queue<EventOccurrence> queue = new LinkedList<EventOccurrence>();
   private boolean broadcasting = false;
+  private Subject subject;
 }

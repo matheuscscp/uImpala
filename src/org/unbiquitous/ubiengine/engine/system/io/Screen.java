@@ -14,6 +14,23 @@ import org.lwjgl.opengl.DisplayMode;
  */
 public final class Screen extends OutputResource {
   /**
+   * Broadcasted when the user requests to close the screen.
+   */
+  public static final int EVENT_CLOSE_REQUEST = IOResource.LAST_EVENT + 1;
+  
+  /**
+   * The last event of this class.
+   */
+  public static final int LAST_EVENT          = EVENT_CLOSE_REQUEST;
+  
+  /**
+   * Constructor to setup screen events.
+   */
+  public Screen() {
+    observations.addEvents(EVENT_CLOSE_REQUEST);
+  }
+  
+  /**
    * Open the screen.
    * @param t Title.
    * @param w Width.
@@ -114,6 +131,10 @@ public final class Screen extends OutputResource {
     this.icon = icon;
   }
   
+  public boolean isCloseRequested() {
+    return closeRequested;
+  }
+  
   protected void update() {
     if (!open)
       return;
@@ -134,6 +155,9 @@ public final class Screen extends OutputResource {
     //TODO
     
     Display.update();
+    closeRequested = Display.isCloseRequested();
+    if (closeRequested)
+      observations.broadcast(EVENT_CLOSE_REQUEST, null);
   }
   
   public void close() {
@@ -172,4 +196,5 @@ public final class Screen extends OutputResource {
   private String icon = null;
   
   private boolean open = false;
+  private boolean closeRequested = false;
 }

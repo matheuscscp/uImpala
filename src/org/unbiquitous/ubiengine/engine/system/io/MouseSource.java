@@ -28,6 +28,7 @@ public final class MouseSource extends InputResource {
   
   /**
    * Constructor to allocate an array of flags, for buttons.
+   * Also setup events.
    * @param butts Buttons amount.
    */
   public MouseSource(int butts) {

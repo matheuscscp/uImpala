@@ -92,7 +92,7 @@ public final class Alarm implements Subject {
     observations.disconnect(eventType, obs);
   }
   
-  private Observations observations = new Observations(TRRRIMM);
+  private Observations observations = new Observations(this, TRRRIMM);
   private boolean done = true;
   private boolean paused = false;
   private long done_ticks;

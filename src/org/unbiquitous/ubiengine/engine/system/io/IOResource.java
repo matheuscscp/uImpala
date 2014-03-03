@@ -28,7 +28,7 @@ public abstract class IOResource implements Subject {
   /**
    * Use to broadcast events.
    */
-  protected Observations observations = new Observations(0, 1);
+  protected Observations observations = new Observations(this, EVENT_STARTED_UPDATING, EVENT_STOPPED_UPDATING);
   
   /**
    * Method to update the resource state and/or broadcast events.
