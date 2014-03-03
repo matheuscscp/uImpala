@@ -1,81 +1,65 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import org.unbiquitous.ubiengine.util.observer.Event;
-import org.unbiquitous.ubiengine.util.observer.Observations;
-
 public final class KeyboardSource extends InputResource {
+  /**
+   * Broadcasted when a key is pressed.
+   */
+  public static final int EVENT_KEY_DOWN = IOResource.LAST_EVENT + 1;
   
-  public static final String KEYDOWN  = "KEYDOWN";
-  public static final String KEYUP    = "KEYUP";
-
-  public static final class KeyDownEvent extends Event {
-    private int unicode_char;
-    
-    public KeyDownEvent(int unicode_char) {
-      this.unicode_char = unicode_char;
-    }
-    
-    public int getUnicodeChar() {
-      return unicode_char;
-    }
-  }
-
-  public static final class KeyUpEvent extends Event {
-    private int unicode_char;
-    
-    public KeyUpEvent(int unicode_char) {
-      this.unicode_char = unicode_char;
-    }
-    
-    public int getUnicodeChar() {
-      return unicode_char;
-    }
-  }
-
-  private Queue<Event> events = new LinkedList<Event>();
+  /**
+   * Broadcasted when a key is released.
+   */
+  public static final int EVENT_KEY_UP   = IOResource.LAST_EVENT + 2;
   
-  private HashMap<Integer, Boolean> key_pressed = new HashMap<Integer, Boolean>();
-
-  public KeyboardSource() {
-    subject = new Observations(KEYDOWN, KEYUP);
+  /**
+   * The last event of this class.
+   */
+  public static final int LAST_EVENT     = EVENT_KEY_UP;
+  
+  /**
+   * Constructor to allocate an array of flags, for keys.
+   * Also setup events.
+   * @param ks Amount of keys.
+   */
+  public KeyboardSource(int ks) {
+    observations.addEvents(EVENT_KEY_DOWN, EVENT_KEY_UP);
+    keys = new boolean[ks];
+    for (int i = 0; i < ks; i++)
+      keys[i] = false;
   }
   
-  public void update() {
-    if (!active) {
-      while (!events.isEmpty())
-        events.remove();
-      return;
-    }
-    
-    while (!events.isEmpty()) {
-      Event event = events.poll();
-      if (event instanceof KeyDownEvent) {
-        key_pressed.put(Integer.valueOf(((KeyDownEvent) event).getUnicodeChar()), true);
-        subject.broadcast(KEYDOWN, event);
-      }
-      else if (event instanceof KeyUpEvent) {
-        key_pressed.put(Integer.valueOf(((KeyUpEvent) event).getUnicodeChar()), false);
-        subject.broadcast(KEYUP, event);
+  protected void update() {
+    while (events.size() > 0) {
+      KeyboardEvent event = (KeyboardEvent)events.poll();
+      switch (event.type) {
+        case EVENT_KEY_DOWN:
+          keys[event.getKey()] = true;
+          observations.broadcast(EVENT_KEY_DOWN, event);
+          break;
+          
+        case EVENT_KEY_UP:
+          keys[event.getKey()] = false;
+          observations.broadcast(EVENT_KEY_UP, event);
+          break;
+          
+        default:
+          throw new Error("Invalid keyboard event");
       }
     }
   }
-
-  public boolean isKeyPressed(int unicode_char) {
-    Boolean check = key_pressed.get(Integer.valueOf(unicode_char));
-    if (check == null)
-      return false;
-    return check.booleanValue();
+  
+  public void close() {
+    // TODO Auto-generated method stub
   }
   
-  public void forceKeyPressed(int unicode_char) {
-    events.add(new KeyDownEvent(unicode_char));
+  public boolean isUpdating() {
+    // TODO Auto-generated method stub
+    return true;
   }
-
-  public void forceKeyReleased(int unicode_char) {
-    events.add(new KeyUpEvent(unicode_char));
+  
+  public boolean getKey(int k) {
+    return keys[k];
   }
+  
+  private boolean[] keys;
 }

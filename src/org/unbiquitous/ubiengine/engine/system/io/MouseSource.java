@@ -14,25 +14,25 @@ public final class MouseSource extends InputResource {
   /**
    * Broadcasted when a button is pressed.
    */
-  public static final int EVENT_MOUSE_DOWN   = IOResource.LAST_EVENT + 2;
+  public static final int EVENT_BUTTON_DOWN  = IOResource.LAST_EVENT + 2;
   
   /**
    * Broadcasted when a button is released.
    */
-  public static final int EVENT_MOUSE_UP     = IOResource.LAST_EVENT + 3;
+  public static final int EVENT_BUTTON_UP    = IOResource.LAST_EVENT + 3;
   
   /**
    * The last event of this class.
    */
-  public static final int LAST_EVENT         = EVENT_MOUSE_UP;
+  public static final int LAST_EVENT         = EVENT_BUTTON_UP;
   
   /**
    * Constructor to allocate an array of flags, for buttons.
    * Also setup events.
-   * @param butts Buttons amount.
+   * @param butts Amount of buttons.
    */
   public MouseSource(int butts) {
-    observations.addEvents(EVENT_MOUSE_MOTION, EVENT_MOUSE_DOWN, EVENT_MOUSE_UP);
+    observations.addEvents(EVENT_MOUSE_MOTION, EVENT_BUTTON_DOWN, EVENT_BUTTON_UP);
     X = 0; Y = 0;
     downX = 0; downY = 0;
     buttons = new boolean[butts];
@@ -50,16 +50,16 @@ public final class MouseSource extends InputResource {
           observations.broadcast(EVENT_MOUSE_MOTION, event);
           break;
           
-        case EVENT_MOUSE_DOWN:
+        case EVENT_BUTTON_DOWN:
           buttons[event.getButton()] = true;
           downX = event.getX();
           downY = event.getY();
-          observations.broadcast(EVENT_MOUSE_DOWN, event);
+          observations.broadcast(EVENT_BUTTON_DOWN, event);
           break;
           
-        case EVENT_MOUSE_UP:
+        case EVENT_BUTTON_UP:
           buttons[event.getButton()] = false;
-          observations.broadcast(EVENT_MOUSE_UP, event);
+          observations.broadcast(EVENT_BUTTON_UP, event);
           break;
           
         default:

@@ -21,14 +21,14 @@ public final class KeyboardManagerOld extends InputManager implements KeyListene
 
   private static final class DeviceTuple {
     public UpDevice uos_device;
-    public KeyboardSource engine_device = new KeyboardSource();
+    public KeyboardSourceOld engine_device = new KeyboardSourceOld();
     
     public DeviceTuple(UpDevice uos_device) {
       this.uos_device = uos_device;
     }
   }
   
-  private KeyboardSource main_keyboard;
+  private KeyboardSourceOld main_keyboard;
   private HashMap<String, DeviceTuple> keyboards = new HashMap<String, DeviceTuple>();
   private Gateway gateway;
   private Queue<String> plugged_devices = new LinkedList<String>();
@@ -38,7 +38,7 @@ public final class KeyboardManagerOld extends InputManager implements KeyListene
   public KeyboardManagerOld(ComponentContainer components) {
     gateway = components.get(Gateway.class);
     
-    main_keyboard = new KeyboardSource();
+    main_keyboard = new KeyboardSourceOld();
     main_keyboard.active(true);
     components.get(ScreenOld.class).addKeyListener(this);
     
@@ -52,7 +52,7 @@ public final class KeyboardManagerOld extends InputManager implements KeyListene
     request_map.put("application_name", (String) components.get(Settings.class).get("window_title"));
   }
   
-  public KeyboardSource getMainKeyboard() {
+  public KeyboardSourceOld getMainKeyboard() {
     return main_keyboard;
   }
   
@@ -69,7 +69,7 @@ public final class KeyboardManagerOld extends InputManager implements KeyListene
     
     // updating down devices
     while (!down_devices.isEmpty()) {
-      KeyboardSource kdev = keyboards.remove(down_devices.poll()).engine_device;
+      KeyboardSourceOld kdev = keyboards.remove(down_devices.poll()).engine_device;
       kdev.active(false);
       broadcastDeviceDown(kdev);
     }

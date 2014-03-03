@@ -3,6 +3,7 @@ package org.unbiquitous.ubiengine.engine.system.io;
 import java.util.Arrays;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -145,15 +146,23 @@ public final class Screen extends OutputResource {
       if (event.button == -1)
         event.type = MouseSource.EVENT_MOUSE_MOTION;
       else if (Mouse.getEventButtonState())
-        event.type = MouseSource.EVENT_MOUSE_DOWN;
+        event.type = MouseSource.EVENT_BUTTON_DOWN;
       else
-        event.type = MouseSource.EVENT_MOUSE_UP;
+        event.type = MouseSource.EVENT_BUTTON_UP;
       mouse.events.add(event);
     }
     
     // keyboard
-    //TODO
+    while (Keyboard.next()) {
+      KeyboardEvent event = new KeyboardEvent(0, Keyboard.getEventKey());
+      if (Keyboard.getEventKeyState())
+        event.type = KeyboardSource.EVENT_KEY_DOWN;
+      else
+        event.type = KeyboardSource.EVENT_KEY_UP;
+      keyboard.events.add(event);
+    }
     
+    // screen
     Display.update();
     closeRequested = Display.isCloseRequested();
     if (closeRequested)
@@ -179,7 +188,7 @@ public final class Screen extends OutputResource {
   /**
    * Engine's private use.
    */
-  protected KeyboardSource keyboard = new KeyboardSource();
+  protected KeyboardSource keyboard = new KeyboardSource(Keyboard.KEYBOARD_SIZE);
   
   public MouseSource getMouse() {
     return mouse;

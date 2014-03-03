@@ -1,5 +1,4 @@
-refactor system.io.Keyboard*
-refactor system.io.Screen* (push keyboard events)
+refactor system.io.Keyboard* (uos stuff)
 implement asset.Music and asset.SoundEffect
 implement lwjgl context creation (system.*)
 implement asset.*

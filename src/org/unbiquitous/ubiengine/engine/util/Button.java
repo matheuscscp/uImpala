@@ -3,9 +3,9 @@ package org.unbiquitous.ubiengine.engine.util;
 import java.lang.reflect.Method;
 
 import org.unbiquitous.ubiengine.engine.asset.SpriteOld;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardSource;
+import org.unbiquitous.ubiengine.engine.system.io.KeyboardSourceOld;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardSource.KeyDownEvent;
+import org.unbiquitous.ubiengine.engine.system.io.KeyboardSourceOld.KeyDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseUpEvent;
 import org.unbiquitous.ubiengine.engine.system.time.Alarm;
@@ -18,7 +18,7 @@ public class Button implements Subject {
 
   private static final long ENTER_DELAY = 200;
   
-  protected KeyboardSource keyboard_device;
+  protected KeyboardSourceOld keyboard_device;
   protected MouseSourceOld mouse_device;
   protected SpriteOld spriteOld;
   protected Rectangle rect;
@@ -51,7 +51,7 @@ public class Button implements Subject {
     }
   }
   
-  public Button(KeyboardSource keyboard_device, MouseSourceOld mouse_device, SpriteOld spriteOld) {
+  public Button(KeyboardSourceOld keyboard_device, MouseSourceOld mouse_device, SpriteOld spriteOld) {
     this.keyboard_device = keyboard_device;
     this.mouse_device = mouse_device;
     this.spriteOld = spriteOld;
@@ -71,7 +71,7 @@ public class Button implements Subject {
     enable(true);
 
     try {
-      keyboard_device.connect(KeyboardSource.KEYDOWN, this, Button.class.getDeclaredMethod("handleKeyDown", Event.class));
+      keyboard_device.connect(KeyboardSourceOld.KEYDOWN, this, Button.class.getDeclaredMethod("handleKeyDown", Event.class));
       mouse_device.connect(MouseSourceOld.MOUSEDOWN, this, Button.class.getDeclaredMethod("handleMouseDown", Event.class));
       mouse_device.connect(MouseSourceOld.MOUSEUP, this, Button.class.getDeclaredMethod("handleMouseUp", Event.class));
       
