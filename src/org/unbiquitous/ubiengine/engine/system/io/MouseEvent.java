@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.engine.system.io;
  * @author Pimenta
  *
  */
-public class MouseEvent extends InputEvent {
+public final class MouseEvent extends InputEvent {
   /**
    * Assignment constructor.
    * @param t Type.

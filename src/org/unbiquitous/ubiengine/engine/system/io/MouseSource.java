@@ -1,6 +1,6 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
-public class MouseSource extends InputResource {
+public final class MouseSource extends InputResource {
   /**
    * Broadcasted when mouse pointer moves.
    */
