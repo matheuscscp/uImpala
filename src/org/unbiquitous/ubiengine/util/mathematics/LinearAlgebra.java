@@ -5,7 +5,7 @@ package org.unbiquitous.ubiengine.util.mathematics;
  * 
  * @author Matheus
  */
-public class LinearAlgebraFunctions {
+public class LinearAlgebra {
   /**
    * Calculates the determinant of a two-dimensional matrix.
    * 

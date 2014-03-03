@@ -2,6 +2,9 @@ package org.unbiquitous.ubiengine.engine.system.io;
 
 import java.util.HashSet;
 
+import org.unbiquitous.ubiengine.engine.core.GameComponents;
+import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
+
 /**
  * Class for keyboards management.
  * @author Pimenta
@@ -12,6 +15,10 @@ public final class KeyboardManager extends InputManager {
    * Engine's private use.
    */
   protected HashSet<KeyboardSource> screenKeyboards = new HashSet<KeyboardSource>();
+  
+  public KeyboardManager() {
+    gateway = GameComponents.get(Gateway.class);
+  }
   
   protected void updateLists() {
     // TODO Auto-generated method stub
@@ -30,4 +37,6 @@ public final class KeyboardManager extends InputManager {
     for (KeyboardSource ks : screenKeyboards)
       ks.update();
   }
+  
+  private Gateway gateway;
 }
