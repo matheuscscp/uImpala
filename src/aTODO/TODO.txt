@@ -1,9 +1,8 @@
-refactor system.io.Screen* (push mouse events)
 refactor system.io.Keyboard*
 refactor system.io.Screen* (push keyboard events)
 implement asset.Music and asset.SoundEffect
+implement lwjgl context creation (system.*)
 implement asset.*
 implement asset creation (asset.AssetManager)
-implement lwjgl context creation (system.*)
 refactor util.Button
 refactor util.StringInput

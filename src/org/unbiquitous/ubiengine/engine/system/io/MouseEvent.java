@@ -32,5 +32,5 @@ public final class MouseEvent extends InputEvent {
     return button;
   }
   
-  private int x, y, button;
+  protected int x, y, button;
 }

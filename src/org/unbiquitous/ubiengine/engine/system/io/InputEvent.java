@@ -9,20 +9,15 @@ import org.unbiquitous.ubiengine.util.observer.Event;
  */
 class InputEvent extends Event {
   /**
+   * Event type.
+   */
+  protected int type;
+  
+  /**
    * Assignment constructor.
    * @param t Event type.
    */
   public InputEvent(int t) {
     type = t;
   }
-  
-  /**
-   * Access method to event type.
-   * @return Event type.
-   */
-  public int type() {
-    return type;
-  }
-  
-  private int type;
 }

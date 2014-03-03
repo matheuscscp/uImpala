@@ -37,7 +37,7 @@ public final class MouseSource extends InputResource {
   protected void update() {
     while (events.size() > 0) {
       MouseEvent event = (MouseEvent)events.poll();
-      switch (event.type()) {
+      switch (event.type) {
         case EVENT_MOUSE_MOTION:
           X = event.getX();
           Y = event.getY();
@@ -74,16 +74,8 @@ public final class MouseSource extends InputResource {
     return X;
   }
   
-  protected void setX(int x) {
-    X = x;
-  }
-  
   public int getY() {
     return Y;
-  }
-  
-  protected void setY(int y) {
-    Y = y;
   }
   
   public int getDownX() {
@@ -100,6 +92,10 @@ public final class MouseSource extends InputResource {
   
   public int getDeltaY() {
     return Y - downY;
+  }
+  
+  public boolean getButton(int butt) {
+    return buttons[butt];
   }
   
   private int X, Y, downX, downY;

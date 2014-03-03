@@ -117,7 +117,22 @@ public final class Screen extends OutputResource {
   protected void update() {
     if (!open)
       return;
+    
+    // mouse
+    while (Mouse.next()) {
+      MouseEvent event = new MouseEvent(0, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton());
+      if (event.button == -1)
+        event.type = MouseSource.EVENT_MOUSE_MOTION;
+      else if (Mouse.getEventButtonState())
+        event.type = MouseSource.EVENT_MOUSE_DOWN;
+      else
+        event.type = MouseSource.EVENT_MOUSE_UP;
+      mouse.events.add(event);
+    }
+    
+    // keyboard
     //TODO
+    
     Display.update();
   }
   
