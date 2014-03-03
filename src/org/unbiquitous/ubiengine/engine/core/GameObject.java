@@ -41,7 +41,7 @@ public abstract class GameObject {
    * Add a child game object.
    * @param o Game object.
    */
-  protected void add(GameObject o) {
+  public void add(GameObject o) {
     objects.add(o);
   }
 //==============================================================================
