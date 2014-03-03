@@ -1,7 +1,7 @@
 package org.unbiquitous.ubiengine.util.mathematics;
 
 public class Rectangle {
-  private float x, y, w, h, angle;
+  protected float x, y, w, h, angle;
   
   public Rectangle() {
     setX(0);

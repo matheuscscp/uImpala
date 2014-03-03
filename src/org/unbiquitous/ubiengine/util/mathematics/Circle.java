@@ -1,7 +1,7 @@
 package org.unbiquitous.ubiengine.util.mathematics;
 
 public class Circle {
-  private float x, y, r;
+  protected float x, y, r;
   
   public Circle() {
     setX(0);
