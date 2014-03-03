@@ -49,17 +49,17 @@ public final class KeyboardSource extends InputResource {
   }
   
   public void close() {
-    // TODO Auto-generated method stub
+    
   }
   
   public boolean isUpdating() {
-    // TODO Auto-generated method stub
-    return true;
+    return updating;
   }
   
   public boolean getKey(int k) {
     return keys[k];
   }
   
+  protected boolean updating = false;
   private boolean[] keys;
 }

@@ -11,7 +11,7 @@ public final class KeyboardManager extends InputManager {
   /**
    * Engine's private use.
    */
-  protected HashSet<KeyboardSourceOld> screenKeyboards = new HashSet<KeyboardSourceOld>();
+  protected HashSet<KeyboardSource> screenKeyboards = new HashSet<KeyboardSource>();
   
   protected void updateLists() {
     // TODO Auto-generated method stub
@@ -27,7 +27,7 @@ public final class KeyboardManager extends InputManager {
   
   public void update() {
     super.update();
-    for (KeyboardSourceOld ks : screenKeyboards)
+    for (KeyboardSource ks : screenKeyboards)
       ks.update();
   }
 }
