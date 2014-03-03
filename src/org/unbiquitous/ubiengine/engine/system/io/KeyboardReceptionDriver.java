@@ -12,15 +12,14 @@ import org.unbiquitous.uos.core.messageEngine.messages.Call;
 import org.unbiquitous.uos.core.messageEngine.messages.Response;
 
 public class KeyboardReceptionDriver implements UosDriver {
-
-  public static final String TRANSMISSION_DRIVER  = "KeyboardTransmissionDriver";
-  public static final String RECEPTION_DRIVER     = "KeyboardReceptionDriver";
+  public static final String TRANSMISSION_DRIVER = "KeyboardTransmissionDriver";
+  public static final String RECEPTION_DRIVER    = "KeyboardReceptionDriver";
   
   private KeyboardReceptionDriverManager manager = null;
   
   public UpDriver getDriver() {
     UpDriver driver = new UpDriver(RECEPTION_DRIVER);
-
+    
     driver.addService("requestAccepted")
     .addParameter("transmitter_device", ParameterType.MANDATORY);
     driver.addService("keyboardClosed")
@@ -35,31 +34,31 @@ public class KeyboardReceptionDriver implements UosDriver {
     
     return driver;
   }
-
+  
   public List<UpDriver> getParent() {
     return new ArrayList<UpDriver>();
   }
-
+  
   public void init(Gateway gateway, String instanceId) {
     
   }
-
+  
   public void destroy() {
     
   }
-
+  
   public void requestAccepted(Call serviceCall,
       Response serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.requestAccepted(serviceCall.getParameterString("transmitter_device"));
   }
-
+  
   public void keyboardClosed(Call serviceCall,
       Response serviceResponse, CallContext messageContext) {
     if (manager != null)
       manager.keyboardClosed(serviceCall.getParameterString("transmitter_device"));
   }
-
+  
   public void keyDown(Call serviceCall,
       Response serviceResponse, CallContext messageContext) {
     if (manager != null)
@@ -68,7 +67,7 @@ public class KeyboardReceptionDriver implements UosDriver {
         ((Integer) serviceCall.getParameter("unicode_char")).intValue()
       );
   }
-
+  
   public void keyUp(Call serviceCall,
       Response serviceResponse, CallContext messageContext) {
     if (manager != null)
@@ -77,7 +76,7 @@ public class KeyboardReceptionDriver implements UosDriver {
         ((Integer) serviceCall.getParameter("unicode_char")).intValue()
       );
   }
-
+  
   public void setManager(Call serviceCall,
       Response serviceResponse, CallContext messageContext) {
     if (manager == null)

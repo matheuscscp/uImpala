@@ -31,7 +31,7 @@ public final class MouseSource extends InputResource {
    * Also setup events.
    * @param butts Amount of buttons.
    */
-  public MouseSource(int butts) {
+  protected MouseSource(int butts) {
     observations.addEvents(EVENT_MOUSE_MOTION, EVENT_BUTTON_DOWN, EVENT_BUTTON_UP);
     X = 0; Y = 0;
     downX = 0; downY = 0;

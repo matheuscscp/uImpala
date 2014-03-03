@@ -21,7 +21,7 @@ public final class KeyboardSource extends InputResource {
    * Also setup events.
    * @param ks Amount of keys.
    */
-  public KeyboardSource(int ks) {
+  protected KeyboardSource(int ks) {
     observations.addEvents(EVENT_KEY_DOWN, EVENT_KEY_UP);
     keys = new boolean[ks];
     for (int i = 0; i < ks; i++)
