@@ -46,6 +46,8 @@ public final class Screen extends OutputResource {
       setDisplayMode(w, h, f);
       setIcon(i);
       Display.create();
+      mouse = new MouseSource(Mouse.getButtonCount());
+      keyboard = new KeyboardSource(Keyboard.KEYBOARD_SIZE);
     } catch (Throwable e) {
       open = false;
       throw new Error(e);
@@ -114,8 +116,8 @@ public final class Screen extends OutputResource {
       throw new Error(e);
     }
     
-    width = w;
-    height = h;
+    width = full ? mode.getWidth() : w;
+    height = full ? mode.getHeight() : h;
     fullscreen = full;
   }
   
@@ -174,6 +176,8 @@ public final class Screen extends OutputResource {
       return;
     Display.destroy();
     open = false;
+    mouse = null;
+    keyboard = null;
   }
   
   public boolean isUpdating() {
@@ -183,12 +187,12 @@ public final class Screen extends OutputResource {
   /**
    * Engine's private use.
    */
-  protected MouseSource mouse = new MouseSource(Mouse.getButtonCount());
+  protected MouseSource mouse = null;
   
   /**
    * Engine's private use.
    */
-  protected KeyboardSource keyboard = new KeyboardSource(Keyboard.KEYBOARD_SIZE);
+  protected KeyboardSource keyboard = null;
   
   public MouseSource getMouse() {
     return mouse;
