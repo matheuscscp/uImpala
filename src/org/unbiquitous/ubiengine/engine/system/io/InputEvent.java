@@ -1,11 +1,13 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
+import org.unbiquitous.ubiengine.util.observer.Event;
+
 /**
  * Base class for input events.
  * @author Pimenta
  *
  */
-abstract class InputEvent {
+class InputEvent extends Event {
   /**
    * Assignment constructor.
    * @param t Event type.

@@ -1,4 +1,3 @@
-refactor system.io.Mouse*
 refactor system.io.Screen* (push mouse events)
 refactor system.io.Keyboard*
 refactor system.io.Screen* (push keyboard events)

@@ -21,6 +21,11 @@ public abstract class IOResource implements Subject {
   public static final int EVENT_STOPPED_UPDATING = 1;
   
   /**
+   * The last event of this class.
+   */
+  public static final int LAST_EVENT = EVENT_STOPPED_UPDATING;
+  
+  /**
    * Use to broadcast events.
    */
   protected Observations observations = new Observations(0, 1);

@@ -1,149 +1,107 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Queue;
-
-import org.unbiquitous.ubiengine.util.mathematics.Rectangle;
-import org.unbiquitous.ubiengine.util.observer.Event;
-import org.unbiquitous.ubiengine.util.observer.Observations;
-
-public final class MouseSource extends InputResource {
+public class MouseSource extends InputResource {
+  /**
+   * Broadcasted when mouse pointer moves.
+   */
+  public static final int EVENT_MOUSE_MOTION = IOResource.LAST_EVENT + 1;
   
-  public static final String MOUSEDOWN    = "MOUSEDOWN";
-  public static final String MOUSEUP      = "MOUSEUP";
-  public static final String MOUSEMOTION  = "MOUSEMOTION";
+  /**
+   * Broadcasted when a button is pressed.
+   */
+  public static final int EVENT_MOUSE_DOWN   = IOResource.LAST_EVENT + 2;
   
-  public static final int LEFT_BUTTON    = java.awt.event.MouseEvent.BUTTON1;
-  public static final int MIDDLE_BUTTON  = java.awt.event.MouseEvent.BUTTON2;
-  public static final int RIGHT_BUTTON   = java.awt.event.MouseEvent.BUTTON3;
-
-  public static final class MouseDownEvent extends Event {
-    private int button;
-    
-    public MouseDownEvent(int button) {
-      this.button = button;
-    }
-    
-    public int getButton() {
-      return button;
-    }
-  }
-
-  public static final class MouseUpEvent extends Event {
-    private int button;
-    
-    public MouseUpEvent(int button) {
-      this.button = button;
-    }
-    
-    public int getButton() {
-      return button;
-    }
+  /**
+   * Broadcasted when a button is released.
+   */
+  public static final int EVENT_MOUSE_UP     = IOResource.LAST_EVENT + 3;
+  
+  /**
+   * The last event of this class.
+   */
+  public static final int LAST_EVENT         = EVENT_MOUSE_UP;
+  
+  /**
+   * Constructor to allocate an array of flags, for buttons.
+   * @param butts Buttons amount.
+   */
+  public MouseSource(int butts) {
+    observations.addEvents(EVENT_MOUSE_MOTION, EVENT_MOUSE_DOWN, EVENT_MOUSE_UP);
+    X = 0; Y = 0;
+    downX = 0; downY = 0;
+    buttons = new boolean[butts];
+    for (int i = 0; i < butts; i++)
+      buttons[i] = false;
   }
   
-  public static final class MouseMotionEvent extends Event {
-    private int x, y;
-    
-    public MouseMotionEvent(int x, int y) {
-      this.x = x;
-      this.y = y;
-    }
-    
-    public int getX() {
-      return x;
-    }
-    
-    public int getY() {
-      return y;
-    }
-  }
-
-  private Queue<Event> events = new LinkedList<Event>();
-  
-  private HashMap<Integer, Boolean> mouse_pressed = new HashMap<Integer, Boolean>();
-  private int mouse_x;
-  private int mouse_y;
-  private int mousedown_x;
-  private int mousedown_y;
-  
-  public MouseSource() {
-    mouse_x = 0;
-    mouse_y = 0;
-    mousedown_x = 0;
-    mousedown_y = 0;
-    subject = new Observations(MOUSEDOWN, MOUSEUP, MOUSEMOTION);
-  }
-
-  public void update() {
-    if (!active) {
-      while (!events.isEmpty())
-        events.remove();
-      return;
-    }
-    
-    while (!events.isEmpty()) {
-      Event event = events.poll();
-      if (event instanceof MouseDownEvent) {
-        mousedown_x = mouse_x;
-        mousedown_y = mouse_y;
-        mouse_pressed.put(Integer.valueOf(((MouseDownEvent) event).getButton()), true);
-        subject.broadcast(MOUSEDOWN, event);
-      }
-      else if (event instanceof MouseUpEvent) {
-        mouse_pressed.put(Integer.valueOf(((MouseUpEvent) event).getButton()), false);
-        subject.broadcast(MOUSEUP, event);
-      }
-      else if (event instanceof MouseMotionEvent) {
-        mouse_x = ((MouseMotionEvent) event).getX();
-        mouse_y = ((MouseMotionEvent) event).getY();
-        subject.broadcast(MOUSEMOTION, event);
+  protected void update() {
+    while (events.size() > 0) {
+      MouseEvent event = (MouseEvent)events.poll();
+      switch (event.type()) {
+        case EVENT_MOUSE_MOTION:
+          X = event.getX();
+          Y = event.getY();
+          observations.broadcast(EVENT_MOUSE_MOTION, event);
+          break;
+          
+        case EVENT_MOUSE_DOWN:
+          buttons[event.getButton()] = true;
+          downX = event.getX();
+          downY = event.getY();
+          observations.broadcast(EVENT_MOUSE_DOWN, event);
+          break;
+          
+        case EVENT_MOUSE_UP:
+          buttons[event.getButton()] = false;
+          observations.broadcast(EVENT_MOUSE_UP, event);
+          break;
+          
+        default:
+          throw new Error("Invalid mouse event");
       }
     }
   }
-
-  public boolean isMousePressed(int button) {
-    Boolean check = mouse_pressed.get(Integer.valueOf(button));
-    if (check == null)
-      return false;
-    return check.booleanValue();
-  }
-
-  public int mouseX() {
-    return mouse_x;
+  
+  public void close() {
+    
   }
   
-  public int mouseY() {
-    return mouse_y;
-  }
-
-  public int mouseDownX() {
-    return mousedown_x;
+  public boolean isUpdating() {
+    return true;
   }
   
-  public int mouseDownY() {
-    return mousedown_y;
-  }
-
-  public void forceMousePressed(int button) {
-    events.add(new MouseDownEvent(button));
-  }
-
-  public void forceMouseReleased(int button) {
-    events.add(new MouseUpEvent(button));
+  public int getX() {
+    return X;
   }
   
-  public void forceMouseMotion(int x, int y) {
-    events.add(new MouseMotionEvent(x, y));
+  protected void setX(int x) {
+    X = x;
   }
   
-  public boolean isMouseInside(Rectangle rect) {
-    return (mouse_x <= rect.getX() + rect.getW() && mouse_x >= rect.getX() &&
-            mouse_y <= rect.getY() + rect.getH() && mouse_y >= rect.getY());
+  public int getY() {
+    return Y;
   }
   
-  public boolean isMouseDownInside(Rectangle rect) {
-    return (mousedown_x <= rect.getX() + rect.getW() && mousedown_x >= rect.getX() &&
-            mousedown_y <= rect.getY() + rect.getH() && mousedown_y >= rect.getY());
+  protected void setY(int y) {
+    Y = y;
   }
+  
+  public int getDownX() {
+    return downX;
+  }
+  
+  public int getDownY() {
+    return downY;
+  }
+  
+  public int getDeltaX() {
+    return X - downX;
+  }
+  
+  public int getDeltaY() {
+    return Y - downY;
+  }
+  
+  private int X, Y, downX, downY;
+  private boolean[] buttons;
 }

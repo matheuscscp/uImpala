@@ -3,6 +3,7 @@ package org.unbiquitous.ubiengine.engine.system.io;
 import java.util.Arrays;
 
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
@@ -38,8 +39,10 @@ public final class Screen extends OutputResource {
   }
   
   public void setTitle(String title) {
-    if (!open || title == null || title.length() == 0)
-      throw new Error("Impossible to set title. Screen not open or invalid title");
+    if (title == null)
+      return;
+    if (!open)
+      throw new Error("Impossible to set title, screen is not open");
     Display.setTitle(title);
     this.title = title;
   }
@@ -103,7 +106,9 @@ public final class Screen extends OutputResource {
   }
   
   public void setIcon(String icon) {
-    if (!open || icon == null || icon.length() == 0)
+    if (icon == null)
+      return;
+    if (!open || icon.length() == 0)
       throw new Error("Impossible to set icon. Screen not open or invalid icon path");
     Display.setIcon(IconLoader.load(icon));
     this.icon = icon;
@@ -130,7 +135,7 @@ public final class Screen extends OutputResource {
   /**
    * Engine's private use.
    */
-  protected MouseSource mouse = new MouseSource();
+  protected MouseSource mouse = new MouseSource(Mouse.getButtonCount());
   
   /**
    * Engine's private use.

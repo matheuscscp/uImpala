@@ -4,10 +4,10 @@ import java.lang.reflect.Method;
 
 import org.unbiquitous.ubiengine.engine.asset.SpriteOld;
 import org.unbiquitous.ubiengine.engine.system.io.KeyboardSource;
-import org.unbiquitous.ubiengine.engine.system.io.MouseSource;
+import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld;
 import org.unbiquitous.ubiengine.engine.system.io.KeyboardSource.KeyDownEvent;
-import org.unbiquitous.ubiengine.engine.system.io.MouseSource.MouseDownEvent;
-import org.unbiquitous.ubiengine.engine.system.io.MouseSource.MouseUpEvent;
+import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseDownEvent;
+import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseUpEvent;
 import org.unbiquitous.ubiengine.engine.system.time.Alarm;
 import org.unbiquitous.ubiengine.util.mathematics.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
@@ -19,7 +19,7 @@ public class Button implements Subject {
   private static final long ENTER_DELAY = 200;
   
   protected KeyboardSource keyboard_device;
-  protected MouseSource mouse_device;
+  protected MouseSourceOld mouse_device;
   protected SpriteOld spriteOld;
   protected Rectangle rect;
   protected int clip_y;
@@ -51,7 +51,7 @@ public class Button implements Subject {
     }
   }
   
-  public Button(KeyboardSource keyboard_device, MouseSource mouse_device, SpriteOld spriteOld) {
+  public Button(KeyboardSource keyboard_device, MouseSourceOld mouse_device, SpriteOld spriteOld) {
     this.keyboard_device = keyboard_device;
     this.mouse_device = mouse_device;
     this.spriteOld = spriteOld;
@@ -72,8 +72,8 @@ public class Button implements Subject {
 
     try {
       keyboard_device.connect(KeyboardSource.KEYDOWN, this, Button.class.getDeclaredMethod("handleKeyDown", Event.class));
-      mouse_device.connect(MouseSource.MOUSEDOWN, this, Button.class.getDeclaredMethod("handleMouseDown", Event.class));
-      mouse_device.connect(MouseSource.MOUSEUP, this, Button.class.getDeclaredMethod("handleMouseUp", Event.class));
+      mouse_device.connect(MouseSourceOld.MOUSEDOWN, this, Button.class.getDeclaredMethod("handleMouseDown", Event.class));
+      mouse_device.connect(MouseSourceOld.MOUSEUP, this, Button.class.getDeclaredMethod("handleMouseUp", Event.class));
       
       alarm = new Alarm();
       alarm.connect(Alarm.TRRRIMM, this, Button.class.getDeclaredMethod("handleTimerDone", Event.class));
@@ -107,7 +107,7 @@ public class Button implements Subject {
       hover = false;
       just_hit = false;
     }
-    else if (!mouse_device.isMousePressed(MouseSource.LEFT_BUTTON)) {
+    else if (!mouse_device.isMousePressed(MouseSourceOld.LEFT_BUTTON)) {
       clip_y = spriteOld.getHeight()/4;
       
       // play sound
@@ -188,7 +188,7 @@ public class Button implements Subject {
   }
   
   protected void handleMouseDown(Event event) {
-    if (((MouseDownEvent) event).getButton() != MouseSource.LEFT_BUTTON)
+    if (((MouseDownEvent) event).getButton() != MouseSourceOld.LEFT_BUTTON)
       return;
     
     if (!mouse_device.isMouseDownInside(rect))
@@ -213,7 +213,7 @@ public class Button implements Subject {
   
   protected void handleMouseUp(Event event) {
     if (
-      ((MouseUpEvent) event).getButton() == MouseSource.LEFT_BUTTON &&
+      ((MouseUpEvent) event).getButton() == MouseSourceOld.LEFT_BUTTON &&
       mouse_device.isMouseDownInside(rect) &&
       mouse_device.isMouseInside(rect) &&
       enabled &&
