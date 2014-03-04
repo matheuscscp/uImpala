@@ -13,7 +13,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 import org.unbiquitous.ubiengine.engine.system.io.ScreenOld;
-import org.unbiquitous.ubiengine.util.mathematics.Rectangle;
+import org.unbiquitous.ubiengine.util.math.Rectangle;
 
 public class SpriteOld {
   protected ScreenOld screenOld;

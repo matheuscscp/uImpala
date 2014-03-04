@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.util.mathematics;
+package org.unbiquitous.ubiengine.util.math;
 
 public class Rectangle {
   protected float x, y, w, h, angle;

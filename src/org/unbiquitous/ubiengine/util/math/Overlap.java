@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.util.mathematics;
+package org.unbiquitous.ubiengine.util.math;
 
 /**
  * Class to implement overlap detection between geometrical shapes.
