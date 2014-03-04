@@ -44,11 +44,9 @@ public abstract class GameObject {
   public void add(GameObject o) {
     objects.add(o);
   }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
+  
   /**
-   * Engine's private use.
+   * Calls update() for this object and its tree.
    */
   protected void updateTree() {
     update();
@@ -59,7 +57,7 @@ public abstract class GameObject {
   }
   
   /**
-   * Engine's private use.
+   * Calls render() for this object and its tree.
    */
   protected void renderTree(RendererContainer renderers) {
     render(renderers);
@@ -76,7 +74,7 @@ public abstract class GameObject {
   }
   
   /**
-   * Engine's private use.
+   * Calls wakeup() for this object and its tree.
    */
   protected void wakeupTree(Object... args) {
     wakeup(args);
@@ -85,7 +83,7 @@ public abstract class GameObject {
   }
   
   /**
-   * Engine's private use.
+   * Calls destroy() for this object and its tree.
    */
   protected void destroyTree() {
     destroy();

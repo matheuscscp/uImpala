@@ -62,7 +62,7 @@ public abstract class ContainerScene extends GameScene {
   /**
    * Engine's private use.
    */
-  protected void close() {
+  protected void destroy() {
     for (GameObject o : objects)
       o.destroyTree();
   }

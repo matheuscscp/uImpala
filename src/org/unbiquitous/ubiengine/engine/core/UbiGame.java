@@ -193,9 +193,9 @@ public abstract class UbiGame implements UosApplication {
   
   private void close() {
     for (InputManager im : inputs)
-      im.close();
+      im.destroy();
     for (OutputManager om : outputs)
-      om.close();
+      om.destroy();
   }
   
   private void updateStack() {
@@ -204,7 +204,7 @@ public abstract class UbiGame implements UosApplication {
         break;
         
       case CHANGE:
-        scenes.removeLast().close();
+        scenes.removeLast().destroy();
         scenes.add(scene_change);
         break;
         
@@ -213,7 +213,7 @@ public abstract class UbiGame implements UosApplication {
         break;
         
       case POP:
-        scenes.removeLast().close();
+        scenes.removeLast().destroy();
         if (scenes.size() > 0)
           scenes.getLast().wakeup(pop_args);
         break;

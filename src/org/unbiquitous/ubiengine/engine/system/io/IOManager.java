@@ -79,7 +79,7 @@ public abstract class IOManager {
   /**
    * Engine's private use.
    */
-  public void close() {
+  public void destroy() {
     while (availableResources.size() > 0)
       availableResources.removeFirst().close();
     for (Iterator<IOResource> i = busyResources.iterator(); i.hasNext();) {

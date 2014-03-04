@@ -33,5 +33,5 @@ public abstract class GameScene {
   /**
    * Method to close whatever is necessary.
    */
-  protected abstract void close();
+  protected abstract void destroy();
 }

@@ -1,6 +1,7 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * Class for mouses management.
@@ -29,5 +30,13 @@ public final class MouseManager extends InputManager {
     super.update();
     for (MouseSource ms : screenMouses)
       ms.update();
+  }
+  
+  public void destroy() {
+    super.destroy();
+    for (Iterator<MouseSource> i = screenMouses.iterator(); i.hasNext();) {
+      i.next().close();
+      i.remove();
+    }
   }
 }

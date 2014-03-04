@@ -1,6 +1,7 @@
 package org.unbiquitous.ubiengine.engine.system.io;
 
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.unbiquitous.ubiengine.engine.core.GameComponents;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
@@ -36,6 +37,14 @@ public final class KeyboardManager extends InputManager {
     super.update();
     for (KeyboardSource ks : screenKeyboards)
       ks.update();
+  }
+  
+  public void destroy() {
+    super.destroy();
+    for (Iterator<KeyboardSource> i = screenKeyboards.iterator(); i.hasNext();) {
+      i.next().close();
+      i.remove();
+    }
   }
   
   private Gateway gateway;
