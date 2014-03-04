@@ -8,13 +8,13 @@ import java.util.List;
  * Class to automatically update and render game objects.
  * Extend only to implement a constructor, to add game objects.
  * @see GameObject
- * @see GameState
+ * @see GameScene
  * @author Pimenta
  *
  */
-public abstract class ContainerState extends GameState {
+public abstract class ContainerScene extends GameScene {
   /**
-   * Add a game object to the game state.
+   * Add a game object to the game scene.
    * @param o Game object.
    */
   protected void add(GameObject o) {

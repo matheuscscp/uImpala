@@ -3,12 +3,12 @@ package org.unbiquitous.ubiengine.engine.core;
 import org.unbiquitous.ubiengine.engine.asset.AssetManager;
 
 /**
- * Interface for a game state.
- * @see ContainerState
+ * Interface for a game scene.
+ * @see ContainerScene
  * @author Pimenta
  *
  */
-public abstract class GameState {
+public abstract class GameScene {
   /**
    * Use to load assets.
    */
@@ -25,8 +25,8 @@ public abstract class GameState {
   protected abstract void render();
   
   /**
-   * Handle a pop from the stack of game states.
-   * @param args Arguments passed from the state popped.
+   * Handle a pop from the stack of game scenes.
+   * @param args Arguments passed from the scene popped.
    */
   protected abstract void wakeup(Object... args);
   

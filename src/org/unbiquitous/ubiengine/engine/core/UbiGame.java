@@ -52,30 +52,30 @@ public abstract class UbiGame implements UosApplication {
   }
   
   /**
-   * Call to change the current game state.
-   * @param state New game state.
+   * Call to change the current game scene.
+   * @param scene New game scene.
    */
-  public void change(GameState state) {
-    if (state == null)
+  public void change(GameScene scene) {
+    if (scene == null)
       return;
-    state_change = state;
+    scene_change = scene;
     change_option = ChangeOption.CHANGE;
   }
   
   /**
-   * Call to push a game state.
-   * @param state Game state to be pushed.
+   * Call to push a game scene.
+   * @param scene Game scene to be pushed.
    */
-  public void push(GameState state) {
-    if (state == null)
+  public void push(GameScene scene) {
+    if (scene == null)
       return;
-    state_change = state;
+    scene_change = scene;
     change_option = ChangeOption.PUSH;
   }
   
   /**
-   * Call to pop the current game state.
-   * @param args Arguments to be passed to the new current game state.
+   * Call to pop the current game scene.
+   * @param args Arguments to be passed to the new current game scene.
    */
   public void pop(Object... args) {
     pop_args = args;
@@ -92,7 +92,7 @@ public abstract class UbiGame implements UosApplication {
 //nothings else matters from here to below
 //==============================================================================
   private GameSettings settings;
-  private LinkedList<GameState> states = new LinkedList<GameState>();
+  private LinkedList<GameScene> scenes = new LinkedList<GameScene>();
   private List<InputManager> inputs = new ArrayList<InputManager>();
   private List<OutputManager> outputs = new ArrayList<OutputManager>();
   private DeltaTime deltatime = new DeltaTime();
@@ -101,7 +101,7 @@ public abstract class UbiGame implements UosApplication {
     NA, CHANGE, PUSH, POP, QUIT
   }
   
-  private GameState state_change = null;
+  private GameScene scene_change = null;
   private Object[] pop_args = null;
   private ChangeOption change_option = ChangeOption.NA;
   
@@ -111,13 +111,13 @@ public abstract class UbiGame implements UosApplication {
   public void start(Gateway gateway, OntologyStart ontology) {
     try {
       init(gateway);
-      while (states.size() > 0) {
+      while (scenes.size() > 0) {
         deltatime.update();
         for (InputManager im : inputs)
           im.update();
-        for (GameState gs : states)
+        for (GameScene gs : scenes)
           gs.update();
-        for (GameState gs : states)
+        for (GameScene gs : scenes)
           gs.render();
         for (OutputManager om : outputs)
           om.update();
@@ -185,7 +185,7 @@ public abstract class UbiGame implements UosApplication {
         }
       }
       
-      states.add(((GameState)((Class<?>)settings.get("first_state")).newInstance()));
+      scenes.add(((GameScene)((Class<?>)settings.get("first_scene")).newInstance()));
     } catch (Exception e) {
       throw new Error(e);
     }
@@ -204,28 +204,28 @@ public abstract class UbiGame implements UosApplication {
         break;
         
       case CHANGE:
-        states.removeLast().close();
-        states.add(state_change);
+        scenes.removeLast().close();
+        scenes.add(scene_change);
         break;
         
       case PUSH:
-        states.add(state_change);
+        scenes.add(scene_change);
         break;
         
       case POP:
-        states.removeLast().close();
-        if (states.size() > 0)
-          states.getLast().wakeup(pop_args);
+        scenes.removeLast().close();
+        if (scenes.size() > 0)
+          scenes.getLast().wakeup(pop_args);
         break;
         
       case QUIT:
-        states.clear();
+        scenes.clear();
         break;
         
       default:
         throw new Error("Invalid value for ChangeOption in UosGame!");
     }
-    state_change = null;
+    scene_change = null;
     pop_args = null;
     change_option = ChangeOption.NA;
   }

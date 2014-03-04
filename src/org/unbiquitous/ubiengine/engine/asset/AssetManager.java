@@ -16,7 +16,7 @@ import org.unbiquitous.ubiengine.engine.core.GameComponents;
 import org.unbiquitous.ubiengine.engine.core.GameSettings;
 
 /**
- * Class to manage assets of a game state.
+ * Class to manage assets of a game scene.
  * @author Pimenta
  *
  */

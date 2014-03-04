@@ -16,8 +16,8 @@ public class GameSettings extends HashMap<String, Object> {
   protected GameSettings validate() {
     if (get("root_path") == null)
       put("root_path", ".");
-    if (get("first_state") == null)
-      throw new Error("First game state not defined!");
+    if (get("first_scene") == null)
+      throw new Error("First game scene not defined!");
     if (get("input_managers") == null)
       throw new Error("Cannot start game with no input managers!");
     if (get("output_managers") == null)

@@ -5,14 +5,14 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Use this class to implement game objects of a ContainerState.
- * @see ContainerState
+ * Use this class to implement game objects of a ContainerScene.
+ * @see ContainerScene
  * @author Pimenta
  *
  */
 public abstract class GameObject {
   /**
-   * Flag to tell the game state if this object must be destroyed.
+   * Flag to tell the game scene if this object must be destroyed.
    */
   protected boolean destroy = false;
   
@@ -27,8 +27,8 @@ public abstract class GameObject {
   protected abstract void render(RendererContainer renderers);
   
   /**
-   * Handle a pop from the stack of game states.
-   * @param args Arguments passed from the state popped.
+   * Handle a pop from the stack of game scenes.
+   * @param args Arguments passed from the scene popped.
    */
   protected abstract void wakeup(Object... args);
   

@@ -71,9 +71,9 @@ public final class DeltaTime {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private long before;            // unit: millisecond
-  private float idealFPS = 30;  // unit: frame/second
-  private long realDT = 0;      // unit: millisecond
+  private long before;         // unit: millisecond
+  private float idealFPS = 30; // unit: frame/second
+  private long realDT = 0;     // unit: millisecond
   
   /**
    * Engine's private use.
