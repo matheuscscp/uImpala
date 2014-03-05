@@ -23,114 +23,114 @@ import org.unbiquitous.ubiengine.engine.core.GameSettings;
 public final class AssetManager {
   /**
    * Load a texture.
-   * @param fn Texture path.
+   * @param path Texture path.
    * @return Texture loaded.
    */
-  public Texture getTexture(String fn) {
-    Texture asset = (Texture)assets.get(fn);
+  public Texture getTexture(String path) {
+    Texture asset = (Texture)assets.get(path);
     if (asset != null)
       return asset;
     
     try {
-      asset = TextureLoader.getTexture(getFormat(fn),
+      asset = TextureLoader.getTexture(getFormat(path),
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
         )
       );
     } catch (IOException e) {
       throw new Error(e);
     }
     
-    assets.put(fn, asset);
+    assets.put(path, asset);
     return asset;
   }
   
   /**
    * Load audio.
-   * @param fn Audio path.
+   * @param path Audio path.
    * @return Audio loaded.
    */
-  public Audio getAudio(String fn) {
-    Audio asset = (Audio)assets.get(fn);
+  public Audio getAudio(String path) {
+    Audio asset = (Audio)assets.get(path);
     if (asset != null)
       return asset;
     
     try {
-      asset = AudioLoader.getAudio(getFormat(fn),
+      asset = AudioLoader.getAudio(getFormat(path),
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
         )
       );
     } catch (IOException e) {
       throw new Error(e);
     }
     
-    assets.put(fn, asset);
+    assets.put(path, asset);
     return asset;
   }
   
   /**
    * Load streaming audio.
-   * @param fn Audio path.
+   * @param path Audio path.
    * @return Audio loaded.
    */
-  public Audio getStreamingAudio(String fn) {
-    Audio asset = (Audio)assets.get(fn);
+  public Audio getStreamingAudio(String path) {
+    Audio asset = (Audio)assets.get(path);
     if (asset != null)
       return asset;
     
     try {
-      asset = AudioLoader.getStreamingAudio(getFormat(fn),
+      asset = AudioLoader.getStreamingAudio(getFormat(path),
         ResourceLoader.getResource(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
         )
       );
     } catch (IOException e) {
       throw new Error(e);
     }
     
-    assets.put(fn, asset);
+    assets.put(path, asset);
     return asset;
   }
   
   /**
    * Load font.
-   * @param fn Font path.
+   * @param path Font path.
    * @return Font loaded.
    */
-  public Font getFont(String fn) {
-    Font asset = (Font)assets.get(fn);
+  public Font getFont(String path) {
+    Font asset = (Font)assets.get(path);
     if (asset != null)
       return asset;
     
     try {
       asset = Font.createFont(Font.TRUETYPE_FONT,
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
         )
       );
     } catch (Exception e) {
       throw new Error(e);
     }
     
-    assets.put(fn, asset);
+    assets.put(path, asset);
     return asset;
   }
   
   /**
    * Load map from a text file.
-   * @param fn Text file path.
+   * @param path Text file path.
    * @return Map loaded.
    */
-  public int[][] getMap(String fn) {
-    int[][] asset = (int[][])assets.get(fn);
+  public int[][] getMap(String path) {
+    int[][] asset = (int[][])assets.get(path);
     if (asset != null)
       return asset;
     
     Scanner sc;
     try {
       sc = new Scanner(new FileReader(
-        GameComponents.get(GameSettings.class).get("root_path") + "/" + fn
+        GameComponents.get(GameSettings.class).get("root_path") + "/" + path
       ));
     } catch (FileNotFoundException e) {
       throw new Error(e);
@@ -147,7 +147,7 @@ public final class AssetManager {
     }
     sc.close();
     
-    assets.put(fn, asset);
+    assets.put(path, asset);
     return asset;
   }
 //==============================================================================
