@@ -7,54 +7,53 @@ package org.unbiquitous.ubiengine.engine.system.time;
  */
 public final class Stopwatch {
   /**
-   * Resets and starts counting time.
+   * Starts the time counting. If already counting, starts over.
    */
   public void start() {
-    initialtime = Time.get();
     paused = false;
+    started = true;
+    initialTime = Time.get();
   }
   
   /**
-   * Pauses the time counting.
+   * Pauses the time counting if the stopwatch is not paused.
    */
   public void pause() {
-    if (!paused && initialtime != -1) {
-      pausetime = Time.get();
+    if (!paused && started) {
+      pauseTime = Time.get();
       paused = true;
     }
   }
   
   /**
-   * Resumes the time counting.
+   * Resumes the time counting if the stopwatch is paused.
    */
   public void resume() {
-    if (paused) {
-      initialtime += Time.get() - pausetime;
+    if (paused && started) {
+      initialTime += Time.get() - pauseTime;
       paused = false;
     }
   }
   
   /**
-   * Query the counted time.
-   * @return Time in milliseconds.
+   * Stops and sets the counting to zero.
    */
-  public long time() {
-    if (initialtime == -1)
-      return -1;
-    if (paused)
-      return pausetime - initialtime;
-    return Time.get() - initialtime;
+  public void reset() {
+    started = false;
   }
   
   /**
-   * Query if timer is paused.
-   * @return Boolean value.
+   * Query the time counted.
+   * @return Time in milliseconds.
    */
-  public boolean isPaused() {
-    return paused;
+  public long time() {
+    if (paused)
+      return pauseTime - initialTime;
+    if (!started)
+      return 0;
+    return Time.get() - initialTime;
   }
-
-  private boolean paused = false;
-  private long initialtime = -1;
-  private long pausetime;
+  
+  private boolean paused = false, started = false;
+  private long initialTime = 0, pauseTime = 0;
 }
