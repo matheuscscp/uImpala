@@ -1,6 +1,5 @@
 package org.unbiquitous.ubiengine.engine.time;
 
-
 /**
  * Class to handle frame rate. The initial frame rate is 30 FPS.
  * @author Pimenta
