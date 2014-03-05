@@ -58,7 +58,8 @@ public final class Countdown implements Subject {
       return 0;
     if (paused)
       return finalTime - pauseTime;
-    return finalTime - Time.get();
+    long rem = finalTime - Time.get();
+    return rem > 0 ? rem : 0;
   }
   
   /**
