@@ -61,8 +61,7 @@ public class Countdown extends GameObject implements Subject {
       return 0;
     if (paused)
       return finalTime - pauseTime;
-    long rem = finalTime - Time.get();
-    return rem > 0 ? rem : 0;
+    return finalTime - Time.get();
   }
   
   /**
