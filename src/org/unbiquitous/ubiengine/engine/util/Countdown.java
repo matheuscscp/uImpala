@@ -1,5 +1,8 @@
-package org.unbiquitous.ubiengine.engine.system.time;
+package org.unbiquitous.ubiengine.engine.util;
 
+import org.unbiquitous.ubiengine.engine.core.GameObject;
+import org.unbiquitous.ubiengine.engine.core.RendererContainer;
+import org.unbiquitous.ubiengine.engine.system.time.Time;
 import org.unbiquitous.ubiengine.util.observer.Observation;
 import org.unbiquitous.ubiengine.util.observer.Observations;
 import org.unbiquitous.ubiengine.util.observer.Subject;
@@ -9,7 +12,7 @@ import org.unbiquitous.ubiengine.util.observer.Subject;
  * @author Pimenta
  *
  */
-public final class Countdown implements Subject {
+public class Countdown extends GameObject implements Subject {
   /**
    * Starts the countdown. If already counting, starts over.
    * @param ms Time to countdown in milliseconds.
@@ -88,4 +91,16 @@ public final class Countdown implements Subject {
   private Observations observations = new Observations(this, EVENT_COMPLETE);
   private boolean started = false, paused = false;
   private long finalTime = 0, pauseTime = 0;
+  
+  protected void render(RendererContainer renderers) {
+    
+  }
+  
+  protected void wakeup(Object... args) {
+    
+  }
+  
+  protected void destroy() {
+    
+  }
 }

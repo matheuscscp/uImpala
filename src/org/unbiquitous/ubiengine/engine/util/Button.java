@@ -8,7 +8,6 @@ import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld;
 import org.unbiquitous.ubiengine.engine.system.io.KeyboardSourceOld.KeyDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseUpEvent;
-import org.unbiquitous.ubiengine.engine.system.time.Countdown;
 import org.unbiquitous.ubiengine.util.math.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Subject;
