@@ -3,11 +3,11 @@ package org.unbiquitous.ubiengine.engine.util;
 import java.lang.reflect.Method;
 
 import org.unbiquitous.ubiengine.engine.asset.SpriteOld;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardSourceOld;
-import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardSourceOld.KeyDownEvent;
-import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseDownEvent;
-import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseUpEvent;
+import org.unbiquitous.ubiengine.engine.io.KeyboardSourceOld;
+import org.unbiquitous.ubiengine.engine.io.MouseSourceOld;
+import org.unbiquitous.ubiengine.engine.io.KeyboardSourceOld.KeyDownEvent;
+import org.unbiquitous.ubiengine.engine.io.MouseSourceOld.MouseDownEvent;
+import org.unbiquitous.ubiengine.engine.io.MouseSourceOld.MouseUpEvent;
 import org.unbiquitous.ubiengine.util.math.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Subject;

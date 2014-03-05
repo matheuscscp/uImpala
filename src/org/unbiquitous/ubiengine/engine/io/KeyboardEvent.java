@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.io;
+package org.unbiquitous.ubiengine.engine.io;
 
 /**
  * Class to hold data about keyboard events.

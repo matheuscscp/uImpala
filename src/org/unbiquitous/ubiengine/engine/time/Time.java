@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.time;
+package org.unbiquitous.ubiengine.engine.time;
 
 import org.lwjgl.Sys;
 

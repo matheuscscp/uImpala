@@ -5,10 +5,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.ubiengine.engine.system.io.InputManager;
-import org.unbiquitous.ubiengine.engine.system.io.KeyboardReceptionDriver;
-import org.unbiquitous.ubiengine.engine.system.io.OutputManager;
-import org.unbiquitous.ubiengine.engine.system.time.DeltaTime;
+import org.unbiquitous.ubiengine.engine.io.InputManager;
+import org.unbiquitous.ubiengine.engine.io.KeyboardReceptionDriver;
+import org.unbiquitous.ubiengine.engine.io.OutputManager;
+import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
 import org.unbiquitous.uos.core.UOS;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;

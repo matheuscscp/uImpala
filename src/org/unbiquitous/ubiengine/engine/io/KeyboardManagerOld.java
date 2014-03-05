@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.io;
+package org.unbiquitous.ubiengine.engine.io;
 
 import java.awt.event.KeyListener;
 import java.util.HashMap;

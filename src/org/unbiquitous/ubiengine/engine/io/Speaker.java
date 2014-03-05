@@ -1,4 +1,4 @@
-package org.unbiquitous.ubiengine.engine.system.io;
+package org.unbiquitous.ubiengine.engine.io;
 
 /**
  * Class for sound speaker resource.

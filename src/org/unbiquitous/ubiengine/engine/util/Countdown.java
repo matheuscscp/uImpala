@@ -2,7 +2,7 @@ package org.unbiquitous.ubiengine.engine.util;
 
 import org.unbiquitous.ubiengine.engine.core.GameObject;
 import org.unbiquitous.ubiengine.engine.core.RendererContainer;
-import org.unbiquitous.ubiengine.engine.system.time.Time;
+import org.unbiquitous.ubiengine.engine.time.Time;
 import org.unbiquitous.ubiengine.util.observer.Observation;
 import org.unbiquitous.ubiengine.util.observer.Observations;
 import org.unbiquitous.ubiengine.util.observer.Subject;
