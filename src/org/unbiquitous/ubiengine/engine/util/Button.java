@@ -8,7 +8,7 @@ import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld;
 import org.unbiquitous.ubiengine.engine.system.io.KeyboardSourceOld.KeyDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseDownEvent;
 import org.unbiquitous.ubiengine.engine.system.io.MouseSourceOld.MouseUpEvent;
-import org.unbiquitous.ubiengine.engine.system.time.Alarm;
+import org.unbiquitous.ubiengine.engine.system.time.Countdown;
 import org.unbiquitous.ubiengine.util.math.Rectangle;
 import org.unbiquitous.ubiengine.util.observer.Event;
 import org.unbiquitous.ubiengine.util.observer.Subject;
@@ -28,7 +28,7 @@ public class Button implements Subject {
   protected boolean hover;
   protected boolean just_clicked;
   protected boolean just_hit;
-  protected Alarm alarm;
+  protected Countdown countdown;
   protected boolean toggle;
   protected boolean was_enabled;
   protected boolean center;
@@ -75,8 +75,8 @@ public class Button implements Subject {
       mouse_device.connect(MouseSourceOld.MOUSEDOWN, this, Button.class.getDeclaredMethod("handleMouseDown", Event.class));
       mouse_device.connect(MouseSourceOld.MOUSEUP, this, Button.class.getDeclaredMethod("handleMouseUp", Event.class));
       
-      alarm = new Alarm();
-      alarm.connect(Alarm.TRRRIMM, this, Button.class.getDeclaredMethod("handleTimerDone", Event.class));
+      countdown = new Countdown();
+      countdown.connect(Countdown.EVENT_COMPLETE, this, Button.class.getDeclaredMethod("handleTimerDone", Event.class));
     } catch (NoSuchMethodException e1) {
     } catch (SecurityException e1) {
     }
@@ -92,7 +92,7 @@ public class Button implements Subject {
       return;
     
     try {
-      alarm.update();
+      countdown.update();
     } catch (Exception e) {
     }
     
@@ -135,7 +135,7 @@ public class Button implements Subject {
     
     // if selected and mouse not inside, clip hover
     if (selected) {
-      if (alarm.time() != 0) {
+      if (countdown.time() != 0) {
         toggle = (!toggle);
         if (toggle)
           clip_y = spriteOld.getHeight()/4;
@@ -178,7 +178,7 @@ public class Button implements Subject {
   protected void handleKeyDown(Event event) {
     if (((KeyDownEvent) event).getUnicodeChar() == java.awt.event.KeyEvent.VK_ENTER) {
       if ((selected) && (enabled)) {
-        alarm.start(ENTER_DELAY);
+        countdown.start(ENTER_DELAY);
         
         // play sound
         /*FIXME if ((sound_clicked) && (play_sounds))

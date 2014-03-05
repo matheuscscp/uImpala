@@ -10,8 +10,8 @@ public final class Stopwatch {
    * Starts the time counting. If already counting, starts over.
    */
   public void start() {
-    paused = false;
     started = true;
+    paused = false;
     initialTime = Time.get();
   }
   
@@ -19,9 +19,9 @@ public final class Stopwatch {
    * Pauses the time counting if the stopwatch is not paused.
    */
   public void pause() {
-    if (!paused && started) {
-      pauseTime = Time.get();
+    if (!paused) {
       paused = true;
+      pauseTime = Time.get();
     }
   }
   
@@ -29,9 +29,9 @@ public final class Stopwatch {
    * Resumes the time counting if the stopwatch is paused.
    */
   public void resume() {
-    if (paused && started) {
-      initialTime += Time.get() - pauseTime;
+    if (paused) {
       paused = false;
+      initialTime += Time.get() - pauseTime;
     }
   }
   
@@ -47,13 +47,13 @@ public final class Stopwatch {
    * @return Time in milliseconds.
    */
   public long time() {
-    if (paused)
-      return pauseTime - initialTime;
     if (!started)
       return 0;
+    if (paused)
+      return pauseTime - initialTime;
     return Time.get() - initialTime;
   }
   
-  private boolean paused = false, started = false;
+  private boolean started = false, paused = false;
   private long initialTime = 0, pauseTime = 0;
 }
