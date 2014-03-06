@@ -115,10 +115,14 @@ public abstract class UbiGame implements UosApplication {
         deltatime.update();
         for (InputManager im : inputs)
           im.update();
-        for (GameScene gs : scenes)
-          gs.update();
-        for (GameScene gs : scenes)
-          gs.render();
+        for (GameScene gs : scenes) {
+          if (!gs.frozen)
+            gs.update();
+        }
+        for (GameScene gs : scenes) {
+          if (!gs.frozen || (gs.frozen && gs.visible))
+            gs.render();
+        }
         for (OutputManager om : outputs)
           om.update();
         updateStack();

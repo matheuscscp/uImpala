@@ -18,7 +18,7 @@ public abstract class ContainerScene extends GameScene {
    * @param o Game object.
    */
   protected void add(GameObject o) {
-    objects.add(o);
+    newObjects.add(o);
   }
 //==============================================================================
 //nothings else matters from here to below
@@ -28,9 +28,11 @@ public abstract class ContainerScene extends GameScene {
    */
   protected void update() {
     for (GameObject o : objects) {
-      if (!o.destroy)
+      if (!o.destroy && !o.frozen)
         o.updateTree();
     }
+    while (newObjects.size() > 0)
+      objects.add(newObjects.removeFirst());
   }
   
   /**
@@ -41,8 +43,10 @@ public abstract class ContainerScene extends GameScene {
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {
       GameObject o = i.next();
-      if (!o.destroy)
-        o.renderTree(renderers);
+      if (!o.destroy) {
+        if (!o.frozen || (o.frozen && o.visible))
+          o.renderTree(renderers);
+      }
       else {
         o.destroyTree();
         i.remove();
@@ -68,4 +72,5 @@ public abstract class ContainerScene extends GameScene {
   }
   
   private List<GameObject> objects = new LinkedList<GameObject>();
+  private LinkedList<GameObject> newObjects = new LinkedList<GameObject>();
 }

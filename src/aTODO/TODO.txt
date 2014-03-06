@@ -3,5 +3,4 @@ implement lwjgl context creation (system.*)
 implement asset.*
 implement asset creation (asset.AssetManager)
 refactor util.Button
-refactor util.TextInput
 implement util.mathematics.Overlap.*

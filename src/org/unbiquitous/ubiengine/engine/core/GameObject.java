@@ -12,9 +12,20 @@ import java.util.List;
  */
 public abstract class GameObject {
   /**
-   * Flag to tell the game scene if this object must be destroyed.
+   * Flag to tell the parent if this object must be destroyed.
    */
   protected boolean destroy = false;
+  
+  /**
+   * If true, the parent won't call update() for this object.
+   */
+  protected boolean frozen = false;
+  
+  /**
+   * If true, the parent will call render() for this object, even if
+   * frozen is true.
+   */
+  protected boolean visible = false;
   
   /**
    * Method to implement update.
@@ -42,7 +53,7 @@ public abstract class GameObject {
    * @param o Game object.
    */
   public void add(GameObject o) {
-    objects.add(o);
+    newObjects.add(o);
   }
   
   /**
@@ -51,9 +62,11 @@ public abstract class GameObject {
   protected void updateTree() {
     update();
     for (GameObject o : objects) {
-      if (!o.destroy)
+      if (!o.destroy && !o.frozen)
         o.updateTree();
     }
+    while (newObjects.size() > 0)
+      objects.add(newObjects.removeFirst());
   }
   
   /**
@@ -64,8 +77,10 @@ public abstract class GameObject {
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {
       GameObject o = i.next();
-      if (!o.destroy)
-        o.renderTree(renderers);
+      if (!o.destroy) {
+        if (!o.frozen || (o.frozen && o.visible))
+          o.renderTree(renderers);
+      }
       else {
         o.destroyTree();
         i.remove();
@@ -92,4 +107,5 @@ public abstract class GameObject {
   }
   
   private List<GameObject> objects = new LinkedList<GameObject>();
+  private LinkedList<GameObject> newObjects = new LinkedList<GameObject>();
 }
