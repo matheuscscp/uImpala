@@ -52,20 +52,20 @@ public final class DeltaTime {
   
   /**
    * Sets the fixed value of frame rate.
-   * @param FPS Frequency in frames per second.
+   * @param fps Frequency in frames per second.
    */
-  public void setFPS(float FPS) {
-    if (FPS > 0)
-      idealFPS = FPS;
+  public void setFPS(float fps) {
+    if (fps > 0)
+      idealFPS = fps;
   }
   
   /**
    * Sets the desired value of frame's duration.
-   * @param DT Time in seconds.
+   * @param dt Time in seconds.
    */
-  public void setDT(float DT) {
-    if (DT > 0)
-      idealFPS = 1/DT;
+  public void setDT(float dt) {
+    if (dt > 0)
+      idealFPS = 1/dt;
   }
 //==============================================================================
 //nothings else matters from here to below
