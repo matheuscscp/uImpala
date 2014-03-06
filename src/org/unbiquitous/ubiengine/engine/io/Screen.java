@@ -27,7 +27,7 @@ public final class Screen extends OutputResource {
   /**
    * Constructor to setup screen events.
    */
-  public Screen() {
+  protected Screen() {
     observations.addEvents(EVENT_CLOSE_REQUEST);
   }
   

@@ -120,7 +120,7 @@ public final class Observations {
     EventObservations event = events.get(eventType);
     if (event == null)
       return;
-    event.add(obs);
+    event.remove(obs);
   }
 //==============================================================================
 //nothings else matters from here to below

@@ -6,6 +6,10 @@ package org.unbiquitous.ubiengine.engine.io;
  *
  */
 public final class Speaker extends OutputResource {
+  protected Speaker() {
+    
+  }
+  
   protected void update() {
     
   }
