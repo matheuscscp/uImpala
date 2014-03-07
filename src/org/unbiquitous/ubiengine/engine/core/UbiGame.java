@@ -197,9 +197,9 @@ public abstract class UbiGame implements UosApplication {
   
   private void close() {
     for (InputManager im : inputs)
-      im.destroy();
+      im.close();
     for (OutputManager om : outputs)
-      om.destroy();
+      om.close();
   }
   
   private void updateStack() {

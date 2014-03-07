@@ -45,7 +45,7 @@ public abstract class IOManager {
    * @return Resource's reference, or null if no resource is available.
    */
   public IOResource alloc() {
-    if (availableResources.size() > 0)
+    if (availableResources.size() == 0)
       return null;
     IOResource rsc = availableResources.removeFirst();
     busyResources.add(rsc);
@@ -56,13 +56,16 @@ public abstract class IOManager {
   /**
    * Release a resource.
    * @param rsc Resource to be released.
+   * @return Returns true if the resource was removed from the container of
+   * busy resources.
    */
-  public void free(IOResource rsc) {
-    rsc.close();
+  public boolean free(IOResource rsc) {
     if (!busyResources.remove(rsc))
-      return;
+      return false;
+    rsc.close();
     stop(rsc);
-    availableResources.addFirst(rsc);
+    availableResources.addLast(rsc);
+    return true;
   }
   
   /**
@@ -79,7 +82,7 @@ public abstract class IOManager {
   /**
    * Engine's private use.
    */
-  public void destroy() {
+  public void close() {
     while (availableResources.size() > 0)
       availableResources.removeFirst().close();
     for (Iterator<IOResource> i = busyResources.iterator(); i.hasNext();) {

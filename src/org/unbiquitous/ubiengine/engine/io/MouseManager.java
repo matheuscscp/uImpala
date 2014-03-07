@@ -32,8 +32,8 @@ public final class MouseManager extends InputManager {
       ms.update();
   }
   
-  public void destroy() {
-    super.destroy();
+  public void close() {
+    super.close();
     for (Iterator<MouseSource> i = screenMouses.iterator(); i.hasNext();) {
       i.next().close();
       i.remove();

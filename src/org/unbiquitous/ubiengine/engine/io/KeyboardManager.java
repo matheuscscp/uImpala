@@ -39,8 +39,8 @@ public final class KeyboardManager extends InputManager {
       ks.update();
   }
   
-  public void destroy() {
-    super.destroy();
+  public void close() {
+    super.close();
     for (Iterator<KeyboardSource> i = screenKeyboards.iterator(); i.hasNext();) {
       i.next().close();
       i.remove();
