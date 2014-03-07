@@ -1,5 +1,6 @@
 refactor io.Keyboard* (uos stuff)
-implement lwjgl context creation (io.*)
 implement asset.*
+implement lwjgl context creation (io.*)
+implement asset.* (Sprite and Text)
 refactor util.Button
 implement util.math.Overlap.*
