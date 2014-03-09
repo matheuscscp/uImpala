@@ -10,6 +10,7 @@ import org.unbiquitous.ubiengine.engine.io.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.engine.io.OutputManager;
 import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
+import org.unbiquitous.uos.core.InitialProperties;
 import org.unbiquitous.uos.core.UOS;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.applicationManager.UosApplication;
@@ -34,8 +35,9 @@ public abstract class UbiGame implements UosApplication {
   /**
    * Use this method in main() to start the game.
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
+   * @param args Command line arguments.
    */
-  protected static void run(final Class<? extends UbiGame> game) {
+  protected static void run(final Class<? extends UbiGame> game, final String[] args) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -43,9 +45,9 @@ public abstract class UbiGame implements UosApplication {
           {"ubiquitos.radar", PingRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          //{"ubiquitos.uos.deviceName","compDevice"},FIXME
           {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
-          {"ubiquitos.application.deploylist", game.getName()}
+          {"ubiquitos.application.deploylist", game.getName()},
+          {"args", args}
         };
       }
     });
@@ -91,7 +93,7 @@ public abstract class UbiGame implements UosApplication {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private GameSettings settings;
+  private GameSettings settings = getSettings().validate();
   private LinkedList<GameScene> scenes = new LinkedList<GameScene>();
   private List<InputManager> inputs = new ArrayList<InputManager>();
   private List<OutputManager> outputs = new ArrayList<OutputManager>();
@@ -152,8 +154,8 @@ public abstract class UbiGame implements UosApplication {
   /**
    * uOS's private use.
    */
-  public void init(OntologyDeploy ontology, String appId) {
-    
+  public void init(OntologyDeploy knowledgeBase, InitialProperties properties, String appId) {
+    settings.put("args", (String[])properties.get("args"));
   }
   
   /**
@@ -165,7 +167,7 @@ public abstract class UbiGame implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
-    GameComponents.put(GameSettings.class, settings = getSettings().validate());
+    GameComponents.put(GameSettings.class, settings);
     GameComponents.put(UbiGame.class, this);
     GameComponents.put(Gateway.class, gateway);
     GameComponents.put(DeltaTime.class, deltatime);
