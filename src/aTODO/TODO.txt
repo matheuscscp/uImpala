@@ -1,5 +1,6 @@
 refactor io.Keyboard* (uos stuff)
 implement asset.*
+rewrite basics 1 tutorial
 implement lwjgl context creation (io.*)
 implement asset.* (Sprite and Text)
 refactor util.Button

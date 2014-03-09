@@ -25,19 +25,13 @@ import org.unbiquitous.uos.network.socket.radar.PingRadar;
  * @author Pimenta
  *
  */
-public abstract class UbiGame implements UosApplication {
-  /**
-   * Must be implemented by the game class.
-   * @return Reference to the game initial settings.
-   */
-  protected abstract GameSettings getSettings();
-  
+public final class UbiGame implements UosApplication {
   /**
    * Use this method in main() to start the game.
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
    * @param args Command line arguments.
    */
-  protected static void run(final Class<? extends UbiGame> game, final String[] args) {
+  public static void run(final GameSettings settings) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -46,8 +40,8 @@ public abstract class UbiGame implements UosApplication {
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
           {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
-          {"ubiquitos.application.deploylist", game.getName()},
-          {"args", args}
+          {"ubiquitos.application.deploylist", UbiGame.class.getName()},
+          {"ubiengine.gameSettings", settings}
         };
       }
     });
@@ -93,7 +87,7 @@ public abstract class UbiGame implements UosApplication {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private GameSettings settings = getSettings().validate();
+  private GameSettings settings;
   private LinkedList<GameScene> scenes = new LinkedList<GameScene>();
   private List<InputManager> inputs = new ArrayList<InputManager>();
   private List<OutputManager> outputs = new ArrayList<OutputManager>();
@@ -155,7 +149,7 @@ public abstract class UbiGame implements UosApplication {
    * uOS's private use.
    */
   public void init(OntologyDeploy knowledgeBase, InitialProperties properties, String appId) {
-    settings.put("args", (String[])properties.get("args"));
+    settings = (GameSettings)properties.get("ubiengine.gameSettings");
   }
   
   /**
@@ -167,6 +161,7 @@ public abstract class UbiGame implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
+    validateSettings();
     GameComponents.put(GameSettings.class, settings);
     GameComponents.put(UbiGame.class, this);
     GameComponents.put(Gateway.class, gateway);
@@ -195,6 +190,19 @@ public abstract class UbiGame implements UosApplication {
     } catch (Exception e) {
       throw new Error(e);
     }
+  }
+  
+  private void validateSettings() {
+    if (settings == null)
+      throw new Error("GameSettings not defined!");
+    if (settings.get("first_scene") == null)
+      throw new Error("First game scene not defined!");
+    if (settings.get("input_managers") == null)
+      throw new Error("Cannot start game with no input managers!");
+    if (settings.get("output_managers") == null)
+      throw new Error("Cannot start game with no output managers!");
+    if (settings.get("root_path") == null)
+      settings.put("root_path", ".");
   }
   
   private void close() {
