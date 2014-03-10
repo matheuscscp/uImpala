@@ -35,7 +35,7 @@ public abstract class GameObject {
   /**
    * Method to implement rendering.
    */
-  protected abstract void render(RendererContainer renderers);
+  protected abstract void render(GameRenderers renderers);
   
   /**
    * Handle a pop from the stack of game scenes.
@@ -72,7 +72,7 @@ public abstract class GameObject {
   /**
    * Calls render() for this object and its tree.
    */
-  protected void renderTree(RendererContainer renderers) {
+  protected void renderTree(GameRenderers renderers) {
     render(renderers);
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {

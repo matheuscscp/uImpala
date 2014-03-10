@@ -4,7 +4,7 @@ import java.awt.event.KeyEvent;
 
 import org.lwjgl.input.Keyboard;
 import org.unbiquitous.ubiengine.engine.core.GameObject;
-import org.unbiquitous.ubiengine.engine.core.RendererContainer;
+import org.unbiquitous.ubiengine.engine.core.GameRenderers;
 import org.unbiquitous.ubiengine.engine.io.KeyboardEvent;
 import org.unbiquitous.ubiengine.engine.io.KeyboardSource;
 import org.unbiquitous.ubiengine.engine.time.Stopwatch;
@@ -71,7 +71,7 @@ public class StringInput extends GameObject {
     }
   }
   
-  protected void render(RendererContainer renderers) {
+  protected void render(GameRenderers renderers) {
     
   }
   

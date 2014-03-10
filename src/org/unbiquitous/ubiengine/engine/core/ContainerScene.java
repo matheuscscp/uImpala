@@ -39,7 +39,7 @@ public abstract class ContainerScene extends GameScene {
    * Engine's private use.
    */
   protected void render() {
-    RendererContainer renderers = new RendererContainer();
+    GameRenderers renderers = new GameRenderers();
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {
       GameObject o = i.next();

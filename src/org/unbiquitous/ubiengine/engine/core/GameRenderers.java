@@ -9,17 +9,17 @@ import java.util.TreeMap;
  * @author Pimenta
  *
  */
-public class RendererContainer {
+public class GameRenderers {
   /**
    * Method to add a render operation to the container.
    * @param z Plane of renderization. The renderization will happen
    * in ascending order.
    * @param renderer Renderer to be called.
    */
-  public void put(int z, GameRenderer renderer) {
-    List<GameRenderer> l = renderers.get(z);
+  public void put(int z, Runnable renderer) {
+    List<Runnable> l = renderers.get(z);
     if (l == null) {
-      l = new LinkedList<GameRenderer>();
+      l = new LinkedList<Runnable>();
       renderers.put(z, l);
     }
     l.add(renderer);
@@ -30,13 +30,13 @@ public class RendererContainer {
    */
   public void render() {
     while (renderers.size() > 0) {
-      LinkedList<GameRenderer> tmp = (LinkedList<GameRenderer>)renderers.pollFirstEntry().getValue();
+      LinkedList<Runnable> tmp = (LinkedList<Runnable>)renderers.pollFirstEntry().getValue();
       while (tmp.size() > 0)
-        tmp.removeFirst().render();
+        tmp.removeFirst().run();
     }
   }
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private TreeMap<Integer, List<GameRenderer>> renderers = new TreeMap<Integer, List<GameRenderer>>();
+  private TreeMap<Integer, List<Runnable>> renderers = new TreeMap<Integer, List<Runnable>>();
 }

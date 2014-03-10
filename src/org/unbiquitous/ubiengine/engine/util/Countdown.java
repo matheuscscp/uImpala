@@ -1,7 +1,7 @@
 package org.unbiquitous.ubiengine.engine.util;
 
 import org.unbiquitous.ubiengine.engine.core.GameObject;
-import org.unbiquitous.ubiengine.engine.core.RendererContainer;
+import org.unbiquitous.ubiengine.engine.core.GameRenderers;
 import org.unbiquitous.ubiengine.engine.time.Time;
 import org.unbiquitous.ubiengine.util.observer.Observation;
 import org.unbiquitous.ubiengine.util.observer.Observations;
@@ -91,7 +91,7 @@ public class Countdown extends GameObject implements Subject {
   private boolean started = false, paused = false;
   private long finalTime = 0, pauseTime = 0;
   
-  protected void render(RendererContainer renderers) {
+  protected void render(GameRenderers renderers) {
     
   }
   
