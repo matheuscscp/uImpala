@@ -22,7 +22,7 @@ public class StringInput extends GameObject {
    * A constructor to set the source from where the object must retrieve input.
    * @param keyb Keyboard source.
    */
-  public StringInput(KeyboardSource keyb) {
+  ZUERApublic StringInput(KeyboardSource keyb) {
     keyboard = keyb;
     connect();
   }

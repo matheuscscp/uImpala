@@ -8,35 +8,29 @@ import java.util.Iterator;
  * @author Pimenta
  *
  */
-public final class MouseManager extends InputManager {
-  /**
-   * Engine's private use.
-   */
-  protected HashSet<MouseSource> screenMouses = new HashSet<MouseSource>();
-  
-  protected void updateLists() {
-    
+public final class MouseManager implements InputManager {
+  public IOResource alloc() {
+    return null;
   }
   
-  protected void start(IOResource rsc) {
-    
-  }
-  
-  protected void stop(IOResource rsc) {
-    
+  public boolean free(IOResource rsc) {
+    return false;
   }
   
   public void update() {
-    super.update();
     for (MouseSource ms : screenMouses)
       ms.update();
   }
   
   public void close() {
-    super.close();
     for (Iterator<MouseSource> i = screenMouses.iterator(); i.hasNext();) {
       i.next().close();
       i.remove();
     }
   }
+  
+  /**
+   * Engine's private use.
+   */
+  protected HashSet<MouseSource> screenMouses = new HashSet<MouseSource>();
 }

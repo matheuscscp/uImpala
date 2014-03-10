@@ -5,47 +5,53 @@ import java.util.Iterator;
 
 import org.unbiquitous.ubiengine.engine.core.GameComponents;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
+import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
+import org.unbiquitous.uos.core.messageEngine.messages.Notify;
 
 /**
  * Class for keyboards management.
  * @author Pimenta
  *
  */
-public final class KeyboardManager extends InputManager {
-  /**
-   * Engine's private use.
-   */
-  protected HashSet<KeyboardSource> screenKeyboards = new HashSet<KeyboardSource>();
-  
+public final class KeyboardManager implements InputManager, UosEventListener {
   public KeyboardManager() {
     gateway = GameComponents.get(Gateway.class);
   }
   
-  protected void updateLists() {
+  public IOResource alloc() {
     // TODO Auto-generated method stub
+    return null;
   }
   
-  protected void start(IOResource rsc) {
+  public boolean free(IOResource rsc) {
     // TODO Auto-generated method stub
+    return false;
   }
-  
-  protected void stop(IOResource rsc) {
-    // TODO Auto-generated method stub
-  }
-  
+//==============================================================================
+//nothings else matters from here to below
+//==============================================================================
   public void update() {
-    super.update();
+    //TODO
     for (KeyboardSource ks : screenKeyboards)
       ks.update();
   }
   
   public void close() {
-    super.close();
+    //TODO
     for (Iterator<KeyboardSource> i = screenKeyboards.iterator(); i.hasNext();) {
       i.next().close();
       i.remove();
     }
   }
+  
+  public void handleEvent(Notify event) {
+    // TODO Auto-generated method stub
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  protected HashSet<KeyboardSource> screenKeyboards = new HashSet<KeyboardSource>();
   
   private Gateway gateway;
 }

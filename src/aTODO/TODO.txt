@@ -4,4 +4,5 @@ rewrite basics 1 tutorial
 implement lwjgl context creation (io.*)
 implement asset.* (Sprite and Text)
 refactor util.Button
+refactor util.StringInput (for uos keyboards)
 implement util.math.Overlap.*

@@ -5,23 +5,30 @@ package org.unbiquitous.ubiengine.engine.io;
  * @author Pimenta
  *
  */
-public final class SpeakerManager extends OutputManager {
-  /**
-   * Constructor to add the default speaker in availableResources.
-   */
-  public SpeakerManager() {
-    availableResources.add(new Speaker());
+public final class SpeakerManager implements OutputManager {
+  public IOResource alloc() {
+    if (busy)
+      return null;
+    busy = true;
+    return speaker;
   }
   
-  protected void updateLists() {
-    
+  public boolean free(IOResource rsc) {
+    if (!busy || speaker != (Speaker)rsc)
+      return false;
+    busy = false;
+    return true;
   }
   
-  protected void start(IOResource rsc) {
-    
+  public void update() {
+    speaker.update();
   }
   
-  protected void stop(IOResource rsc) {
-    
+  public void close() {
+    speaker.close();
+    speaker = null;
   }
+  
+  private Speaker speaker = new Speaker();
+  private boolean busy = false;
 }

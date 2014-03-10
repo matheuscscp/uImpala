@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.ListResourceBundle;
 
 import org.unbiquitous.ubiengine.engine.io.InputManager;
-import org.unbiquitous.ubiengine.engine.io.KeyboardReceptionDriver;
 import org.unbiquitous.ubiengine.engine.io.OutputManager;
 import org.unbiquitous.ubiengine.engine.time.DeltaTime;
 import org.unbiquitous.ubiengine.util.Logger;
@@ -39,7 +38,6 @@ public final class UbiGame implements UosApplication {
           {"ubiquitos.radar", PingRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.driver.deploylist", KeyboardReceptionDriver.class.getName()},
           {"ubiquitos.application.deploylist", UbiGame.class.getName()},
           {"ubiengine.gameSettings", settings}
         };
