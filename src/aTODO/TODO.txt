@@ -1,8 +1,9 @@
-refactor io.Keyboard* (uos stuff)
-implement asset.*
-rewrite basics 1 tutorial
 implement lwjgl context creation (io.*)
 implement asset.* (Sprite and Text)
+implement asset.*
+refactor io.Keyboard* (uos stuff)
+rewrite basics 1 tutorial
+write basics 7 tutorial
 refactor util.Button
 refactor util.StringInput (for uos keyboards)
 implement util.math.Overlap.*
