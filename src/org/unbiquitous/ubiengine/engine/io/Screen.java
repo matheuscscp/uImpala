@@ -7,6 +7,8 @@ import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
+import org.unbiquitous.ubiengine.engine.core.GameComponents;
 
 /**
  * Class for screen resource.
@@ -48,10 +50,35 @@ public final class Screen extends OutputResource {
       Display.create();
       mouse = new MouseSource(Mouse.getButtonCount());
       keyboard = new KeyboardSource(Keyboard.KEYBOARD_SIZE);
+      addMouseKeyboard();
     } catch (Throwable e) {
       open = false;
       throw new Error(e);
     }
+  }
+  
+  /**
+   * Initializes fixed pipeline OpenGL.
+   */
+  public void initGL() {
+    // enable texture
+    GL11.glEnable(GL11.GL_TEXTURE_2D);
+    
+    // enable blend
+    GL11.glEnable(GL11.GL_BLEND);
+    GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+    
+    // backbuffer size
+    GL11.glViewport(0, 0, width, height);
+    
+    // setup projection
+    GL11.glMatrixMode(GL11.GL_PROJECTION);
+    GL11.glLoadIdentity();
+    GL11.glOrtho(0, width, height, 0, -1, 1);
+    
+    // clears matrix
+    GL11.glMatrixMode(GL11.GL_MODELVIEW);
+    GL11.glLoadIdentity();
   }
   
   public String getTitle() {
@@ -166,6 +193,7 @@ public final class Screen extends OutputResource {
     
     // screen
     Display.update();
+    GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     closeRequested = Display.isCloseRequested();
     if (closeRequested)
       observations.broadcast(EVENT_CLOSE_REQUEST, null);
@@ -174,6 +202,7 @@ public final class Screen extends OutputResource {
   public void close() {
     if (!open)
       return;
+    removeMouseKeyboard();
     Display.destroy();
     open = false;
     mouse = null;
@@ -182,6 +211,32 @@ public final class Screen extends OutputResource {
   
   public boolean isUpdating() {
     return true;
+  }
+  
+  public MouseSource getMouse() {
+    return mouse;
+  }
+  
+  public KeyboardSource getKeyboard() {
+    return keyboard;
+  }
+  
+  private void addMouseKeyboard() {
+    MouseManager mm = GameComponents.get(MouseManager.class);
+    if (mm != null && mouse != null)
+      mm.screenMouses.add(mouse);
+    KeyboardManager km = GameComponents.get(KeyboardManager.class);
+    if (km != null && keyboard != null)
+      km.screenKeyboards.add(keyboard);
+  }
+  
+  private void removeMouseKeyboard() {
+    MouseManager mm = GameComponents.get(MouseManager.class);
+    if (mm != null && mouse != null)
+      mm.screenMouses.remove(mouse);
+    KeyboardManager km = GameComponents.get(KeyboardManager.class);
+    if (km != null && keyboard != null)
+      km.screenKeyboards.remove(keyboard);
   }
   
   /**
@@ -193,14 +248,6 @@ public final class Screen extends OutputResource {
    * Engine's private use.
    */
   protected KeyboardSource keyboard = null;
-  
-  public MouseSource getMouse() {
-    return mouse;
-  }
-  
-  public KeyboardSource getKeyboard() {
-    return keyboard;
-  }
   
   private String title = null;
   private int width = 0;

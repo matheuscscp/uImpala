@@ -3,8 +3,6 @@ package org.unbiquitous.ubiengine.engine.io;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.unbiquitous.ubiengine.engine.core.GameComponents;
-
 /**
  * Class for screens management.
  * @author Pimenta
@@ -21,7 +19,6 @@ public final class ScreenManager implements OutputManager {
       return null;
     Screen screen = new Screen();
     localScreens.add(screen);
-    addMouseKeyboard(screen);
     return screen;
   }
   
@@ -36,7 +33,6 @@ public final class ScreenManager implements OutputManager {
       return false;
     screen.close();
     localScreens.remove(screen);
-    removeMouseKeyboard(screen);
     return true;
   }
   
@@ -69,24 +65,6 @@ public final class ScreenManager implements OutputManager {
       i.next().close();
       i.remove();
     }
-  }
-  
-  private void addMouseKeyboard(Screen screen) {
-    MouseManager mm = GameComponents.get(MouseManager.class);
-    if (mm != null && screen.mouse != null)
-      mm.screenMouses.add(screen.mouse);
-    KeyboardManager km = GameComponents.get(KeyboardManager.class);
-    if (km != null && screen.keyboard != null)
-      km.screenKeyboards.add(screen.keyboard);
-  }
-  
-  private void removeMouseKeyboard(Screen screen) {
-    MouseManager mm = GameComponents.get(MouseManager.class);
-    if (mm != null && screen.mouse != null)
-      mm.screenMouses.remove(screen.mouse);
-    KeyboardManager km = GameComponents.get(KeyboardManager.class);
-    if (km != null && screen.keyboard != null)
-      km.screenKeyboards.remove(screen.keyboard);
   }
   
   private HashSet<Screen> localScreens = new HashSet<Screen>();
