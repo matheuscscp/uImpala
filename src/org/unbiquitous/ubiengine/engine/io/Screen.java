@@ -172,7 +172,7 @@ public final class Screen extends OutputResource {
     
     // mouse
     while (Mouse.next()) {
-      MouseEvent event = new MouseEvent(0, Mouse.getEventX(), Mouse.getEventY(), Mouse.getEventButton());
+      MouseEvent event = new MouseEvent(0, Mouse.getEventX(), height - 1 - Mouse.getEventY(), Mouse.getEventButton());
       if (event.button == -1)
         event.type = MouseSource.EVENT_MOUSE_MOTION;
       else if (Mouse.getEventButtonState())
