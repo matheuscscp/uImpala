@@ -53,6 +53,13 @@ public final class DeltaTime {
   /**
    * Engine's private use.
    */
+  public DeltaTime() {
+    last = Time.get() - dtFixed;
+  }
+  
+  /**
+   * Engine's private use.
+   */
   public void update() {
     long now = Time.get();
     dt = now - last - dt;
