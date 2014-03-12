@@ -64,7 +64,7 @@ public final class DeltaTime {
     long now = Time.get();
     dt = now - last - dt;
     last = now;
-    updateID = now;
+    updateID = now - 1;
   }
   
   /**
