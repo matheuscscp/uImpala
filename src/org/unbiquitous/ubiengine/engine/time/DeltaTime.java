@@ -1,98 +1,74 @@
 package org.unbiquitous.ubiengine.engine.time;
 
 /**
- * Class to handle frame rate. The initial frame rate is 30 FPS.
+ * Class to handle update rate. The initial rate is 32 Hz.
  * @author Pimenta
  *
  */
 public final class DeltaTime {
   /**
-   * Can be used as frame's unique id.
-   * @return Time in milliseconds.
+   * The fixed value of update rate.
+   * @return Frequency in updates per second.
    */
-  public long frameID() {
-    return before;
+  public int getUPS() {
+    return ups;
   }
   
   /**
-   * The fixed value of frame rate.
-   * @return Frequency in frames per second.
+   * Sets the fixed value of update rate.
+   * @param ups Frequency in updates per second.
    */
-  public float getFPS() {
-    return idealFPS;
+  public void setUPS(int ups) {
+    if (ups > 0) {
+      this.ups = ups;
+      dtFloat = 1/(float)ups;
+      dtFixed = 1000/ups;
+    }
   }
   
   /**
-   * The value of frame rate achieved in the last frame.
-   * @return Frequency in frames per second.
-   */
-  public float getRealFPS() {
-    if (realDT == 0)
-      return 0;
-    return 1000.0f/realDT;
-  }
-  
-  /**
-   * The desired value of frame's duration.
+   * The time interval between two updates.
    * @return Time in seconds.
    */
   public float getDT() {
-    if (realDT == 0)
-      return 0;
-    return 1/idealFPS;
+    return dtFloat;
   }
   
   /**
-   * The value of last frame's duration.
-   * @return Time in seconds.
+   * @return Update's unique ID.
    */
-  public float getRealDT() {
-    return realDT/1000.0f;
-  }
-  
-  /**
-   * Sets the fixed value of frame rate.
-   * @param fps Frequency in frames per second.
-   */
-  public void setFPS(float fps) {
-    if (fps > 0)
-      idealFPS = fps;
-  }
-  
-  /**
-   * Sets the desired value of frame's duration.
-   * @param dt Time in seconds.
-   */
-  public void setDT(float dt) {
-    if (dt > 0)
-      idealFPS = 1/dt;
+  public long updateID() {
+    return updateID;
   }
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
-  private long before;         // unit: millisecond
-  private float idealFPS = 30; // unit: frame/second
-  private long realDT = 0;     // unit: millisecond
+  private long last = 0;            // unit: milliseconds
+  private int ups = 32;             // unit: updates/second
+  private float dtFloat = 0.03125f; // unit: seconds
+  private int dtFixed = 31;         // unit: milliseconds
+  private long dt = 0;              // unit: milliseconds
+  private long updateID = 0;
   
   /**
    * Engine's private use.
    */
   public void update() {
     long now = Time.get();
-    realDT = now - before;
-    before = now;
+    dt = now - last - dt;
+    last = now;
+    updateID = now;
   }
   
   /**
    * Engine's private use.
    */
-  public void sync() {
-    long diff = 1000/((long)idealFPS) - (Time.get() - before);
-    if (diff <= 0)
-      return;
-    try {
-      Thread.sleep(diff);
-    } catch (InterruptedException e) {
+  public boolean dtReachedLimit() {
+    if (dt >= dtFixed) {
+      dt -= dtFixed;
+      updateID++;
+      return true;
     }
+    return false;
   }
 }

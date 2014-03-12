@@ -48,6 +48,7 @@ public final class Screen extends OutputResource {
       setDisplayMode(w, h, f);
       setIcon(i);
       Display.create();
+      Display.setVSyncEnabled(true);
       mouse = new MouseSource(Mouse.getButtonCount());
       keyboard = new KeyboardSource(Keyboard.KEYBOARD_SIZE);
       addMouseKeyboard();

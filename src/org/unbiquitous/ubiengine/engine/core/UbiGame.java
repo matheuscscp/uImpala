@@ -107,20 +107,30 @@ public final class UbiGame implements UosApplication {
       init(gateway);
       while (scenes.size() > 0) {
         deltatime.update();
+        
+        // update input
         for (InputManager im : inputs)
           im.update();
-        for (GameScene gs : scenes) {
-          if (!gs.frozen)
-            gs.update();
+        
+        // update scenes
+        while (deltatime.dtReachedLimit()) {
+          for (GameScene gs : scenes) {
+            if (!gs.frozen)
+              gs.update();
+          }
         }
+        
+        // render scenes
         for (GameScene gs : scenes) {
           if (!gs.frozen || (gs.frozen && gs.visible))
             gs.render();
         }
+        
+        // update output
         for (OutputManager om : outputs)
           om.update();
+        
         updateStack();
-        deltatime.sync();
       }
       close();
     } catch (Error e) {

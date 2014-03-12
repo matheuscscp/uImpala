@@ -1,9 +1,9 @@
-refactor time.DeltaTime and UbiGame loop
 implement asset.* (Sprite and Text)
 refactor io.Keyboard* (uos stuff)
 implement asset.*
 rewrite basics 1 tutorial
 write basics 7 tutorial
+rewrite basics 8 tutorial
 refactor util.StringInput (for uos keyboards)
 refactor util.Button
 implement util.math.Overlap.*
