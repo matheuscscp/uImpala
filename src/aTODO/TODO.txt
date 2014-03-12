@@ -1,7 +1,6 @@
-rewrite basics 8 tutorial
 implement asset.* (Sprite and Text)
-refactor io.Keyboard* (uos stuff)
 implement asset.*
+refactor io.Keyboard* (uos stuff)
 write basics 7 tutorial
 refactor util.StringInput (for uos keyboards)
 refactor util.Button
