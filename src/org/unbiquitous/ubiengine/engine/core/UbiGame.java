@@ -119,6 +119,7 @@ public final class UbiGame implements UosApplication {
               gs.update();
           }
         }
+        deltatime.accumulate();
         
         // render scenes
         for (GameScene gs : scenes) {

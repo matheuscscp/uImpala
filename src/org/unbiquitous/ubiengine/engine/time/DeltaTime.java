@@ -62,7 +62,7 @@ public final class DeltaTime {
    */
   public void update() {
     long now = Time.get();
-    dt = now - last - dt;
+    dt = now - last;
     last = now;
     updateID = now - 1;
   }
@@ -77,5 +77,12 @@ public final class DeltaTime {
       return true;
     }
     return false;
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void accumulate() {
+    last -= dt;
   }
 }
