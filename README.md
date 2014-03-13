@@ -25,7 +25,7 @@ pom.xml
   <dependencies>
     <dependency>
       <groupId>org.unbiquitous</groupId>
-      <artifactId>ubi-engine</artifactId>
+      <artifactId>uImp67</artifactId>
       <version>1.0-SNAPSHOT</version>
     </dependency>
   </dependencies>
