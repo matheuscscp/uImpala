@@ -1,4 +1,4 @@
-implement asset.* (Text)
+implement asset.* (Text OR Font)
 implement asset.*
 refactor io.Keyboard* (uos stuff)
 write basics 7 tutorial
