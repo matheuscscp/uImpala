@@ -14,7 +14,7 @@ Check the [Wiki](https://github.com/matheuscscp/ubiengine/wiki) for tutorials.
 Links
 =====
 
-* [uImp67](https://github.com/matheuscscp/ubiengine)
+* [uImp67](https://github.com/matheuscscp/uImp67)
 * [uos_socket_plugin](https://github.com/UnBiquitous/uos_socket_plugin)
 * [uos_core](https://github.com/UnBiquitous/uos_core)
 
