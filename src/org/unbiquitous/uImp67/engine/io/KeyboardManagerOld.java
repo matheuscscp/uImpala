@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Queue;
 
 import org.unbiquitous.json.JSONException;
-import org.unbiquitous.uImp67.engine.core.UbiGame.Settings;
+import org.unbiquitous.uImp67.engine.core.Game.Settings;
 import org.unbiquitous.uImp67.util.ComponentContainer;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.ServiceCallException;

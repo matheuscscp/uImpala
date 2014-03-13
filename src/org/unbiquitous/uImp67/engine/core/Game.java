@@ -24,7 +24,7 @@ import org.unbiquitous.uos.network.socket.radar.PingRadar;
  * @author Pimenta
  *
  */
-public final class UbiGame implements UosApplication {
+public final class Game implements UosApplication {
   /**
    * Use this method in main() to start the game.
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
@@ -38,8 +38,8 @@ public final class UbiGame implements UosApplication {
           {"ubiquitos.radar", PingRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.application.deploylist", UbiGame.class.getName()},
-          {"ubiengine.gameSettings", settings}
+          {"ubiquitos.application.deploylist", Game.class.getName()},
+          {"uImp67.gameSettings", settings}
         };
       }
     });
@@ -158,7 +158,7 @@ public final class UbiGame implements UosApplication {
    * uOS's private use.
    */
   public void init(OntologyDeploy knowledgeBase, InitialProperties properties, String appId) {
-    settings = (GameSettings)properties.get("ubiengine.gameSettings");
+    settings = (GameSettings)properties.get("uImp67.gameSettings");
   }
   
   /**
@@ -172,7 +172,7 @@ public final class UbiGame implements UosApplication {
   private void init(Gateway gateway) {
     validateSettings();
     GameComponents.put(GameSettings.class, settings);
-    GameComponents.put(UbiGame.class, this);
+    GameComponents.put(Game.class, this);
     GameComponents.put(Gateway.class, gateway);
     GameComponents.put(DeltaTime.class, deltatime);
     
