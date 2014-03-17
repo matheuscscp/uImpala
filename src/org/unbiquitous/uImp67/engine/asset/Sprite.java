@@ -48,10 +48,29 @@ public class Sprite {
     this.color = color;
   }
   
+  /**
+   * Calls the complete render method with opacity 1.0f.
+   * @param x Coordinate x of the top-left corner of the clipping rectangle.
+   * @param y Coordinate y of the top-left corner of the clipping rectangle.
+   * @param screen Screen on which the image will be rendered.
+   * @see Sprite#render(float, float, Screen, float)
+   */
   public void render(float x, float y, Screen screen) {
+    render(x, y, screen, 1.0f);
+  }
+  
+  /**
+   * Render with (x,y) being the top-left corner of the sprite.
+   * @param x Coordinate x of the top-left corner of the clipping rectangle.
+   * @param y Coordinate y of the top-left corner of the clipping rectangle.
+   * @param screen Screen on which the image will be rendered.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @see Sprite#render(float, float, Screen)
+   */
+  public void render(float x, float y, Screen screen, float opacity) {
     texture.bind();
     
-    GL11.glColor4f(color.r, color.g, color.b, 1f);
+    GL11.glColor4f(color.r, color.g, color.b, opacity);
     
     GL11.glLoadIdentity();
     GL11.glTranslatef(x, y, 0.0f);

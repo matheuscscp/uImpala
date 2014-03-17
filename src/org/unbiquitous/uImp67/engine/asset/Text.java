@@ -35,10 +35,34 @@ public class Text {
   }
   
   /**
+   * Calls the complete render method with opacity 1.0f.
+   * @param x Coordinate x of the top-left corner of the text.
+   * @param y Coordinate y of the top-left corner of the text.
+   * @param screen Screen on which the text will be rendered.
+   * @see Text#render(float, float, Screen, float)
+   */
+  public void render(float x, float y, Screen screen) {
+    render(x, y, screen, 1.0f);
+  }
+  
+  /**
+   * Render with (x,y) being the top-left corner of the text.
+   * @param x Coordinate x of the top-left corner of the text.
+   * @param y Coordinate y of the top-left corner of the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @see Text#render(float, float, Screen)
+   */
+  public void render(float x, float y, Screen screen, float opacity) {
+    color.a = opacity;
+    ttfFont.drawString(x, y, text, color);
+  }
+  
+  /**
    * Calls the complete render method with angle 0.0f, scale 1.0f and opacity 1.0f.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
+   * @param x Coordinate x of the center of the text.
+   * @param y Coordinate y of the center of the text.
    * @see Text#render(Screen, float, float, float)
    * @see Text#render(Screen, float, float, float, float, float)
    * @see Text#render(Screen, float, float, float, float, float, float)
@@ -50,8 +74,8 @@ public class Text {
   /**
    * Calls the complete render method with scale 1.0f and opacity 1.0f.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
+   * @param x Coordinate x of the center of the text.
+   * @param y Coordinate y of the center of the text.
    * @param angle Angle of rotation in degrees.
    * @see Text#render(Screen, float, float)
    * @see Text#render(Screen, float, float, float, float, float)
@@ -64,8 +88,8 @@ public class Text {
   /**
    * Calls the complete render method with opacity 1.0f.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
+   * @param x Coordinate x of the center of the text.
+   * @param y Coordinate y of the center of the text.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
@@ -80,8 +104,8 @@ public class Text {
   /**
    * Render the text.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
+   * @param x Coordinate x of the center of the text.
+   * @param y Coordinate y of the center of the text.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
