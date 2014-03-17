@@ -1,4 +1,3 @@
-implement asset.Animation advanced methods (like pause and resume)
 implement asset.*
 write basics 7 tutorial
 refactor io.Keyboard* (uos stuff)

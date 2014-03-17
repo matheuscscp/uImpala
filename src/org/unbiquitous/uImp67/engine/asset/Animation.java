@@ -25,6 +25,36 @@ public class Animation extends Sprite {
     clipWidth = getWidth()/frames;
     clipHeight = getHeight();
     lastTime = Time.get();
+    running = true;
+    clip(0, 0, clipWidth, clipHeight);
+  }
+  
+  /**
+   * Pauses the animation.
+   */
+  public void pause() {
+    if (!running)
+      return;
+    pauseTime = Time.get();
+    running = false;
+  }
+  
+  /**
+   * Resumes the animation.
+   */
+  public void resume() {
+    if (running)
+      return;
+    lastTime += Time.get() - pauseTime;
+    running = true;
+  }
+  
+  /**
+   * Sets the current frame.
+   * @param frame Frame in the interval [0, frames).
+   */
+  public void setFrame(float frame) {
+    this.frame = frame;
   }
   
   public void render(float x, float y, Screen screen, float opacity) {
@@ -40,6 +70,9 @@ public class Animation extends Sprite {
 //nothings else matters from here to below
 //==============================================================================
   private void update() {
+    if (!running)
+      return;
+    
     long now = Time.get();
     float dt = (now - lastTime)/1000f;
     lastTime = now;
@@ -53,6 +86,7 @@ public class Animation extends Sprite {
   }
   
   private int frames, frameInt, clipWidth, clipHeight;
-  private long lastTime;
+  private long lastTime, pauseTime;
   private float fps, frame;
+  private boolean running;
 }
