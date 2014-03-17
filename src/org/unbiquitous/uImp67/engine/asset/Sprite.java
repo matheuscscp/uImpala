@@ -23,6 +23,7 @@ public class Sprite {
     width = texture.getImageWidth();
     height = texture.getImageHeight();
     resetClip();
+    color = Color.white;
   }
   
   /**
