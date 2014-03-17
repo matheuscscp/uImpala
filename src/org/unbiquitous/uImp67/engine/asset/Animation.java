@@ -14,7 +14,7 @@ public class Animation extends Sprite {
    * @param assets Object to load the image.
    * @param path Image path.
    * @param frames Amount of frames to divide the image.
-   * @param fps Animation rate in frames per second.
+   * @param fps Frame rate in frames per second.
    */
   public Animation(AssetManager assets, String path, int frames, float fps) {
     super(assets, path);
@@ -47,6 +47,30 @@ public class Animation extends Sprite {
       return;
     lastTime += Time.get() - pauseTime;
     running = true;
+  }
+  
+  /**
+   * Gets the current frame rate.
+   * @return Frame rate in frames per second.
+   */
+  public float getFPS() {
+    return fps;
+  }
+  
+  /**
+   * Sets the current frame rate.
+   * @param fps Frame rate in frames per second.
+   */
+  public void setFPS(float fps) {
+    this.fps = fps;
+  }
+  
+  /**
+   * Gets the current frame.
+   * @return Frame in the interval [0, frames).
+   */
+  public float getFrame() {
+    return frame;
   }
   
   /**
