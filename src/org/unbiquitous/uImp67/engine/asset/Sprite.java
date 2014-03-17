@@ -48,6 +48,26 @@ public class Sprite {
     this.color = color;
   }
   
+  public void render(float x, float y, Screen screen) {
+    texture.bind();
+    
+    GL11.glColor4f(color.r, color.g, color.b, 1f);
+    
+    GL11.glLoadIdentity();
+    GL11.glTranslatef(x, y, 0.0f);
+    
+    GL11.glBegin(GL11.GL_QUADS);
+      GL11.glTexCoord2f(texCoordX0, texCoordY0);
+      GL11.glVertex2f(0f, 0f);
+      GL11.glTexCoord2f(texCoordX1, texCoordY0);
+      GL11.glVertex2f(2*vertexCoordX1, 0f);
+      GL11.glTexCoord2f(texCoordX1, texCoordY1);
+      GL11.glVertex2f(2*vertexCoordX1, 2*vertexCoordY1);
+      GL11.glTexCoord2f(texCoordX0, texCoordY1);
+      GL11.glVertex2f(0f, 2*vertexCoordY1);
+    GL11.glEnd();
+  }
+  
   /**
    * Calls the complete render method with angle 0.0f, scale 1.0f and opacity 1.0f.
    * @param screen Screen on which the image will be rendered.
