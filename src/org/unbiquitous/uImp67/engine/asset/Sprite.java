@@ -1,11 +1,12 @@
 package org.unbiquitous.uImp67.engine.asset;
 
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 import org.unbiquitous.uImp67.engine.io.Screen;
 
 /**
- * Class to implement the rendering of an image.
+ * Class to implement image rendering.
  * @author Pimenta
  *
  */
@@ -36,6 +37,14 @@ public class Sprite {
    */
   public int getHeight() {
     return height;
+  }
+  
+  /**
+   * Set the color to multiply the texture.
+   * @param color Color.
+   */
+  public void setColor(Color color) {
+    this.color = color;
   }
   
   /**
@@ -97,7 +106,7 @@ public class Sprite {
   public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY, float opacity) {
     texture.bind();
     
-    GL11.glColor4f(1.0f, 1.0f, 1.0f, opacity);
+    GL11.glColor4f(color.r, color.g, color.b, opacity);
     
     GL11.glLoadIdentity();
     GL11.glTranslatef(x, y, 0.0f);
@@ -144,4 +153,5 @@ public class Sprite {
   private float texCoordY0, texCoordY1;
   private float vertexCoordX0, vertexCoordX1;
   private float vertexCoordY0, vertexCoordY1;
+  private Color color;
 }
