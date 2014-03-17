@@ -1,4 +1,5 @@
-implement asset.*
+implement asset.* (audio)
+implement asset.* (tiles)
 write basics 7 tutorial
 refactor io.Keyboard* (uos stuff)
 refactor util.StringInput (for uos keyboards)
