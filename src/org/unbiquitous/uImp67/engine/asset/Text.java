@@ -14,8 +14,22 @@ import org.unbiquitous.uImp67.engine.io.Screen;
  */
 public class Text {
   /**
+   * Constructor to load a font from a file.
+   * @param assets Object to load the font.
+   * @param path Font path.
+   * @param text String text.
+   */
+  public Text(AssetManager assets, String fontPath, String text) {
+    awtFont = assets.getFont(fontPath).deriveFont(24f);
+    this.text = text;
+    antiAlias = true;
+    color = Color.white;
+    ttfFont = new TrueTypeFont(awtFont, antiAlias);
+  }
+  
+  /**
    * Assigment constructor.
-   * @param font Text font.
+   * @param font Java font.
    * @param text String text.
    */
   public Text(Font font, String text) {

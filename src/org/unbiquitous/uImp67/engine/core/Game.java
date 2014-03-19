@@ -222,12 +222,15 @@ public final class Game implements UosApplication {
   }
   
   private void updateStack() {
+    GameScene tmp;
     switch (change_option) {
       case NA:
         break;
         
       case CHANGE:
-        scenes.removeLast().destroy();
+        tmp = scenes.removeLast();
+        tmp.assets.destroy();
+        tmp.destroy();
         scenes.add(scene_change);
         break;
         
@@ -236,7 +239,9 @@ public final class Game implements UosApplication {
         break;
         
       case POP:
-        scenes.removeLast().destroy();
+        tmp = scenes.removeLast();
+        tmp.assets.destroy();
+        tmp.destroy();
         if (scenes.size() > 0)
           scenes.getLast().wakeup(pop_args);
         break;

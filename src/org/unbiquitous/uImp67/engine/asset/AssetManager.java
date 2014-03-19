@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 import org.newdawn.slick.openal.Audio;
@@ -42,11 +43,13 @@ public final class AssetManager {
     }
     
     assets.put(path, asset);
+    textures.add(asset);
     return asset;
   }
   
   /**
    * Load audio.
+   * Supported formats: OGG, WAV, AIF/AIFF
    * @param path Audio path.
    * @return Audio loaded.
    */
@@ -58,30 +61,6 @@ public final class AssetManager {
     try {
       asset = AudioLoader.getAudio(getFormat(path),
         ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-        )
-      );
-    } catch (IOException e) {
-      throw new Error(e);
-    }
-    
-    assets.put(path, asset);
-    return asset;
-  }
-  
-  /**
-   * Load streaming audio.
-   * @param path Audio path.
-   * @return Audio loaded.
-   */
-  public Audio getStreamingAudio(String path) {
-    Audio asset = (Audio)assets.get(path);
-    if (asset != null)
-      return asset;
-    
-    try {
-      asset = AudioLoader.getStreamingAudio(getFormat(path),
-        ResourceLoader.getResource(
           GameComponents.get(GameSettings.class).get("root_path") + "/" + path
         )
       );
@@ -153,6 +132,14 @@ public final class AssetManager {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
+  /**
+   * Engine's private use.
+   */
+  public void destroy() {
+    for (Texture t : textures)
+      t.release();
+  }
+  
   private static String getFormat(String fn) {
     int i;
     for (i = fn.length() - 1; i >= 0 && fn.charAt(i) != '.'; i--);
@@ -161,8 +148,12 @@ public final class AssetManager {
     String fmt = "";
     for (int j = i + 1; j < fn.length(); j++)
       fmt += fn.charAt(j);
-    return fmt.toUpperCase();
+    fmt = fmt.toUpperCase();
+    if (fmt.equals("AIFF"))
+      return "AIF";
+    return fmt;
   }
   
   private HashMap<String, Object> assets = new HashMap<String, Object>();
+  private HashSet<Texture> textures = new HashSet<Texture>();
 }
