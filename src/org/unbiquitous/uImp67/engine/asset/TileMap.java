@@ -35,6 +35,14 @@ public class TileMap {
     }
   }
   
+  /**
+   * Gets a copy of the internal map.
+   * @return New bidimensional array copied from the internal map.
+   */
+  public int[][] getInternalMap() {
+    return map.getInternalMap();
+  }
+  
   private TileSet tileSet;
   private Map map;
 }
