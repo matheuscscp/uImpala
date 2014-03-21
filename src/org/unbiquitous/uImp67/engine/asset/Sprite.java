@@ -179,7 +179,7 @@ public class Sprite {
    * @param w Rectangle width.
    * @param h Rectangle height.
    */
-  public void clip(int x, int y, int w, int h) {
+  public void clip(float x, float y, float w, float h) {
     texCoordX0 = x/widthTexture; texCoordX1 = (x + w)/widthTexture;
     texCoordY0 = y/heightTexture; texCoordY1 = (y + h)/heightTexture;
     vertexCoordX0 = -w/2; vertexCoordX1 = w/2;
