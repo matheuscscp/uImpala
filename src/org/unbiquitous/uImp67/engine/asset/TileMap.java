@@ -26,9 +26,9 @@ public class TileMap {
    * @param y Coordinate y of top-left corner of the map.
    */
   public void render(Screen screen, float x, float y) {
-    for (int i = 0; i < map.getRows(); i++) {
-      for (int j = 0; j < map.getCols(); j++) {
-        int tileID = map.get(i, j);
+    for (int i = 0; i < map.rows; i++) {
+      for (int j = 0; j < map.cols; j++) {
+        int tileID = map.map[i][j];
         if (tileID != 0)
           tileSet.render(tileID - 1, screen, x + j*tileSet.tileWidth, y + i*tileSet.tileHeight);
       }
@@ -36,11 +36,11 @@ public class TileMap {
   }
   
   /**
-   * Gets a copy of the internal map.
-   * @return New bidimensional array copied from the internal map.
+   * Gets the read-only Map.
+   * @return Read-only Map.
    */
-  public int[][] getInternalMap() {
-    return map.getInternalMap();
+  public Map getMap() {
+    return map;
   }
   
   private TileSet tileSet;

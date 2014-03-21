@@ -5,7 +5,7 @@ import java.io.FileReader;
 import java.util.Scanner;
 
 /**
- * Class to load map from text file.
+ * Class to load map from text file. Objects of this class are read-only.
  * @author Pimenta
  *
  */
@@ -14,7 +14,7 @@ public class Map {
    * Loads map from text file.
    * @param path File path.
    */
-  public Map(String path) {
+  protected Map(String path) {
     Scanner sc;
     try {
       sc = new Scanner(new FileReader(path));
@@ -64,7 +64,7 @@ public class Map {
    * Gets a copy of the internal map.
    * @return New bidimensional array copied from the internal map.
    */
-  public int[][] getInternalMap() {
+  public int[][] copyInternalMap() {
     int[][] tmp = new int[rows][cols];
     for (int i = 0; i < rows; i++) {
       for (int j = 0; j < cols; j++)
@@ -73,6 +73,6 @@ public class Map {
     return tmp;
   }
   
-  private int[][] map;
-  private int rows, cols;
+  protected int[][] map;
+  protected int rows, cols;
 }
