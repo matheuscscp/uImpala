@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import org.unbiquitous.uImp67.engine.core.GameComponents;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
-import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
 import org.unbiquitous.uos.core.messageEngine.messages.Notify;
 
 /**
@@ -13,7 +12,7 @@ import org.unbiquitous.uos.core.messageEngine.messages.Notify;
  * @author Pimenta
  *
  */
-public final class KeyboardManager implements InputManager, UosEventListener {
+public final class KeyboardManager implements InputManager {
   public KeyboardManager() {
     gateway = GameComponents.get(Gateway.class);
   }
@@ -42,10 +41,6 @@ public final class KeyboardManager implements InputManager, UosEventListener {
       i.next().close();
       i.remove();
     }
-  }
-  
-  public void handleEvent(Notify event) {
-    // TODO Auto-generated method stub
   }
   
   /**

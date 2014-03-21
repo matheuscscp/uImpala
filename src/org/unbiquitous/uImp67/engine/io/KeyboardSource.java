@@ -1,6 +1,9 @@
 package org.unbiquitous.uImp67.engine.io;
 
-public final class KeyboardSource extends InputResource {
+import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
+import org.unbiquitous.uos.core.messageEngine.messages.Notify;
+
+public final class KeyboardSource extends InputResource implements UosEventListener {
   /**
    * Broadcasted when a key is pressed.
    */
@@ -62,4 +65,9 @@ public final class KeyboardSource extends InputResource {
   
   protected boolean updating = false;
   private boolean[] keys;
+  
+  public void handleEvent(Notify event) {
+    // TODO Auto-generated method stub
+    
+  }
 }
