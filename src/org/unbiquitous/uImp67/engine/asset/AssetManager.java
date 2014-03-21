@@ -1,12 +1,9 @@
 package org.unbiquitous.uImp67.engine.asset;
 
 import java.awt.Font;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Scanner;
 
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.openal.AudioLoader;
@@ -101,30 +98,14 @@ public final class AssetManager {
    * @param path Text file path.
    * @return Map loaded.
    */
-  public int[][] getMap(String path) {
-    int[][] asset = (int[][])assets.get(path);
+  public Map getMap(String path) {
+    Map asset = (Map)assets.get(path);
     if (asset != null)
       return asset;
     
-    Scanner sc;
-    try {
-      sc = new Scanner(new FileReader(
-        GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-      ));
-    } catch (FileNotFoundException e) {
-      throw new Error(e);
-    }
-    sc.useDelimiter(",");
-    int rows = sc.nextInt();
-    int cols = sc.nextInt();
-    sc.nextLine();
-    asset = new int[rows][cols];
-    for (int i = 0; i < rows; i++) {
-      for (int j = 0; j < cols; j++)
-        asset[i][j] = sc.nextInt();
-      sc.nextLine();
-    }
-    sc.close();
+    asset = new Map(
+      GameComponents.get(GameSettings.class).get("root_path") + "/" + path
+    );
     
     assets.put(path, asset);
     return asset;

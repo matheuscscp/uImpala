@@ -41,8 +41,12 @@ public class TileSet {
 //==============================================================================
 //nothings else matters from here to below
 //==============================================================================
+  /**
+   * Engine's private use.
+   */
+  protected int tileWidth, tileHeight;
+  
   private Sprite sprite;
-  private int tileWidth, tileHeight;
   private Tile[] tiles;
   
   private class Tile {
