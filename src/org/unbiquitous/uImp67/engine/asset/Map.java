@@ -60,6 +60,19 @@ public class Map {
     return cols;
   }
   
+  /**
+   * Gets a copy of the internal map.
+   * @return New bidimensional array copied from the internal map.
+   */
+  public int[][] getInternalMap() {
+    int[][] tmp = new int[rows][cols];
+    for (int i = 0; i < rows; i++) {
+      for (int j = 0; j < cols; j++)
+        tmp[i][j] = map[i][j];
+    }
+    return tmp;
+  }
+  
   private int[][] map;
   private int rows, cols;
 }
