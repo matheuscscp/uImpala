@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.openal.AudioLoader;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -41,31 +39,6 @@ public final class AssetManager {
     
     assets.put(path, asset);
     textures.add(asset);
-    return asset;
-  }
-  
-  /**
-   * Load audio.
-   * Supported formats: OGG, WAV, AIF/AIFF
-   * @param path Audio path.
-   * @return Audio loaded.
-   */
-  public Audio getAudio(String path) {
-    Audio asset = (Audio)assets.get(path);
-    if (asset != null)
-      return asset;
-    
-    try {
-      asset = AudioLoader.getAudio(getFormat(path),
-        ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-        )
-      );
-    } catch (IOException e) {
-      throw new Error(e);
-    }
-    
-    assets.put(path, asset);
     return asset;
   }
   
