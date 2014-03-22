@@ -9,7 +9,7 @@ import org.unbiquitous.uImp67.engine.io.Speaker;
 
 /**
  * Class to handle audio execution.
- * @author Lucas
+ * @author Lucas Carvalho
  *
  */
 public class AudioControl {

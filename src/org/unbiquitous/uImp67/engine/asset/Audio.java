@@ -9,7 +9,7 @@ import org.unbiquitous.uImp67.engine.core.GameSettings;
 
 /**
  * Class to load OGG audio files.
- * @author Lucas
+ * @author Lucas Carvalho
  *
  */
 public class Audio {
