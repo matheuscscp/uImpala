@@ -1,5 +1,5 @@
+refactor engine.io.Keyboard* (uos stuff)
+refactor engine.util.StringInput (for uos keyboards)
 write basics 7 tutorial
-refactor io.Keyboard* (uos stuff)
-refactor util.StringInput (for uos keyboards)
 implement util.math.Overlap.*
-refactor util.Button
+refactor engine.util.Button
