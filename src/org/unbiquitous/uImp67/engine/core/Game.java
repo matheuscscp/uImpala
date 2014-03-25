@@ -17,7 +17,7 @@ import org.unbiquitous.uos.core.ontologyEngine.api.OntologyDeploy;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyStart;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyUndeploy;
 import org.unbiquitous.uos.network.socket.connectionManager.TCPConnectionManager;
-import org.unbiquitous.uos.network.socket.radar.PingRadar;
+import org.unbiquitous.uos.network.socket.radar.MulticastRadar;
 
 /**
  * The game class. Extend it only to implement getSettings().
@@ -35,7 +35,7 @@ public final class Game implements UosApplication {
       protected Object[][] getContents() {
         return new Object[][] {
           {"ubiquitos.connectionManager", TCPConnectionManager.class.getName()},
-          {"ubiquitos.radar", PingRadar.class.getName()},
+          {"ubiquitos.radar", MulticastRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
           {"ubiquitos.application.deploylist", Game.class.getName()},
