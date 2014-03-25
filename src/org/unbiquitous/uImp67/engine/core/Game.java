@@ -206,8 +206,6 @@ public final class Game implements UosApplication {
       throw new Error("GameSettings not defined!");
     if (settings.get("first_scene") == null)
       throw new Error("First game scene not defined!");
-    if (settings.get("input_managers") == null)
-      throw new Error("Cannot start game with no input managers!");
     if (settings.get("output_managers") == null)
       throw new Error("Cannot start game with no output managers!");
     if (settings.get("root_path") == null)
