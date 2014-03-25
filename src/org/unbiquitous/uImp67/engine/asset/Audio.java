@@ -1,65 +1,34 @@
 package org.unbiquitous.uImp67.engine.asset;
 
-import java.io.IOException;
-
-import org.newdawn.slick.openal.OggInputStream;
-import org.newdawn.slick.util.ResourceLoader;
-import org.unbiquitous.uImp67.engine.core.GameComponents;
-import org.unbiquitous.uImp67.engine.core.GameSettings;
+import org.unbiquitous.uImp67.engine.io.Speaker;
 
 /**
- * Class to load OGG audio files.
- * @author Lucas Carvalho
+ * Class to start a playback of an audio file.
+ * @author Pimenta
  *
  */
 public class Audio {
-  private OggInputStream stream;
-  
-  public Audio(String path) {
-    try {
-      stream = new OggInputStream(ResourceLoader.getResourceAsStream(
-        GameComponents.get(GameSettings.class).get("root_path") + "/" + path)
-      );
-    } catch (IOException e) {
-      throw new Error(e);
-    }
+  /**
+   * Constructor.
+   * @param assets Object to open the audio file.
+   * @param path String path to file.
+   */
+  public Audio(AssetManager assets, String path) {
+    this.assets = assets;
+    this.path = path;
   }
   
-  public int ReadBlock(byte[] buffer) {
-    int count = 0;
-    
-    try {
-      count = stream.read(buffer);
-    } catch (IOException e) {
-      count = -1;
-    }
-    
-    if (count > 0)
-      currentPosition += count;
-    
-    return count;
+  /**
+   * Start playback.
+   * @param speaker Speaker on which this audio will be played.
+   * @param volume A number in [0, 1].
+   * @param loop Pass true to loop the playback.
+   * @return A handler to pause, resume, stop and adjust volume.
+   */
+  public AudioControl play(Speaker speaker, float volume, boolean loop) {
+    return new AudioControl(speaker, assets.getOggInputStream(path), volume, loop);
   }
   
-  int currentPosition;
-  
-  public int getPosition() {
-    return currentPosition;
-  }
-  
-  public void setPosition(int pos) {
-    try {
-      stream.reset();
-      stream.skip(currentPosition = pos);
-    } catch (IOException e) {
-    }
-  }
-  
-  public int getRate() {
-    return stream.getRate();
-  }
-  
-  public int getChannels() {
-    return stream.getChannels();
-  }
+  private AssetManager assets;
+  private String path;
 }
-

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.newdawn.slick.openal.OggInputStream;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
@@ -64,6 +65,21 @@ public final class AssetManager {
     
     assets.put(path, asset);
     return asset;
+  }
+  
+  /**
+   * Load audio from OGG file.
+   * @param path OGG path.
+   * @return OggInputStream loaded from OGG file.
+   */
+  public OggInputStream getOggInputStream(String path) {
+    try {
+      return new OggInputStream(ResourceLoader.getResourceAsStream(
+        GameComponents.get(GameSettings.class).get("root_path") + "/" + path
+      ));
+    } catch (IOException e) {
+      throw new Error(e);
+    }
   }
   
   /**
