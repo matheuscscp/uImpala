@@ -1,5 +1,8 @@
 package org.unbiquitous.uImp67.engine.io;
 
+import org.lwjgl.LWJGLException;
+import org.lwjgl.openal.AL;
+
 /**
  * Class for sound speaker resource.
  * @author Pimenta
@@ -7,7 +10,11 @@ package org.unbiquitous.uImp67.engine.io;
  */
 public final class Speaker extends OutputResource {
   protected Speaker() {
-    
+    try {
+      AL.create();
+    } catch (LWJGLException e) {
+      throw new Error(e);
+    }
   }
   
   protected void update() {
@@ -15,7 +22,7 @@ public final class Speaker extends OutputResource {
   }
   
   public void close() {
-    
+    AL.destroy();
   }
   
   public boolean isUpdating() {
