@@ -1,5 +1,7 @@
 package org.unbiquitous.uImpala.engine.io;
 
+import org.unbiquitous.uImpala.util.math.Rectangle;
+
 /**
  * Class to hold data about mouse events.
  * @author Pimenta
@@ -30,6 +32,10 @@ public final class MouseEvent extends InputEvent {
   
   public int getButton() {
     return button;
+  }
+  
+  public boolean isInside(Rectangle rect) {
+    return rect.isPointInside(x, y);
   }
   
   protected int x, y, button;

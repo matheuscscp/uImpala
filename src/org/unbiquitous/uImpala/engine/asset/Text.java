@@ -6,6 +6,7 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.unbiquitous.uImpala.engine.io.Screen;
+import org.unbiquitous.uImpala.util.Corner;
 
 /**
  * Class to implement text rendering.
@@ -62,99 +63,128 @@ public class Text {
   }
   
   /**
-   * Calls the complete render method with opacity 1.0f.
-   * @param x Coordinate x of the top-left corner of the text.
-   * @param y Coordinate y of the top-left corner of the text.
+   * Render the text.
    * @param screen Screen on which the text will be rendered.
-   * @see Text#render(float, float, Screen, float)
-   */
-  public void render(float x, float y, Screen screen) {
-    render(x, y, screen, 1.0f);
-  }
-  
-  /**
-   * Render with (x,y) being the top-left corner of the text.
-   * @param x Coordinate x of the top-left corner of the text.
-   * @param y Coordinate y of the top-left corner of the text.
-   * @param screen Screen on which the text will be rendered.
-   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
-   * @see Text#render(float, float, Screen)
-   */
-  public void render(float x, float y, Screen screen, float opacity) {
-    color.a = opacity;
-    ttfFont.drawString(x, y, text, color);
-  }
-  
-  /**
-   * Calls the complete render method with angle 0.0f, scale 1.0f and opacity 1.0f.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the text.
-   * @param y Coordinate y of the center of the text.
-   * @see Text#render(Screen, float, float, float)
-   * @see Text#render(Screen, float, float, float, float, float)
-   * @see Text#render(Screen, float, float, float, float, float, float)
+   * @param x Coordinate x of the top-left corner of the drawn text.
+   * @param y Coordinate y of the top-left corner of the drawn text.
    */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, 0.0f, 1.0f, 1.0f, 1.0f);
-  }
-  
-  /**
-   * Calls the complete render method with scale 1.0f and opacity 1.0f.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the text.
-   * @param y Coordinate y of the center of the text.
-   * @param angle Angle of rotation in degrees.
-   * @see Text#render(Screen, float, float)
-   * @see Text#render(Screen, float, float, float, float, float)
-   * @see Text#render(Screen, float, float, float, float, float, float)
-   */
-  public void render(Screen screen, float x, float y, float angle) {
-    render(screen, x, y, angle, 1.0f, 1.0f, 1.0f);
-  }
-  
-  /**
-   * Calls the complete render method with opacity 1.0f.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the text.
-   * @param y Coordinate y of the center of the text.
-   * @param angle Angle of rotation in degrees.
-   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
-   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
-   * @see Text#render(Screen, float, float)
-   * @see Text#render(Screen, float, float, float)
-   * @see Text#render(Screen, float, float, float, float, float, float)
-   */
-  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY) {
-    render(screen, x, scaleY, angle, scaleX, scaleY, 1.0f);
+    render(screen, x, y, Corner.TOP_LEFT, 0.0f, 1.0f, 1.0f, 1.0f);
   }
   
   /**
    * Render the text.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the text.
-   * @param y Coordinate y of the center of the text.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text.
+   */
+  public void render(Screen screen, float x, float y, Corner corner) {
+    render(screen, x, y, corner, 0.0f, 1.0f, 1.0f, 1.0f);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity) {
+    render(screen, x, y, corner, 0.0f, 1.0f, 1.0f, opacity);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the center of the drawn text.
+   * @param y Coordinate y of the center of the drawn text.
+   * @param angle Angle of rotation in degrees.
+   */
+  public void render(Screen screen, float x, float y, float angle) {
+    render(screen, x, y, Corner.CENTER, angle, 1.0f, 1.0f, 1.0f);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the center of the drawn text.
+   * @param y Coordinate y of the center of the drawn text.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
+   */
+  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY) {
+    render(screen, x, y, Corner.CENTER, angle, scaleX, scaleY, 1.0f);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the center of the drawn text.
+   * @param y Coordinate y of the center of the drawn text.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
    * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
-   * @see Text#render(Screen, float, float)
-   * @see Text#render(Screen, float, float, float)
-   * @see Text#render(Screen, float, float, float, float, float)
    */
   public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY, float opacity) {
+    render(screen, x, y, Corner.CENTER, angle, scaleX, scaleY, opacity);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   */
+  protected void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
     color.a = opacity;
     
+    // check corner
+    switch (corner) {
+      case TOP_LEFT:
+        x += halfWidth;
+        y += halfHeight;
+        break;
+        
+      case TOP_RIGHT:
+        x -= halfWidth;
+        y += halfHeight;
+        break;
+        
+      case BOTTOM_LEFT:
+        x += halfWidth;
+        y -= halfHeight;
+        break;
+        
+      case BOTTOM_RIGHT:
+        x -= halfWidth;
+        y -= halfHeight;
+        break;
+        
+      default:
+        break;
+    }
+    
+    // setup matrix
     GL11.glLoadIdentity();
     GL11.glTranslatef(x, y, 0.0f);
     GL11.glRotatef(angle, 0f, 0f, 1.0f);
     GL11.glScalef(scaleX, scaleY, 0.0f);
-    GL11.glTranslatef(minusHalfWidth, minusHalfHeight, 0.0f);
+    GL11.glTranslatef(-halfWidth, -halfHeight, 0.0f);
     
     ttfFont.drawString(0.0f, 0.0f, text, color);
   }
   
   /**
-   * Set options.
+   * Set options. Null arguments won't be considered.
    * @param style Font style, for Java default fonts.
    * @param size Font size.
    * @param antiAlias Apply anti-aliasing when rendering.
@@ -194,8 +224,8 @@ public class Text {
   private void setSize() {
     width = ttfFont.getWidth(text);
     height = ttfFont.getHeight(text);
-    minusHalfWidth = -width/2f;
-    minusHalfHeight = -height/2f;
+    halfWidth = width/2f;
+    halfHeight = height/2f;
   }
   
   private Font awtFont;
@@ -204,5 +234,5 @@ public class Text {
   private boolean antiAlias;
   private Color color;
   private int width, height;
-  private float minusHalfWidth, minusHalfHeight;
+  private float halfWidth, halfHeight;
 }

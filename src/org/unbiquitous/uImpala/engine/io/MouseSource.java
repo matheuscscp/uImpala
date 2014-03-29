@@ -1,5 +1,7 @@
 package org.unbiquitous.uImpala.engine.io;
 
+import org.unbiquitous.uImpala.util.math.Rectangle;
+
 /**
  * Class for mouse resource.
  * @author Pimenta
@@ -33,7 +35,7 @@ public final class MouseSource extends InputResource {
    */
   protected MouseSource(int butts) {
     observations.addEvents(EVENT_MOUSE_MOTION, EVENT_BUTTON_DOWN, EVENT_BUTTON_UP);
-    X = 0; Y = 0;
+    x = 0; y = 0;
     downX = 0; downY = 0;
     buttons = new boolean[butts];
     for (int i = 0; i < butts; i++)
@@ -45,8 +47,8 @@ public final class MouseSource extends InputResource {
       MouseEvent event = (MouseEvent)events.poll();
       switch (event.type) {
         case EVENT_MOUSE_MOTION:
-          X = event.getX();
-          Y = event.getY();
+          x = event.getX();
+          y = event.getY();
           observations.broadcast(EVENT_MOUSE_MOTION, event);
           break;
           
@@ -77,11 +79,11 @@ public final class MouseSource extends InputResource {
   }
   
   public int getX() {
-    return X;
+    return x;
   }
   
   public int getY() {
-    return Y;
+    return y;
   }
   
   public int getDownX() {
@@ -93,17 +95,25 @@ public final class MouseSource extends InputResource {
   }
   
   public int getDeltaX() {
-    return X - downX;
+    return x - downX;
   }
   
   public int getDeltaY() {
-    return Y - downY;
+    return y - downY;
+  }
+  
+  public boolean isInside(Rectangle rect) {
+    return rect.isPointInside(x, y);
+  }
+  
+  public boolean isDownInside(Rectangle rect) {
+    return rect.isPointInside(downX, downY);
   }
   
   public boolean getButton(int butt) {
     return buttons[butt];
   }
   
-  private int X, Y, downX, downY;
+  private int x, y, downX, downY;
   private boolean[] buttons;
 }

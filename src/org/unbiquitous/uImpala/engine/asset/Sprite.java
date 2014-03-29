@@ -86,7 +86,7 @@ public class Sprite {
    * Render the image.
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center corner of the clipping rectangle.
+   * @param y Coordinate y of the center of the clipping rectangle.
    * @param angle Angle of rotation in degrees.
    */
   public void render(Screen screen, float x, float y, float angle) {
@@ -97,7 +97,7 @@ public class Sprite {
    * Render the image.
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center corner of the clipping rectangle.
+   * @param y Coordinate y of the center of the clipping rectangle.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
@@ -110,7 +110,7 @@ public class Sprite {
    * Render the image.
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center corner of the clipping rectangle.
+   * @param y Coordinate y of the center of the clipping rectangle.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
