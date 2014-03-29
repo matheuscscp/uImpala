@@ -64,7 +64,7 @@ public class Sprite {
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the corner of the clipping rectangle.
    * @param y Coordinate y of the corner of the clipping rectangle.
-   * @param corner Corner of clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
    */
   public void render(Screen screen, float x, float y, Corner corner) {
     render(screen, x, y, corner, 0.0f, 1.0f, 1.0f, 1.0f);
@@ -75,7 +75,7 @@ public class Sprite {
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the corner of the clipping rectangle.
    * @param y Coordinate y of the corner of the clipping rectangle.
-   * @param corner Corner of clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
    * @param angle Angle of rotation in degrees.
    */
   public void render(Screen screen, float x, float y, Corner corner, float angle) {
@@ -87,7 +87,7 @@ public class Sprite {
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the corner of the clipping rectangle.
    * @param y Coordinate y of the corner of the clipping rectangle.
-   * @param corner Corner of clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
@@ -101,7 +101,7 @@ public class Sprite {
    * @param screen Screen on which the image will be rendered.
    * @param x Coordinate x of the corner of the clipping rectangle.
    * @param y Coordinate y of the corner of the clipping rectangle.
-   * @param corner Corner of clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
@@ -113,6 +113,8 @@ public class Sprite {
     GL11.glColor4f(color.r, color.g, color.b, opacity);
     
     // check corner
+    if (corner == null)
+      corner = Corner.CENTER;
     switch (corner) {
       case TOP_LEFT:
         x += halfWidth;
