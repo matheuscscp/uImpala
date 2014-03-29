@@ -1,7 +1,7 @@
 uImp67
 ======
 
-![alt tag](http://www.supernaturalwiki.com/images/0/05/Impala.jpg)
+![alt tag](http://www.supernaturalwiki.com/images/0/05/Impala.jpg "The Impala")
 
 A Java engine for ubiquitous games, made with the uOS middleware.
 
