@@ -1,6 +1,8 @@
 uImp67
 ======
 
+![alt tag](http://www.supernaturalwiki.com/images/0/05/Impala.jpg)
+
 A Java engine for ubiquitous games, made with the uOS middleware.
 
 Four steps to create an Eclipse Maven project with this library:
