@@ -69,7 +69,7 @@ public class Text {
    * @param y Coordinate y of the center of the drawn text.
    */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, Corner.CENTER, 0.0f, 1.0f, 1.0f, 1.0f);
+    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f);
   }
   
   /**
@@ -80,7 +80,7 @@ public class Text {
    * @param corner Corner of drawn text. Null is considered Corner.CENTER.
    */
   public void render(Screen screen, float x, float y, Corner corner) {
-    render(screen, x, y, corner, 0.0f, 1.0f, 1.0f, 1.0f);
+    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f);
   }
   
   /**
@@ -89,38 +89,37 @@ public class Text {
    * @param x Coordinate x of the corner of the drawn text.
    * @param y Coordinate y of the corner of the drawn text.
    * @param corner Corner of drawn text. Null is considered Corner.CENTER.
-   * @param angle Angle of rotation in degrees.
-   */
-  public void render(Screen screen, float x, float y, Corner corner, float angle) {
-    render(screen, x, y, corner, angle, 1.0f, 1.0f, 1.0f);
-  }
-  
-  /**
-   * Render the text.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the corner of the drawn text.
-   * @param y Coordinate y of the corner of the drawn text.
-   * @param corner Corner of drawn text. Null is considered Corner.CENTER.
-   * @param angle Angle of rotation in degrees.
-   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
-   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
-   */
-  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY) {
-    render(screen, x, y, corner, angle, scaleX, scaleY, 1.0f);
-  }
-  
-  /**
-   * Render the text.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the corner of the drawn text.
-   * @param y Coordinate y of the corner of the drawn text.
-   * @param corner Corner of drawn text. Null is considered Corner.CENTER.
-   * @param angle Angle of rotation in degrees.
-   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
-   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
    * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
    */
-  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
+  public void render(Screen screen, float x, float y, Corner corner, float opacity) {
+    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle) {
+    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f);
+  }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
     color.a = opacity;
     
     // check corner
