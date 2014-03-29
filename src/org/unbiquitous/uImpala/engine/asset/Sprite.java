@@ -127,7 +127,7 @@ public class Sprite {
    * @see Sprite#render(Screen, float, float, float, float, float, float)
    */
   public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY) {
-    render(screen, x, scaleY, angle, scaleX, scaleY, 1.0f);
+    render(screen, x, y, angle, scaleX, scaleY, 1.0f);
   }
   
   /**
