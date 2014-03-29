@@ -49,17 +49,6 @@ public class Sprite {
   }
   
   /**
-   * Calls the complete render method with opacity 1.0f.
-   * @param x Coordinate x of the top-left corner of the clipping rectangle.
-   * @param y Coordinate y of the top-left corner of the clipping rectangle.
-   * @param screen Screen on which the image will be rendered.
-   * @see Sprite#render(float, float, Screen, float)
-   */
-  public void render(float x, float y, Screen screen) {
-    render(x, y, screen, 1.0f);
-  }
-  
-  /**
    * Render with (x,y) being the top-left corner of the sprite.
    * @param x Coordinate x of the top-left corner of the clipping rectangle.
    * @param y Coordinate y of the top-left corner of the clipping rectangle.
@@ -87,54 +76,28 @@ public class Sprite {
     GL11.glEnd();
   }
   
-  /**
-   * Calls the complete render method with angle 0.0f, scale 1.0f and opacity 1.0f.
-   * @param screen Screen on which the image will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
-   * @see Sprite#render(Screen, float, float, float)
-   * @see Sprite#render(Screen, float, float, float, float, float)
-   * @see Sprite#render(Screen, float, float, float, float, float, float)
-   */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, 0.0f, 1.0f, 1.0f, 1.0f);
+    render(screen, x, y, true, 0.0f, 1.0f, 1.0f, 1.0f);
   }
   
-  /**
-   * Calls the complete render method with scale 1.0f and opacity 1.0f.
-   * @param screen Screen on which the image will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
-   * @param angle Angle of rotation in degrees.
-   * @see Sprite#render(Screen, float, float)
-   * @see Sprite#render(Screen, float, float, float, float, float)
-   * @see Sprite#render(Screen, float, float, float, float, float, float)
-   */
-  public void render(Screen screen, float x, float y, float angle) {
-    render(screen, x, y, angle, 1.0f, 1.0f, 1.0f);
+  public void render(Screen screen, float x, float y, boolean center) {
+    render(screen, x, y, center, 0.0f, 1.0f, 1.0f, 1.0f);
   }
   
-  /**
-   * Calls the complete render method with opacity 1.0f.
-   * @param screen Screen on which the image will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
-   * @param angle Angle of rotation in degrees.
-   * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
-   * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
-   * @see Sprite#render(Screen, float, float)
-   * @see Sprite#render(Screen, float, float, float)
-   * @see Sprite#render(Screen, float, float, float, float, float, float)
-   */
-  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY) {
-    render(screen, x, y, angle, scaleX, scaleY, 1.0f);
+  public void render(Screen screen, float x, float y, boolean center, float angle) {
+    render(screen, x, y, center, angle, 1.0f, 1.0f, 1.0f);
+  }
+  
+  public void render(Screen screen, float x, float y, boolean center, float angle, float scaleX, float scaleY) {
+    render(screen, x, y, center, angle, scaleX, scaleY, 1.0f);
   }
   
   /**
    * Render the image.
    * @param screen Screen on which the image will be rendered.
-   * @param x Coordinate x of the center of the clipping rectangle.
-   * @param y Coordinate y of the center of the clipping rectangle.
+   * @param x Coordinate x.
+   * @param y Coordinate y.
+   * @param center If true, the coordinates represent the center, if false, the coordinates represent the top-left corner.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
@@ -143,7 +106,7 @@ public class Sprite {
    * @see Sprite#render(Screen, float, float, float)
    * @see Sprite#render(Screen, float, float, float, float, float)
    */
-  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY, float opacity) {
+  public void render(Screen screen, float x, float y, boolean center, float angle, float scaleX, float scaleY, float opacity) {
     texture.bind();
     
     GL11.glColor4f(color.r, color.g, color.b, opacity);

@@ -49,8 +49,8 @@ public final class Screen extends OutputResource {
       setIcon(i);
       Display.create();
       Display.setVSyncEnabled(true);
-      mouse = new MouseSource(Mouse.getButtonCount());
-      keyboard = new KeyboardSource(Keyboard.KEYBOARD_SIZE);
+      mouse = GameComponents.get(MouseManager.class) != null ? new MouseSource(Mouse.getButtonCount()) : null;
+      keyboard = GameComponents.get(KeyboardManager.class) != null ? new KeyboardSource(Keyboard.KEYBOARD_SIZE) : null;
       addMouseKeyboard();
     } catch (Throwable e) {
       open = false;
@@ -223,21 +223,17 @@ public final class Screen extends OutputResource {
   }
   
   private void addMouseKeyboard() {
-    MouseManager mm = GameComponents.get(MouseManager.class);
-    if (mm != null && mouse != null)
-      mm.screenMouses.add(mouse);
-    KeyboardManager km = GameComponents.get(KeyboardManager.class);
-    if (km != null && keyboard != null)
-      km.screenKeyboards.add(keyboard);
+    if (mouse != null)
+      GameComponents.get(MouseManager.class).screenMouses.add(mouse);
+    if (keyboard != null)
+      GameComponents.get(KeyboardManager.class).screenKeyboards.add(keyboard);
   }
   
   private void removeMouseKeyboard() {
-    MouseManager mm = GameComponents.get(MouseManager.class);
-    if (mm != null && mouse != null)
-      mm.screenMouses.remove(mouse);
-    KeyboardManager km = GameComponents.get(KeyboardManager.class);
-    if (km != null && keyboard != null)
-      km.screenKeyboards.remove(keyboard);
+    if (mouse != null)
+      GameComponents.get(MouseManager.class).screenMouses.remove(mouse);
+    if (keyboard != null)
+      GameComponents.get(KeyboardManager.class).screenKeyboards.remove(keyboard);
   }
   
   /**

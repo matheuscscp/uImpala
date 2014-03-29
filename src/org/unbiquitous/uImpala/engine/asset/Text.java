@@ -22,9 +22,7 @@ public class Text {
   public Text(AssetManager assets, String fontPath, String text) {
     awtFont = assets.getFont(fontPath).deriveFont(24f);
     this.text = text;
-    antiAlias = true;
-    color = Color.white;
-    ttfFont = new TrueTypeFont(awtFont, antiAlias);
+    init();
   }
   
   /**
@@ -35,9 +33,7 @@ public class Text {
   public Text(Font font, String text) {
     awtFont = font;
     this.text = text;
-    antiAlias = true;
-    color = Color.white;
-    ttfFont = new TrueTypeFont(awtFont, antiAlias);
+    init();
   }
   
   /**
@@ -46,6 +42,7 @@ public class Text {
    */
   public void setText(String text) {
     this.text = text;
+    setSize();
   }
   
   /**
@@ -53,7 +50,7 @@ public class Text {
    * @return Width in pixels.
    */
   public int getWidth() {
-    return ttfFont.getWidth(text);
+    return width;
   }
   
   /**
@@ -61,7 +58,7 @@ public class Text {
    * @return Height in pixels.
    */
   public int getHeight() {
-    return ttfFont.getHeight(text);
+    return height;
   }
   
   /**
@@ -151,7 +148,7 @@ public class Text {
     GL11.glTranslatef(x, y, 0.0f);
     GL11.glRotatef(angle, 0f, 0f, 1.0f);
     GL11.glScalef(scaleX, scaleY, 0.0f);
-    GL11.glTranslatef(-ttfFont.getWidth(text)/2, -ttfFont.getHeight(text)/2, 0.0f);
+    GL11.glTranslatef(minusHalfWidth, minusHalfHeight, 0.0f);
     
     ttfFont.drawString(0.0f, 0.0f, text, color);
   }
@@ -179,8 +176,26 @@ public class Text {
     }
     if (color != null)
       this.color = color;
-    if (changed)
+    if (changed) {
       ttfFont = new TrueTypeFont(awtFont, this.antiAlias);
+      setSize();
+    }
+  }
+//==============================================================================
+//nothings else matters from here to below
+//==============================================================================
+  private void init() {
+    antiAlias = true;
+    color = Color.white;
+    ttfFont = new TrueTypeFont(awtFont, antiAlias);
+    setSize();
+  }
+  
+  private void setSize() {
+    width = ttfFont.getWidth(text);
+    height = ttfFont.getHeight(text);
+    minusHalfWidth = -width/2f;
+    minusHalfHeight = -height/2f;
   }
   
   private Font awtFont;
@@ -188,4 +203,6 @@ public class Text {
   private String text;
   private boolean antiAlias;
   private Color color;
+  private int width, height;
+  private float minusHalfWidth, minusHalfHeight;
 }
