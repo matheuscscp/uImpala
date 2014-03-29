@@ -65,11 +65,11 @@ public class Text {
   /**
    * Render the text.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the top-left corner of the drawn text.
-   * @param y Coordinate y of the top-left corner of the drawn text.
+   * @param x Coordinate x of the center of the drawn text.
+   * @param y Coordinate y of the center of the drawn text.
    */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, Corner.TOP_LEFT, 0.0f, 1.0f, 1.0f, 1.0f);
+    render(screen, x, y, Corner.CENTER, 0.0f, 1.0f, 1.0f, 1.0f);
   }
   
   /**
@@ -89,48 +89,24 @@ public class Text {
    * @param x Coordinate x of the corner of the drawn text.
    * @param y Coordinate y of the corner of the drawn text.
    * @param corner Corner of drawn text.
-   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
-   */
-  public void render(Screen screen, float x, float y, Corner corner, float opacity) {
-    render(screen, x, y, corner, 0.0f, 1.0f, 1.0f, opacity);
-  }
-  
-  /**
-   * Render the text.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the drawn text.
-   * @param y Coordinate y of the center of the drawn text.
    * @param angle Angle of rotation in degrees.
    */
-  public void render(Screen screen, float x, float y, float angle) {
-    render(screen, x, y, Corner.CENTER, angle, 1.0f, 1.0f, 1.0f);
+  public void render(Screen screen, float x, float y, Corner corner, float angle) {
+    render(screen, x, y, corner, angle, 1.0f, 1.0f, 1.0f);
   }
   
   /**
    * Render the text.
    * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the drawn text.
-   * @param y Coordinate y of the center of the drawn text.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text.
    * @param angle Angle of rotation in degrees.
    * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
    */
-  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY) {
-    render(screen, x, y, Corner.CENTER, angle, scaleX, scaleY, 1.0f);
-  }
-  
-  /**
-   * Render the text.
-   * @param screen Screen on which the text will be rendered.
-   * @param x Coordinate x of the center of the drawn text.
-   * @param y Coordinate y of the center of the drawn text.
-   * @param angle Angle of rotation in degrees.
-   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
-   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
-   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
-   */
-  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY, float opacity) {
-    render(screen, x, y, Corner.CENTER, angle, scaleX, scaleY, opacity);
+  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY) {
+    render(screen, x, y, corner, angle, scaleX, scaleY, 1.0f);
   }
   
   /**
@@ -144,7 +120,7 @@ public class Text {
    * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
    * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
    */
-  protected void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
+  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
     color.a = opacity;
     
     // check corner
