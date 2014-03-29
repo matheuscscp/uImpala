@@ -36,7 +36,7 @@ public class TileSet {
   public void render(int tileID, Screen screen, float x, float y) {
     Tile tile = tiles[tileID];
     sprite.clip(tile.x, tile.y, tileWidth, tileHeight);
-    sprite.render(x, y, screen);
+    sprite.render(screen, x, y);
   }
 //==============================================================================
 //nothings else matters from here to below

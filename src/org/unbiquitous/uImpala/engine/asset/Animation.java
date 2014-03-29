@@ -2,6 +2,7 @@ package org.unbiquitous.uImpala.engine.asset;
 
 import org.unbiquitous.uImpala.engine.io.Screen;
 import org.unbiquitous.uImpala.engine.time.Time;
+import org.unbiquitous.uImpala.util.Corner;
 
 /**
  * Class to animate a sprite sheet.
@@ -81,14 +82,9 @@ public class Animation extends Sprite {
     this.frame = frame;
   }
   
-  public void render(float x, float y, Screen screen, float opacity) {
+  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
     update();
-    super.render(x, y, screen, opacity);
-  }
-  
-  public void render(Screen screen, float x, float y, float angle, float scaleX, float scaleY, float opacity) {
-    update();
-    super.render(screen, x, y, angle, scaleX, scaleY, opacity);
+    super.render(screen, x, y, corner, angle, scaleX, scaleY, opacity);
   }
 //==============================================================================
 //nothings else matters from here to below
