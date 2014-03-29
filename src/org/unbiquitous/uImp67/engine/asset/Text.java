@@ -49,6 +49,22 @@ public class Text {
   }
   
   /**
+   * Gets the width of the text rectangle that will be rendered.
+   * @return Width in pixels.
+   */
+  public int getWidth() {
+    return ttfFont.getWidth(text);
+  }
+  
+  /**
+   * Gets the height of the text rectangle that will be rendered.
+   * @return Height in pixels.
+   */
+  public int getHeight() {
+    return ttfFont.getHeight(text);
+  }
+  
+  /**
    * Calls the complete render method with opacity 1.0f.
    * @param x Coordinate x of the top-left corner of the text.
    * @param y Coordinate y of the top-left corner of the text.
