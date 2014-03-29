@@ -9,7 +9,8 @@ Four steps to create an Eclipse Maven project with this library:
 * Clone uImpala, uos_socket_plugin (branch 3.1.0) and uos_core (branch 3.1.0) (**links** below);
 * Import these three existing Maven projects;
 * Create a Maven project and add the tags below in the **pom.xml**;
-* Right-click on project -> Properties -> Java Build Path -> Libraries -> Maven Dependencies arrow -> Native library location -> Edit... -> Insert Location path as replace-with-project-name/target/natives -> OK -> OK.
+* Right-click on project -> Properties -> Java Build Path -> Libraries -> Maven Dependencies arrow -> Native library location -> Edit... -> Insert Location path as replace-with-project-name/target/natives -> OK -> OK;
+** Another option is to install this [plugin](http://mavennatives.googlecode.com/svn/eclipse-update/).
 
 Check the [Wiki](https://github.com/matheuscscp/uImpala/wiki) for tutorials.
 
