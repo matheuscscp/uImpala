@@ -1,5 +1,5 @@
 package org.unbiquitous.uImpala.engine.util;
-
+/*
 import java.lang.reflect.Method;
 
 import org.unbiquitous.uImpala.engine.asset.SpriteOld;
@@ -110,14 +110,14 @@ public class Button implements Subject {
       clip_y = spriteOld.getHeight()/4;
       
       // play sound
-      /*FIXME if ((sound_hover) && (!hover)) {
-        if (!just_clicked) {
-          if (play_sounds)
-            sound_hover->play(1);
-        }
-        else
-          just_clicked = false;
-      }*/
+//      FIXME if ((sound_hover) && (!hover)) {
+//        if (!just_clicked) {
+//          if (play_sounds)
+//            sound_hover->play(1);
+//        }
+//        else
+//          just_clicked = false;
+//      }
       
       hover = true;
       just_hit = false;
@@ -180,8 +180,8 @@ public class Button implements Subject {
         countdown.start(ENTER_DELAY);
         
         // play sound
-        /*FIXME if ((sound_clicked) && (play_sounds))
-          sound_clicked->play(1);*/
+//        FIXME if ((sound_clicked) && (play_sounds))
+//          sound_clicked->play(1);
       }
     }
   }
@@ -203,11 +203,11 @@ public class Button implements Subject {
     clicked = true;
     
     // play sound
-    /*FIXME if (sound_clicked) {
-      if (play_sounds)
-        sound_clicked->play(1);
-      just_hit = true;
-    }*/
+//    FIXME if (sound_clicked) {
+//      if (play_sounds)
+//        sound_clicked->play(1);
+//      just_hit = true;
+//    }
   }
   
   protected void handleMouseUp(Event event) {
@@ -222,8 +222,8 @@ public class Button implements Subject {
       just_clicked = true;
       
       // play sound
-      /*FIXME if ((sound_clicked) && (!just_hit) && (play_sounds))
-        sound_clicked->play(1);*/
+//      FIXME if ((sound_clicked) && (!just_hit) && (play_sounds))
+//        sound_clicked->play(1);
       
       subject.broadcast(CLICKED);
     }
@@ -261,3 +261,4 @@ public class Button implements Subject {
     subject.disconnect(event_type, observer);
   }
 }
+*/
