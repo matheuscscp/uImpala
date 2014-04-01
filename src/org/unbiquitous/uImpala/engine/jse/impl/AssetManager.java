@@ -9,7 +9,7 @@ import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
 
 public final class AssetManager extends org.unbiquitous.uImpala.engine.asset.AssetManager {
-  public org.unbiquitous.uImpala.engine.asset.Texture getTexture(String path) {
+  public Texture getTexture(String path) {
     Texture asset = (Texture)assets.get(path);
     if (asset != null)
       return asset;

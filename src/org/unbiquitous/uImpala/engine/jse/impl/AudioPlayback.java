@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.asset;
+package org.unbiquitous.uImpala.engine.jse.impl;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -6,64 +6,49 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
-import org.newdawn.slick.openal.OggInputStream;
 import org.unbiquitous.uImpala.engine.io.Speaker;
 
-/**
- * Class to handle audio playback.
- * @author Pimenta
- *
- */
-public class AudioControl {
-  /**
-   * Query playback state.
-   * @return Returns a value in {Audio.PLAYING, Audio.PAUSED, Audio.STOPPED}.
-   */
-  public synchronized int state() {
+public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.AudioPlayback {
+  public synchronized AudioPlayback.State state() {
     if (closed)
-      return Audio.STOPPED;
-    return AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE);
+      return AudioPlayback.State.STOPPED;
+    
+    switch (AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE)) {
+      case AL10.AL_PLAYING:
+        return State.PLAYING;
+        
+      case AL10.AL_PAUSED:
+        return State.PAUSED;
+        
+      case AL10.AL_STOPPED:
+        return State.STOPPED;
+        
+      default:
+        return State.STOPPED;
+    }
   }
   
-  /**
-   * Pause playback.
-   */
   public synchronized void pause() {
-    if (!closed && state() == Audio.PLAYING)
+    if (!closed && state() == State.PLAYING)
       AL10.alSourcePause(source);
   }
   
-  /**
-   * Resume playback.
-   */
   public synchronized void resume() {
-    if (!closed && state() == Audio.PAUSED)
+    if (!closed && state() == State.PAUSED)
       AL10.alSourcePlay(source);
   }
   
-  /**
-   * Stop playback.
-   */
   public synchronized void stop() {
     if (!closed)
       AL10.alSourceStop(source);
   }
   
-  /**
-   * Set playback volume.
-   * @param volume A number in [0, 1].
-   */
   public synchronized void volume(float volume) {
     if (!closed)
       AL10.alSourcef(source, AL10.AL_GAIN, volume*speaker.getVolume());
   }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  /**
-   * Engine's private use.
-   */
-  protected AudioControl(Speaker speaker, Audio audio, float volume, boolean loop) {
+  
+  protected AudioPlayback(Speaker speaker, Audio audio, float volume, boolean loop) {
     // init fields, generate source and buffers
     this.speaker = speaker;
     this.audio = audio;
@@ -95,11 +80,7 @@ public class AudioControl {
           break;
         }
         
-        // reopen stream
-        try {
-          stream.close();
-        } catch (IOException e1) {
-        }
+        stream.close();
         stream = audio.stream();
         
         try {
@@ -118,7 +99,7 @@ public class AudioControl {
     // update thread
     new Thread(new Runnable() {
       public void run() {
-        while (state() != Audio.STOPPED) {
+        while (state() != State.STOPPED) {
           try {
             Thread.sleep(UPDATE_PERIOD);
           } catch (InterruptedException e) {
@@ -132,10 +113,7 @@ public class AudioControl {
   
   private synchronized void close() {
     closed = true;
-    try {
-      stream.close();
-    } catch (IOException e) {
-    }
+    stream.close();
     AL10.alDeleteBuffers(buffers);
     AL10.alDeleteSources(source);
   }
@@ -175,11 +153,7 @@ public class AudioControl {
           return;
         }
         
-        // reopen stream
-        try {
-          stream.close();
-        } catch (IOException e1) {
-        }
+        stream.close();
         stream = audio.stream();
         
         try {
