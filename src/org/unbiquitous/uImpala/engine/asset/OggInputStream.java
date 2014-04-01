@@ -1,5 +1,10 @@
 package org.unbiquitous.uImpala.engine.asset;
 
-public class OggInputStream {
+/**
+ * Interface for an ogg audio file.
+ * @author Pimenta
+ *
+ */
+public interface OggInputStream {
   
 }

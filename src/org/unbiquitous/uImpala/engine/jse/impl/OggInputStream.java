@@ -2,7 +2,7 @@ package org.unbiquitous.uImpala.engine.jse.impl;
 
 import java.io.IOException;
 
-public final class OggInputStream extends org.unbiquitous.uImpala.engine.asset.OggInputStream {
+public final class OggInputStream implements org.unbiquitous.uImpala.engine.asset.OggInputStream {
   org.newdawn.slick.openal.OggInputStream oggInputStream;
   
   public OggInputStream(org.newdawn.slick.openal.OggInputStream ogg) {
