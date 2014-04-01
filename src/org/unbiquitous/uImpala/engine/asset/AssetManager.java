@@ -1,14 +1,9 @@
 package org.unbiquitous.uImpala.engine.asset;
 
 import java.awt.Font;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.newdawn.slick.openal.OggInputStream;
-import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
-import org.newdawn.slick.util.ResourceLoader;
 import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
 
@@ -17,70 +12,30 @@ import org.unbiquitous.uImpala.engine.core.GameSettings;
  * @author Pimenta
  *
  */
-public final class AssetManager {
+public abstract class AssetManager {
+  protected HashMap<String, Object> assets = new HashMap<String, Object>();
+  protected HashSet<Texture> textures = new HashSet<Texture>();
+  
   /**
    * Load a texture.
    * @param path Texture path.
    * @return Texture loaded.
    */
-  public Texture getTexture(String path) {
-    Texture asset = (Texture)assets.get(path);
-    if (asset != null)
-      return asset;
-    
-    try {
-      asset = TextureLoader.getTexture(getFormat(path),
-        ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-        )
-      );
-    } catch (IOException e) {
-      throw new Error(e);
-    }
-    
-    assets.put(path, asset);
-    textures.add(asset);
-    return asset;
-  }
+  public abstract Texture getTexture(String path);
   
   /**
    * Load font.
    * @param path Font path.
    * @return Font loaded.
    */
-  public Font getFont(String path) {
-    Font asset = (Font)assets.get(path);
-    if (asset != null)
-      return asset;
-    
-    try {
-      asset = Font.createFont(Font.TRUETYPE_FONT,
-        ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-        )
-      );
-    } catch (Exception e) {
-      throw new Error(e);
-    }
-    
-    assets.put(path, asset);
-    return asset;
-  }
+  public abstract Font getFont(String path);
   
   /**
    * Load audio from OGG file.
    * @param path OGG path.
    * @return OggInputStream loaded from OGG file.
    */
-  public OggInputStream getOggInputStream(String path) {
-    try {
-      return new OggInputStream(ResourceLoader.getResourceAsStream(
-        GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-      ));
-    } catch (IOException e) {
-      throw new Error(e);
-    }
-  }
+  public abstract OggInputStream getOggInputStream(String path);
   
   /**
    * Load map from a text file.
@@ -109,21 +64,4 @@ public final class AssetManager {
     for (Texture t : textures)
       t.release();
   }
-  
-  private static String getFormat(String fn) {
-    int i;
-    for (i = fn.length() - 1; i >= 0 && fn.charAt(i) != '.'; i--);
-    if (i < 0)
-      throw new Error("Invalid path for asset: " + fn);
-    String fmt = "";
-    for (int j = i + 1; j < fn.length(); j++)
-      fmt += fn.charAt(j);
-    fmt = fmt.toUpperCase();
-    if (fmt.equals("AIFF"))
-      return "AIF";
-    return fmt;
-  }
-  
-  private HashMap<String, Object> assets = new HashMap<String, Object>();
-  private HashSet<Texture> textures = new HashSet<Texture>();
 }

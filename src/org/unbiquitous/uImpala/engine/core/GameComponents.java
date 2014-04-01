@@ -1,5 +1,6 @@
 package org.unbiquitous.uImpala.engine.core;
 
+import org.unbiquitous.uImpala.engine.asset.AssetManager;
 import org.unbiquitous.uImpala.util.ComponentContainer;
 
 /**
@@ -8,6 +9,14 @@ import org.unbiquitous.uImpala.util.ComponentContainer;
  *
  */
 public final class GameComponents {
+  private static final InheritableThreadLocal<ComponentContainer> components = 
+    new InheritableThreadLocal<ComponentContainer>() {
+         protected ComponentContainer initialValue() {
+           return new ComponentContainer();
+         }
+    };
+  private static Class<? extends AssetManager> assetManagerClass;
+  
   /**
    * Method to access a component of the current game.
    * @param key Component class.
@@ -26,13 +35,17 @@ public final class GameComponents {
   public static Object put(Class<?> key, Object value) {
     return components.get().put(key, value);
   }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  private static final InheritableThreadLocal<ComponentContainer> components =
-  new InheritableThreadLocal<ComponentContainer>() {
-    protected ComponentContainer initialValue() {
-      return new ComponentContainer();
+  
+  public static void setAssetManagerClass(Class<? extends AssetManager> clazz){
+    GameComponents.assetManagerClass = clazz;
+  }
+  
+  public static AssetManager createAssetManager(){
+    try {
+      return assetManagerClass.newInstance();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
     }
-  };
+  }
+
 }
