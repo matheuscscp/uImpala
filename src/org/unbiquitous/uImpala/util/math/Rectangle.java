@@ -11,6 +11,14 @@ public class Rectangle {
     setAngle(0);
   }
   
+  /**
+   * Assignment constructor.
+   * @param x Coordinate x of the center of the rectangle.
+   * @param y Coordinate y of the center of the rectangle.
+   * @param w Rectangle width.
+   * @param h Rectangle height.
+   * @param angle Angle in degrees of rotation around the center.
+   */
   public Rectangle(float x, float y, float w, float h, float angle) {
     setX(x);
     setY(y);
@@ -31,6 +39,10 @@ public class Rectangle {
     return x;
   }
   
+  /**
+   * 
+   * @param x Coordinate x of the center of the rectangle.
+   */
   public void setX(float x) {
     this.x = x;
   }
@@ -39,6 +51,10 @@ public class Rectangle {
     return y;
   }
   
+  /**
+   * 
+   * @param y Coordinate y of the center of the rectangle.
+   */
   public void setY(float y) {
     this.y = y;
   }
@@ -47,6 +63,10 @@ public class Rectangle {
     return w;
   }
   
+  /**
+   * 
+   * @param w Rectangle width.
+   */
   public void setW(float w) {
     this.w = (w < 0 ? 0 : w);
   }
@@ -55,6 +75,10 @@ public class Rectangle {
     return h;
   }
   
+  /**
+   * 
+   * @param h Rectangle height.
+   */
   public void setH(float h) {
     this.h = (h < 0 ? 0 : h);
   }
@@ -63,6 +87,10 @@ public class Rectangle {
     return angle;
   }
   
+  /**
+   * 
+   * @param angle Angle in degrees of rotation around the center.
+   */
   public void setAngle(float angle) {
     this.angle = angle;
   }

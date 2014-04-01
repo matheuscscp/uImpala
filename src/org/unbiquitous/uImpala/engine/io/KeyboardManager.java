@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
-import org.unbiquitous.uos.core.messageEngine.messages.Notify;
 
 /**
  * Class for keyboards management.
@@ -31,6 +30,7 @@ public final class KeyboardManager implements InputManager {
 //==============================================================================
   public void update() {
     //TODO
+    gateway.hashCode();//FIXME remove
     for (KeyboardSource ks : screenKeyboards)
       ks.update();
   }
