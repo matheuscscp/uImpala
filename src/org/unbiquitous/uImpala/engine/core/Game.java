@@ -24,13 +24,13 @@ import org.unbiquitous.uos.network.socket.radar.MulticastRadar;
  * @author Pimenta
  *
  */
-public final class Game implements UosApplication {
+public abstract class Game implements UosApplication {
   /**
    * Use this method in main() to start the game.
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
    * @param args Command line arguments.
    */
-  public static void run(final GameSettings settings) {
+  protected static void run(final String className, final GameSettings settings) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -38,7 +38,7 @@ public final class Game implements UosApplication {
           {"ubiquitos.radar", MulticastRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.application.deploylist", Game.class.getName()},
+          {"ubiquitos.application.deploylist", className},
           {"uImpala.gameSettings", settings}
         };
       }
