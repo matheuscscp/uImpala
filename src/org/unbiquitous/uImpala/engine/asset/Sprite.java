@@ -1,8 +1,7 @@
 package org.unbiquitous.uImpala.engine.asset;
 
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
 import org.unbiquitous.uImpala.engine.io.Screen;
+import org.unbiquitous.uImpala.util.Color;
 import org.unbiquitous.uImpala.util.Corner;
 
 /**
@@ -10,22 +9,7 @@ import org.unbiquitous.uImpala.util.Corner;
  * @author Pimenta
  *
  */
-public class Sprite {
-  /**
-   * Loads the image.
-   * @param assets Object to load the image.
-   * @param path Image path.
-   */
-  public Sprite(AssetManager assets, String path) {
-    texture = assets.getTexture(path);
-    widthTexture = texture.getTextureWidth();
-    heightTexture = texture.getTextureHeight();
-    width = texture.getImageWidth();
-    height = texture.getImageHeight();
-    resetClip();
-    color = Color.white;
-  }
-  
+public abstract class Sprite {
   /**
    * @return Image width.
    */
@@ -44,9 +28,7 @@ public class Sprite {
    * Set the color to multiply the texture.
    * @param color Color.
    */
-  public void setColor(Color color) {
-    this.color = color;
-  }
+  public abstract void setColor(Color color);
   
   /**
    * Render the image.
@@ -105,57 +87,7 @@ public class Sprite {
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
    */
-  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
-    texture.bind();
-    
-    GL11.glColor4f(color.r, color.g, color.b, opacity);
-    
-    // check corner
-    if (corner == null)
-      corner = Corner.CENTER;
-    switch (corner) {
-      case TOP_LEFT:
-        x += halfWidth;
-        y += halfHeight;
-        break;
-        
-      case TOP_RIGHT:
-        x -= halfWidth;
-        y += halfHeight;
-        break;
-        
-      case BOTTOM_LEFT:
-        x += halfWidth;
-        y -= halfHeight;
-        break;
-        
-      case BOTTOM_RIGHT:
-        x -= halfWidth;
-        y -= halfHeight;
-        break;
-        
-      default:
-        break;
-    }
-    
-    // setup matrix
-    GL11.glLoadIdentity();
-    GL11.glTranslatef(x, y, 0.0f);
-    GL11.glRotatef(angle, 0.0f, 0.0f, 1.0f);
-    GL11.glScalef(scaleX, scaleY, 0.0f);
-    
-    // render
-    GL11.glBegin(GL11.GL_QUADS);
-      GL11.glTexCoord2f(texCoordX0, texCoordY0);
-      GL11.glVertex2f(vertexCoordX0, vertexCoordY0);
-      GL11.glTexCoord2f(texCoordX1, texCoordY0);
-      GL11.glVertex2f(vertexCoordX1, vertexCoordY0);
-      GL11.glTexCoord2f(texCoordX1, texCoordY1);
-      GL11.glVertex2f(vertexCoordX1, vertexCoordY1);
-      GL11.glTexCoord2f(texCoordX0, texCoordY1);
-      GL11.glVertex2f(vertexCoordX0, vertexCoordY1);
-    GL11.glEnd();
-  }
+  public abstract void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY);
   
   /**
    * Sets the clipping rectangle as the whole image.
@@ -171,22 +103,7 @@ public class Sprite {
    * @param w Rectangle width.
    * @param h Rectangle height.
    */
-  public void clip(float x, float y, float w, float h) {
-    halfWidth = w/2;
-    halfHeight = h/2;
-    texCoordX0 = x/widthTexture; texCoordX1 = (x + w)/widthTexture;
-    texCoordY0 = y/heightTexture; texCoordY1 = (y + h)/heightTexture;
-    vertexCoordX0 = -halfWidth; vertexCoordX1 = halfWidth;
-    vertexCoordY0 = -halfHeight; vertexCoordY1 = halfHeight;
-  }
+  public abstract void clip(float x, float y, float w, float h);
   
-  private Texture texture;
-  private float widthTexture, heightTexture;
-  private int width, height;
-  private float texCoordX0, texCoordX1;
-  private float texCoordY0, texCoordY1;
-  private float vertexCoordX0, vertexCoordX1;
-  private float vertexCoordY0, vertexCoordY1;
-  private float halfWidth, halfHeight;
-  private Color color;
+  protected int width, height;
 }

@@ -16,9 +16,9 @@ public class TileSet {
    * @param rows Number of rows.
    * @param cols Number of columns.
    */
-  public TileSet(AssetManager assets, String path, int rows, int cols) {
+  protected TileSet(Sprite spr, int rows, int cols) {
     int tileAmount = rows*cols;
-    sprite = new Sprite(assets, path);
+    sprite = spr;
     tileWidth = sprite.getWidth()/cols;
     tileHeight = sprite.getHeight()/rows;
     tiles = new Tile[tileAmount];

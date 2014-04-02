@@ -1,8 +1,6 @@
 package org.unbiquitous.uImpala.engine.asset;
 
-import java.awt.Font;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
@@ -13,36 +11,66 @@ import org.unbiquitous.uImpala.engine.core.GameSettings;
  *
  */
 public abstract class AssetManager {
-  protected HashMap<String, Object> assets = new HashMap<String, Object>();
-  protected HashSet<Texture> textures = new HashSet<Texture>();
+  /**
+   * Create a sprite.
+   * @param path Image path.
+   * @return Sprite created.
+   */
+  public abstract Sprite newSprite(String path);
   
   /**
-   * Load a texture.
-   * @param path Texture path.
-   * @return Texture loaded.
+   * Create an animation.
+   * @param path Image path.
+   * @param frames Number of frames in the sprite sheet.
+   * @param fps Number of frames per second.
+   * @return Animation created.
    */
-  public abstract Texture getTexture(String path);
+  public abstract Animation newAnimation(String path, int frames, float fps);
   
   /**
-   * Load font.
-   * @param path Font path.
-   * @return Font loaded.
+   * Create a text.
+   * @param fontPath Font path.
+   * @param text Text to render.
+   * @return Text created.
    */
-  public abstract Font getFont(String path);
+  public abstract Text newText(String fontPath, String text);
   
   /**
-   * Load audio from OGG file.
-   * @param path OGG path.
-   * @return OggInputStream loaded from OGG file.
+   * Create an audio.
+   * @param path Audio path.
+   * @return Audio created.
    */
-  public abstract OggInputStream getOggInputStream(String path);
+  public abstract Audio newAudio(String path);
   
   /**
-   * Load map from a text file.
-   * @param path Text file path.
-   * @return Map loaded.
+   * Create a tile set.
+   * @param path Image path.
+   * @param rows Number of rows.
+   * @param cols Number of columns.
+   * @return TileSet created.
    */
-  public Map getMap(String path) {
+  public TileSet newTileSet(String path, int rows, int cols) {
+    return new TileSet(newSprite(path), rows, cols);
+  }
+  
+  /**
+   * Create a tile map.
+   * @param mapPath Map path (text file).
+   * @param tileSet A TileSet to render tiles.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(String mapPath, TileSet tileSet) {
+    return new TileMap(getMap(mapPath), tileSet);
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public abstract void destroy();
+//==============================================================================
+//nothings else matters from here to below
+//==============================================================================
+  private Map getMap(String path) {
     Map asset = (Map)assets.get(path);
     if (asset != null)
       return asset;
@@ -54,14 +82,6 @@ public abstract class AssetManager {
     assets.put(path, asset);
     return asset;
   }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  /**
-   * Engine's private use.
-   */
-  public void destroy() {
-    for (Texture t : textures)
-      t.release();
-  }
+  
+  protected HashMap<String, Object> assets = new HashMap<String, Object>();
 }

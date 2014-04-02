@@ -1,10 +1,15 @@
 package org.unbiquitous.uImpala.engine.jse.impl;
 
+import java.io.IOException;
+
+import org.newdawn.slick.openal.OggInputStream;
+import org.newdawn.slick.util.ResourceLoader;
+import org.unbiquitous.uImpala.engine.core.GameComponents;
+import org.unbiquitous.uImpala.engine.core.GameSettings;
 import org.unbiquitous.uImpala.engine.io.Speaker;
 
 public class Audio implements org.unbiquitous.uImpala.engine.asset.Audio {
-  public Audio(AssetManager assets, String path) {
-    this.assets = assets;
+  protected Audio(String path) {
     this.path = path;
   }
   
@@ -13,9 +18,18 @@ public class Audio implements org.unbiquitous.uImpala.engine.asset.Audio {
   }
   
   protected OggInputStream stream() {
-    return assets.getOggInputStream(path);
+    try {
+      org.newdawn.slick.openal.OggInputStream slickOgg;
+      slickOgg = new org.newdawn.slick.openal.OggInputStream(
+        ResourceLoader.getResourceAsStream(
+          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
+        )
+      );
+      return new OggInputStream(slickOgg);
+    } catch (IOException e) {
+      throw new Error(e);
+    }
   }
   
-  private AssetManager assets;
   private String path;
 }

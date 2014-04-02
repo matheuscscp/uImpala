@@ -6,6 +6,7 @@ import java.nio.IntBuffer;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.AL10;
+import org.newdawn.slick.openal.OggInputStream;
 import org.unbiquitous.uImpala.engine.io.Speaker;
 
 public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.AudioPlayback {
@@ -80,7 +81,10 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
           break;
         }
         
-        stream.close();
+        try {
+          stream.close();
+        } catch (IOException e2) {
+        }
         stream = audio.stream();
         
         try {
@@ -113,7 +117,10 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
   
   private synchronized void close() {
     closed = true;
-    stream.close();
+    try {
+      stream.close();
+    } catch (IOException e) {
+    }
     AL10.alDeleteBuffers(buffers);
     AL10.alDeleteSources(source);
   }
@@ -153,7 +160,10 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
           return;
         }
         
-        stream.close();
+        try {
+          stream.close();
+        } catch (IOException e2) {
+        }
         stream = audio.stream();
         
         try {

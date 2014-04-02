@@ -14,8 +14,8 @@ public class TileMap {
    * @param mapPath String path.
    * @param tileSet TileSet to render each tile.
    */
-  public TileMap(AssetManager assets, String mapPath, TileSet tileSet) {
-    map = assets.getMap(mapPath);
+  protected TileMap(Map map, TileSet tileSet) {
+    this.map = map;
     this.tileSet = tileSet;
   }
   

@@ -1,54 +1,20 @@
 package org.unbiquitous.uImpala.engine.asset;
 
-import org.unbiquitous.uImpala.engine.io.Screen;
-import org.unbiquitous.uImpala.engine.time.Time;
-import org.unbiquitous.uImpala.util.Corner;
-
 /**
  * Class to animate a sprite sheet.
  * @author Pimenta
  *
  */
-public class Animation extends Sprite {
-  /**
-   * Constructor to load the sprite sheet and set class parameters.
-   * @param assets Object to load the image.
-   * @param path Image path.
-   * @param frames Amount of frames to divide the image.
-   * @param fps Frame rate in frames per second.
-   */
-  public Animation(AssetManager assets, String path, int frames, float fps) {
-    super(assets, path);
-    this.frames = frames;
-    this.fps = fps;
-    frame = 0;
-    frameInt = 0;
-    clipWidth = getWidth()/frames;
-    clipHeight = getHeight();
-    lastTime = Time.get();
-    running = true;
-    clip(0, 0, clipWidth, clipHeight);
-  }
-  
+public abstract class Animation extends Sprite {
   /**
    * Pauses the animation.
    */
-  public void pause() {
-    if (!running)
-      return;
-    pauseTime = Time.get();
-    running = false;
-  }
+  public abstract void pause();
   
   /**
    * Resumes the animation.
    */
-  public void resume() {
-    if (running)
-      return;
-    lastTime += Time.get() - pauseTime;
-    running = true;
-  }
+  public abstract void resume();
   
   /**
    * Gets the current frame rate.
@@ -82,31 +48,5 @@ public class Animation extends Sprite {
     this.frame = frame;
   }
   
-  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
-    update();
-    super.render(screen, x, y, corner, angle, scaleX, scaleY, opacity);
-  }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  private void update() {
-    if (!running)
-      return;
-    
-    long now = Time.get();
-    float dt = (now - lastTime)/1000f;
-    lastTime = now;
-    
-    frame += fps*dt;
-    frame -= frames*Math.floor(frame/frames);
-    if (frameInt != (int)frame) {
-      frameInt = (int)frame;
-      clip(clipWidth*frameInt, 0, clipWidth, clipHeight);
-    }
-  }
-  
-  private int frames, frameInt, clipWidth, clipHeight;
-  private long lastTime, pauseTime;
-  private float fps, frame;
-  private boolean running;
+  protected float fps, frame;
 }
