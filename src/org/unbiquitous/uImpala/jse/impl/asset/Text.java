@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.jse.impl;
+package org.unbiquitous.uImpala.jse.impl.asset;
 
 import java.awt.Font;
 

@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.jse.impl;
+package org.unbiquitous.uImpala.jse.impl.asset;
 
 import org.unbiquitous.uImpala.engine.io.Screen;
 import org.unbiquitous.uImpala.util.Corner;

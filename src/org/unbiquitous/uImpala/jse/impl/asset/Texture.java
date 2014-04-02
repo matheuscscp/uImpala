@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.jse.impl;
+package org.unbiquitous.uImpala.jse.impl.asset;
 
 import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
