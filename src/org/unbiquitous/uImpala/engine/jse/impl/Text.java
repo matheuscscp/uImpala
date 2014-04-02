@@ -9,12 +9,7 @@ import org.unbiquitous.uImpala.engine.io.Screen;
 import org.unbiquitous.uImpala.util.Corner;
 
 public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
-  /**
-   * Assigment constructor.
-   * @param font Java font.
-   * @param text String text.
-   */
-  public Text(Font font, String text) {
+  protected Text(Font font, String text) {
     awtFont = font;
     this.text = text;
     init();

@@ -63,6 +63,10 @@ public final class AssetManager extends org.unbiquitous.uImpala.engine.asset.Ass
     return asset;
   }
   
+  public Text newText(Font font, String text) {
+    return new Text(font, text);
+  }
+  
   public Audio newAudio(String path) {
     return new Audio(path);
   }

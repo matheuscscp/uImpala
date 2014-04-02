@@ -1,5 +1,6 @@
 package org.unbiquitous.uImpala.engine.asset;
 
+import java.awt.Font;
 import java.util.HashMap;
 
 import org.unbiquitous.uImpala.engine.core.GameComponents;
@@ -34,6 +35,14 @@ public abstract class AssetManager {
    * @return Text created.
    */
   public abstract Text newText(String fontPath, String text);
+  
+  /**
+   * Create a text.
+   * @param font Java Font.
+   * @param text Text to render.
+   * @return Text created.
+   */
+  public abstract Text newText(Font font, String text);
   
   /**
    * Create an audio.
