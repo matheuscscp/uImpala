@@ -53,6 +53,11 @@ public abstract class Game implements UosApplication {
   protected abstract AssetManager createAssetManager();
   
   /**
+   * Method to initialize an engine implementation.
+   */
+  protected abstract void initImpl();
+  
+  /**
    * Call to change the current game scene.
    * @param scene New game scene.
    */
@@ -177,6 +182,8 @@ public abstract class Game implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
+    initImpl();
+    
     validateSettings();
     GameComponents.put(GameSettings.class, settings);
     GameComponents.put(Game.class, this);
