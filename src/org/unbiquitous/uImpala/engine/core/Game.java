@@ -94,7 +94,7 @@ public abstract class Game implements UosApplication {
   private LinkedList<GameScene> scenes = new LinkedList<GameScene>();
   private List<InputManager> inputs = new ArrayList<InputManager>();
   private List<OutputManager> outputs = new ArrayList<OutputManager>();
-  private DeltaTime deltatime = new DeltaTime();
+  private DeltaTime deltatime;
   
   private enum ChangeOption {
     NA, CHANGE, PUSH, POP, QUIT
@@ -181,7 +181,7 @@ public abstract class Game implements UosApplication {
     GameComponents.put(GameSettings.class, settings);
     GameComponents.put(Game.class, this);
     GameComponents.put(Gateway.class, gateway);
-    GameComponents.put(DeltaTime.class, deltatime);
+    GameComponents.put(DeltaTime.class, deltatime = new DeltaTime());
     
     try {
       List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");
