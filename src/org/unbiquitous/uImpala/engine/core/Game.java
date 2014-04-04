@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.ListResourceBundle;
 
-import org.unbiquitous.uImpala.engine.asset.AssetManager;
 import org.unbiquitous.uImpala.engine.io.InputManager;
 import org.unbiquitous.uImpala.engine.io.OutputManager;
 import org.unbiquitous.uImpala.engine.time.DeltaTime;
@@ -45,12 +44,6 @@ public abstract class Game implements UosApplication {
       }
     });
   }
-  
-  /**
-   * Method to create a concrete AssetManager.
-   * @return A new AssetManager.
-   */
-  protected abstract AssetManager createAssetManager();
   
   /**
    * Method to initialize an engine implementation.

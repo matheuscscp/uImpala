@@ -12,6 +12,20 @@ import org.unbiquitous.uImpala.engine.core.GameSettings;
  *
  */
 public abstract class AssetManager {
+  protected static interface Factory {
+    public AssetManager create();
+  }
+  
+  protected static Factory factory = null;
+  
+  /**
+   * Constructor.
+   * @return AssetManager created.
+   */
+  public static synchronized AssetManager create() {
+    return factory.create();
+  }
+  
   /**
    * Create a sprite.
    * @param path Image path.

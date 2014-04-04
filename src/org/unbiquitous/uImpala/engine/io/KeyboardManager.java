@@ -30,7 +30,6 @@ public final class KeyboardManager implements InputManager {
 //==============================================================================
   public void update() {
     //TODO
-    gateway.hashCode();//FIXME remove
     for (KeyboardSource ks : screenKeyboards)
       ks.update();
   }

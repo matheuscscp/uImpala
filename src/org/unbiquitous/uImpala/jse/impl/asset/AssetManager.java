@@ -11,6 +11,17 @@ import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
 
 public final class AssetManager extends org.unbiquitous.uImpala.engine.asset.AssetManager {
+  private static final class Factory implements org.unbiquitous.uImpala.engine.asset.AssetManager.Factory {
+    public AssetManager create() {
+      return new AssetManager();
+    }
+  }
+  
+  public static synchronized void initImpl() {
+    if (factory == null)
+      factory = new Factory();
+  }
+  
   public Sprite newSprite(String path) {
     return new Sprite(getTexture(path));
   }

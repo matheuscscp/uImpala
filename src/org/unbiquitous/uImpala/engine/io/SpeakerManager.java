@@ -29,6 +29,6 @@ public final class SpeakerManager implements OutputManager {
     speaker = null;
   }
   
-  private Speaker speaker = new Speaker();
+  private Speaker speaker = Speaker.create();
   private boolean busy = false;
 }

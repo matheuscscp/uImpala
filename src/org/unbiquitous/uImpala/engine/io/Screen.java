@@ -15,7 +15,23 @@ import org.unbiquitous.uImpala.engine.core.GameComponents;
  * @author Pimenta
  *
  */
-public final class Screen extends OutputResource {
+public abstract class Screen extends OutputResource {
+  protected static interface Factory {
+    public Screen create();
+  }
+  
+  protected static Factory factory = null;
+  
+  /**
+   * Constructor.
+   * @return Screen created.
+   */
+  protected static synchronized Screen create() {
+    Screen tmp = factory.create();
+    tmp.observations.addEvents(EVENT_CLOSE_REQUEST);
+    return tmp;
+  }
+  
   /**
    * Broadcasted when the user requests to close the screen.
    */
@@ -25,13 +41,6 @@ public final class Screen extends OutputResource {
    * The last event of this class.
    */
   public static final int LAST_EVENT          = EVENT_CLOSE_REQUEST;
-  
-  /**
-   * Constructor to setup screen events.
-   */
-  protected Screen() {
-    observations.addEvents(EVENT_CLOSE_REQUEST);
-  }
   
   /**
    * Open the screen.

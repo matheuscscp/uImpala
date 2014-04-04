@@ -1,9 +1,6 @@
 package org.unbiquitous.uImpala.engine.io;
 
-import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
-import org.unbiquitous.uos.core.messageEngine.messages.Notify;
-
-public final class KeyboardSource extends InputResource implements UosEventListener {
+public final class KeyboardSource extends InputResource {
   /**
    * Broadcasted when a key is pressed.
    */
@@ -65,9 +62,4 @@ public final class KeyboardSource extends InputResource implements UosEventListe
   
   protected boolean updating = false;
   private boolean[] keys;
-  
-  public void handleEvent(Notify event) {
-    // TODO Auto-generated method stub
-    
-  }
 }

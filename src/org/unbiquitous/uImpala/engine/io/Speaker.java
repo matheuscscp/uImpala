@@ -1,32 +1,23 @@
 package org.unbiquitous.uImpala.engine.io;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.openal.AL;
-
 /**
  * Class for sound speaker resource.
  * @author Pimenta
  *
  */
-public final class Speaker extends OutputResource {
-  protected Speaker() {
-    try {
-      AL.create();
-    } catch (LWJGLException e) {
-      throw new Error(e);
-    }
+public abstract class Speaker extends OutputResource {
+  protected static interface Factory {
+    public Speaker create();
   }
   
-  protected void update() {
-    
-  }
+  protected static Factory factory = null;
   
-  public void close() {
-    AL.destroy();
-  }
-  
-  public boolean isUpdating() {
-    return true;
+  /**
+   * Constructor.
+   * @return Speaker created.
+   */
+  protected static synchronized Speaker create() {
+    return factory.create();
   }
   
   public float getVolume() {
