@@ -28,7 +28,8 @@ public abstract class Screen extends OutputResource {
    */
   protected static synchronized Screen create() {
     Screen tmp = factory.create();
-    tmp.observations.addEvents(EVENT_CLOSE_REQUEST);
+    if (tmp != null)
+      tmp.observations.addEvents(EVENT_CLOSE_REQUEST);
     return tmp;
   }
   

@@ -14,11 +14,9 @@ public final class ScreenManager implements OutputManager {
    * @return The local screen created.
    */
   public Screen create() {
-    // FIXME when LWJGL support multiple windows
-    if (localScreens.size() > 0)
-      return null;
     Screen screen = Screen.create();
-    localScreens.add(screen);
+    if (screen != null)
+      localScreens.add(screen);
     return screen;
   }
   

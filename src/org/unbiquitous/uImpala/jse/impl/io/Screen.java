@@ -3,7 +3,10 @@ package org.unbiquitous.uImpala.jse.impl.io;
 public final class Screen extends org.unbiquitous.uImpala.engine.io.Screen {
   private static final class Factory implements org.unbiquitous.uImpala.engine.io.Screen.Factory {
     public Screen create() {
-      return new Screen();
+      if (screen != null)
+        return null;
+      screen = new Screen();
+      return screen;
     }
   }
   
@@ -11,4 +14,6 @@ public final class Screen extends org.unbiquitous.uImpala.engine.io.Screen {
     if (factory == null)
       factory = new Factory();
   }
+  
+  private static Screen screen = null;
 }
