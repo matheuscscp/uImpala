@@ -46,7 +46,7 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
   
   public synchronized void volume(float volume) {
     if (!closed)
-      AL10.alSourcef(source, AL10.AL_GAIN, volume*speaker.getVolume());
+      this.volume = volume;
   }
   
   protected AudioPlayback(Speaker speaker, Audio audio, float volume, boolean loop) {
@@ -60,6 +60,7 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
     nextBuffer = 0;
     buffers = BufferUtils.createIntBuffer(BUFFER_COUNT);
     AL10.alGenBuffers(buffers);
+    this.volume = volume;
     this.loop = loop;
     done = false;
     closed = false;
@@ -140,6 +141,9 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
     if (done)
       return;
     
+    // update volume
+    AL10.alSourcef(source, AL10.AL_GAIN, volume*speaker.getVolume());
+    
     // unqueue processed buffers
     int processed = AL10.alGetSourcei(source, AL10.AL_BUFFERS_PROCESSED);
     if (processed == 0)
@@ -189,4 +193,5 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
   private int source, format, freq, nextBuffer;
   private IntBuffer buffers;
   private boolean loop, done, closed;
+  private float volume;
 }

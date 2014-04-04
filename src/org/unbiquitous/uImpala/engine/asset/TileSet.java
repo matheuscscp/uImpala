@@ -11,8 +11,7 @@ import org.unbiquitous.uImpala.util.Corner;
 public class TileSet {
   /**
    * Constructor.
-   * @param assets Object to load the image.
-   * @param path String path.
+   * @param spr Sprite to split and render tiles.
    * @param rows Number of rows.
    * @param cols Number of columns.
    */
@@ -38,6 +37,14 @@ public class TileSet {
     Tile tile = tiles[tileID];
     sprite.clip(tile.x, tile.y, tileWidth, tileHeight);
     sprite.render(screen, x, y, Corner.TOP_LEFT);
+  }
+  
+  /**
+   * Get the sprite used to render tiles.
+   * @return Sprite used to render tiles.
+   */
+  public Sprite getSprite() {
+    return sprite;
   }
 //==============================================================================
 //nothings else matters from here to below

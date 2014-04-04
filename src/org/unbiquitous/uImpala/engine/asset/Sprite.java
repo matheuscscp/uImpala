@@ -13,22 +13,12 @@ public abstract class Sprite {
   /**
    * @return Image width.
    */
-  public int getWidth() {
-    return width;
-  }
+  public abstract int getWidth();
   
   /**
    * @return Image height.
    */
-  public int getHeight() {
-    return height;
-  }
-  
-  /**
-   * Set the color to multiply the texture.
-   * @param color Color.
-   */
-  public abstract void setColor(Color color);
+  public abstract int getHeight();
   
   /**
    * Render the image.
@@ -37,7 +27,7 @@ public abstract class Sprite {
    * @param y Coordinate y of the center of the clipping rectangle.
    */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f);
+    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -48,7 +38,7 @@ public abstract class Sprite {
    * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
    */
   public void render(Screen screen, float x, float y, Corner corner) {
-    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f);
+    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -60,7 +50,7 @@ public abstract class Sprite {
    * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity) {
-    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f);
+    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -73,7 +63,7 @@ public abstract class Sprite {
    * @param angle Angle of rotation in degrees.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle) {
-    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f);
+    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -87,14 +77,28 @@ public abstract class Sprite {
    * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
    */
-  public abstract void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY);
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
+    render(screen, x, y, corner, opacity, angle, scaleX, scaleY, Color.white);
+  }
+  
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the corner of the clipping rectangle.
+   * @param y Coordinate y of the corner of the clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
+   * @param color Color to multiply texture pixels.
+   */
+  public abstract void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY, Color color);
   
   /**
    * Sets the clipping rectangle as the whole image.
    */
-  public void resetClip() {
-    clip(0, 0, width, height);
-  }
+  public abstract void resetClip();
   
   /**
    * Sets a clipping rectangle.
@@ -104,6 +108,4 @@ public abstract class Sprite {
    * @param h Rectangle height.
    */
   public abstract void clip(float x, float y, float w, float h);
-  
-  protected int width, height;
 }

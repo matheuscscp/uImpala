@@ -21,12 +21,25 @@ public abstract class AssetManager {
   
   /**
    * Create an animation.
+   * @param sprite Sprite to render.
+   * @param frames Number of frames in the sprite sheet.
+   * @param fps Number of frames per second.
+   * @return Animation created.
+   */
+  public Animation newAnimation(Sprite sprite, int frames, float fps) {
+    return new Animation(sprite, frames, fps);
+  }
+  
+  /**
+   * Create an animation.
    * @param path Image path.
    * @param frames Number of frames in the sprite sheet.
    * @param fps Number of frames per second.
    * @return Animation created.
    */
-  public abstract Animation newAnimation(String path, int frames, float fps);
+  public Animation newAnimation(String path, int frames, float fps) {
+    return new Animation(newSprite(path), frames, fps);
+  }
   
   /**
    * Create a text.
@@ -53,6 +66,17 @@ public abstract class AssetManager {
   
   /**
    * Create a tile set.
+   * @param spr Sprite to render.
+   * @param rows Number of rows.
+   * @param cols Number of columns.
+   * @return TileSet created.
+   */
+  public TileSet newTileSet(Sprite spr, int rows, int cols) {
+    return new TileSet(spr, rows, cols);
+  }
+  
+  /**
+   * Create a tile set.
    * @param path Image path.
    * @param rows Number of rows.
    * @param cols Number of columns.
@@ -63,23 +87,11 @@ public abstract class AssetManager {
   }
   
   /**
-   * Create a tile map.
-   * @param mapPath Map path (text file).
-   * @param tileSet A TileSet to render tiles.
-   * @return TileMap created.
+   * Get a map from text file.
+   * @param path Text file path.
+   * @return Map from text file.
    */
-  public TileMap newTileMap(String mapPath, TileSet tileSet) {
-    return new TileMap(getMap(mapPath), tileSet);
-  }
-  
-  /**
-   * Engine's private use.
-   */
-  public abstract void destroy();
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  private Map getMap(String path) {
+  public Map getMap(String path) {
     Map asset = (Map)assets.get(path);
     if (asset != null)
       return asset;
@@ -91,6 +103,79 @@ public abstract class AssetManager {
     assets.put(path, asset);
     return asset;
   }
+  
+  /**
+   * Create a tile map.
+   * @param map Logical map.
+   * @param tileSet A TileSet to render tiles.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(Map map, TileSet tileSet) {
+    return new TileMap(map, tileSet);
+  }
+  
+  /**
+   * Create a tile map.
+   * @param mapPath Logical map path (text file).
+   * @param tileSet TileSet to render tiles.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(String mapPath, TileSet tileSet) {
+    return new TileMap(getMap(mapPath), tileSet);
+  }
+  
+  /**
+   * Create a tile map.
+   * @param map Logical map.
+   * @param tsSprite Sprite for the TileSet.
+   * @param tsRows Number of rows for the TileSet.
+   * @param tsCols Number of columns for the TileSet.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(Map map, Sprite tsSprite, int tsRows, int tsCols) {
+    return new TileMap(map, new TileSet(tsSprite, tsRows, tsCols));
+  }
+  
+  /**
+   * Create a tile map.
+   * @param map Logical map.
+   * @param tsPath Image path for the Sprite of the TileSet.
+   * @param tsRows Number of rows for the TileSet.
+   * @param tsCols Number of columns for the TileSet.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(Map map, String tsPath, int tsRows, int tsCols) {
+    return new TileMap(map, new TileSet(newSprite(tsPath), tsRows, tsCols));
+  }
+  
+  /**
+   * Create a tile map.
+   * @param mapPath Logical map path (text file).
+   * @param tsSprite Sprite for the TileSet.
+   * @param tsRows Number of rows for the TileSet.
+   * @param tsCols Number of columns for the TileSet.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(String mapPath, Sprite tsSprite, int tsRows, int tsCols) {
+    return new TileMap(getMap(mapPath), new TileSet(tsSprite, tsRows, tsCols));
+  }
+  
+  /**
+   * Create a tile map.
+   * @param mapPath Logical map path (text file).
+   * @param tsPath Image path for the Sprite of the TileSet.
+   * @param tsRows Number of rows for the TileSet.
+   * @param tsCols Number of columns for the TileSet.
+   * @return TileMap created.
+   */
+  public TileMap newTileMap(String mapPath, String tsPath, int tsRows, int tsCols) {
+    return new TileMap(getMap(mapPath), new TileSet(newSprite(tsPath), tsRows, tsCols));
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public abstract void destroy();
   
   protected HashMap<String, Object> assets = new HashMap<String, Object>();
 }

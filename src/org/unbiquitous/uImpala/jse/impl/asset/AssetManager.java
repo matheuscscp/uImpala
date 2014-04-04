@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.IOException;
 import java.util.HashSet;
 
+import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.ResourceLoader;
 import org.unbiquitous.uImpala.engine.core.GameComponents;
@@ -20,13 +21,11 @@ public final class AssetManager extends org.unbiquitous.uImpala.engine.asset.Ass
       return asset;
     
     try {
-      org.newdawn.slick.opengl.Texture slickTex;
-      slickTex = TextureLoader.getTexture(getFormat(path),
+      asset = TextureLoader.getTexture(getFormat(path),
         ResourceLoader.getResourceAsStream(
           GameComponents.get(GameSettings.class).get("root_path") + "/" + path
         )
       );
-      asset = new Texture(slickTex);
     } catch (IOException e) {
       throw new Error(e);
     }
@@ -34,10 +33,6 @@ public final class AssetManager extends org.unbiquitous.uImpala.engine.asset.Ass
     assets.put(path, asset);
     textures.add(asset);
     return asset;
-  }
-  
-  public Animation newAnimation(String path, int frames, float fps) {
-    return new Animation(getTexture(path), frames, fps);
   }
   
   public Text newText(String fontPath, String text) {

@@ -3,9 +3,9 @@ package org.unbiquitous.uImpala.jse.impl.asset;
 import java.awt.Font;
 
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.unbiquitous.uImpala.engine.io.Screen;
+import org.unbiquitous.uImpala.util.Color;
 import org.unbiquitous.uImpala.util.Corner;
 
 public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
@@ -20,7 +20,15 @@ public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
     setSize();
   }
   
-  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
+  public int getWidth() {
+    return width;
+  }
+  
+  public int getHeight() {
+    return height;
+  }
+  
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY, Color color) {
     color.a = opacity;
     
     // check corner
@@ -58,10 +66,10 @@ public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
     GL11.glScalef(scaleX, scaleY, 0.0f);
     GL11.glTranslatef(-halfWidth, -halfHeight, 0.0f);
     
-    ttfFont.drawString(0.0f, 0.0f, text, color);
+    ttfFont.drawString(0.0f, 0.0f, text, new org.newdawn.slick.Color(color.r, color.g, color.b, color.a));
   }
   
-  public void options(Integer style, Float size, Boolean antiAlias, org.unbiquitous.uImpala.util.Color color) {
+  public void options(Integer style, Float size, Boolean antiAlias) {
     boolean changed = false;
     if (style != null) {
       awtFont = awtFont.deriveFont(style);
@@ -75,8 +83,6 @@ public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
       this.antiAlias = antiAlias;
       changed = true;
     }
-    if (color != null)
-      this.color = new Color(color.r, color.g, color.b, color.a);
     if (changed) {
       ttfFont = new TrueTypeFont(awtFont, this.antiAlias);
       setSize();
@@ -87,7 +93,6 @@ public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
 //==============================================================================
   private void init() {
     antiAlias = true;
-    color = Color.white;
     ttfFont = new TrueTypeFont(awtFont, antiAlias);
     setSize();
   }
@@ -103,6 +108,6 @@ public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
   private TrueTypeFont ttfFont;
   private String text;
   private boolean antiAlias;
-  private Color color;
+  private int width, height;
   private float halfWidth, halfHeight;
 }

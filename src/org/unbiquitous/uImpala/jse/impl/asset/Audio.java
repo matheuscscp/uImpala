@@ -19,13 +19,9 @@ public class Audio implements org.unbiquitous.uImpala.engine.asset.Audio {
   
   protected OggInputStream stream() {
     try {
-      org.newdawn.slick.openal.OggInputStream slickOgg;
-      slickOgg = new org.newdawn.slick.openal.OggInputStream(
-        ResourceLoader.getResourceAsStream(
-          GameComponents.get(GameSettings.class).get("root_path") + "/" + path
-        )
-      );
-      return new OggInputStream(slickOgg);
+      return new OggInputStream(ResourceLoader.getResourceAsStream(
+        GameComponents.get(GameSettings.class).get("root_path") + "/" + path
+      ));
     } catch (IOException e) {
       throw new Error(e);
     }
