@@ -16,7 +16,7 @@ import org.unbiquitous.uos.core.driverManager.DriverData;
  * @author Pimenta
  *
  */
-public final class KeyboardManager implements InputManager {
+public class KeyboardManager implements InputManager {
   public KeyboardManager() {
     gateway = GameComponents.get(Gateway.class);
   }
@@ -113,6 +113,20 @@ public final class KeyboardManager implements InputManager {
       i.next().getValue().close();
       i.remove();
     }
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void add(KeyboardSource ks) {
+    screenKeyboards.add(ks);
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void remove(KeyboardSource ks) {
+    screenKeyboards.remove(ks);
   }
   
   /**

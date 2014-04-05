@@ -4,7 +4,7 @@ import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
 import org.unbiquitous.uos.core.driverManager.DriverData;
 import org.unbiquitous.uos.core.messageEngine.messages.Notify;
 
-public final class KeyboardSource extends InputResource implements UosEventListener {
+public class KeyboardSource extends InputResource implements UosEventListener {
   /**
    * Broadcasted when a key is pressed.
    */
@@ -25,7 +25,7 @@ public final class KeyboardSource extends InputResource implements UosEventListe
    * Also setup events.
    * @param ks Amount of keys.
    */
-  protected KeyboardSource(int ks, DriverData driver) {
+  public KeyboardSource(int ks, DriverData driver) {
     observations.addEvents(EVENT_KEY_DOWN, EVENT_KEY_UP);
     keys = new boolean[ks];
     for (int i = 0; i < ks; i++)
@@ -66,6 +66,13 @@ public final class KeyboardSource extends InputResource implements UosEventListe
   
   public boolean getKey(int k) {
     return keys[k];
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void add(KeyboardEvent event) {
+    events.add(event);
   }
   
   private boolean[] keys;

@@ -10,8 +10,8 @@ import org.newdawn.slick.util.ResourceLoader;
 import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
 
-public final class AssetManager extends org.unbiquitous.uImpala.engine.asset.AssetManager {
-  private static final class Factory implements org.unbiquitous.uImpala.engine.asset.AssetManager.Factory {
+public class AssetManager extends org.unbiquitous.uImpala.engine.asset.AssetManager {
+  private static class Factory implements org.unbiquitous.uImpala.engine.asset.AssetManager.Factory {
     public AssetManager create() {
       return new AssetManager();
     }

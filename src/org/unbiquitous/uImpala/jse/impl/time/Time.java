@@ -2,7 +2,7 @@ package org.unbiquitous.uImpala.jse.impl.time;
 
 import org.lwjgl.Sys;
 
-public final class Time extends org.unbiquitous.uImpala.engine.time.Time {
+public class Time extends org.unbiquitous.uImpala.engine.time.Time {
   public synchronized long getTime() {
     return Sys.getTime()*1000/Sys.getTimerResolution();
   }

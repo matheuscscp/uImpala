@@ -3,8 +3,8 @@ package org.unbiquitous.uImpala.jse.impl.io;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.openal.AL;
 
-public final class Speaker extends org.unbiquitous.uImpala.engine.io.Speaker {
-  private static final class Factory implements org.unbiquitous.uImpala.engine.io.Speaker.Factory {
+public class Speaker extends org.unbiquitous.uImpala.engine.io.Speaker {
+  private static class Factory implements org.unbiquitous.uImpala.engine.io.Speaker.Factory {
     public Speaker create() {
       return new Speaker();
     }

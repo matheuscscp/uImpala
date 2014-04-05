@@ -8,7 +8,7 @@ import java.util.Iterator;
  * @author Pimenta
  *
  */
-public final class ScreenManager implements OutputManager {
+public class ScreenManager implements OutputManager {
   /**
    * Use this method ONLY to create local screens.
    * @return The local screen created.

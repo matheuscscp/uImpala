@@ -6,7 +6,7 @@ import org.unbiquitous.uImpala.jse.impl.io.Screen;
 import org.unbiquitous.uImpala.jse.impl.io.Speaker;
 import org.unbiquitous.uImpala.jse.impl.time.Time;
 
-public final class Game extends org.unbiquitous.uImpala.engine.core.Game {
+public class Game extends org.unbiquitous.uImpala.engine.core.Game {
   public static void run(GameSettings settings) {
     run(Game.class.getName(), settings);
   }

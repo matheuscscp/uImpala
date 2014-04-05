@@ -88,9 +88,7 @@ public class Text extends org.unbiquitous.uImpala.engine.asset.Text {
       setSize();
     }
   }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
+  
   private void init() {
     antiAlias = true;
     ttfFont = new TrueTypeFont(awtFont, antiAlias);
