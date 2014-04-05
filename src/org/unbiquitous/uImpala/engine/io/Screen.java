@@ -69,9 +69,9 @@ public abstract class Screen extends OutputResource {
   }
   
   /**
-   * Initializes fixed pipeline OpenGL.
+   * Initializes legacy OpenGL.
    */
-  public void initGL() {
+  public void initGraphics() {
     // enable texture
     GL11.glEnable(GL11.GL_TEXTURE_2D);
     
