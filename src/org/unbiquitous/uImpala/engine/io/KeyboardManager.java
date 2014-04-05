@@ -84,23 +84,21 @@ public final class KeyboardManager implements InputManager {
       return;
     }
     
-    // get associated devices
+    // checking for new devices
     HashSet<String> currentDriversIDs = new HashSet<String>();
     for (DriverData driver : currentDrivers) {
       String id = driver.getDevice().getName() + driver.getInstanceID();
       currentDriversIDs.add(id);
-      
-      // checking for new devices
       if (availableKeyboards.get(id) == null && busyKeyboards.get(id) == null)
         availableKeyboards.put(id, new KeyboardSource(256, driver));
     }
     
     // checking for disconnected devices
-    checkDisconnected(currentDriversIDs, availableKeyboards);
-    checkDisconnected(currentDriversIDs, busyKeyboards);
+    checkDisconnected(availableKeyboards, currentDriversIDs);
+    checkDisconnected(busyKeyboards, currentDriversIDs);
   }
   
-  private void checkDisconnected(HashSet<String> currentDriversIDs, HashMap<String, KeyboardSource> container) {
+  private void checkDisconnected(HashMap<String, KeyboardSource> container, HashSet<String> currentDriversIDs) {
     for (Iterator<Entry<String, KeyboardSource>> i = container.entrySet().iterator(); i.hasNext();) {
       Entry<String, KeyboardSource> e = i.next();
       if (!currentDriversIDs.contains(e.getKey())) {
