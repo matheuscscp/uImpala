@@ -1,6 +1,10 @@
 package org.unbiquitous.uImpala.engine.io;
 
-public final class KeyboardSource extends InputResource {
+import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
+import org.unbiquitous.uos.core.driverManager.DriverData;
+import org.unbiquitous.uos.core.messageEngine.messages.Notify;
+
+public final class KeyboardSource extends InputResource implements UosEventListener {
   /**
    * Broadcasted when a key is pressed.
    */
@@ -21,11 +25,14 @@ public final class KeyboardSource extends InputResource {
    * Also setup events.
    * @param ks Amount of keys.
    */
-  protected KeyboardSource(int ks) {
+  protected KeyboardSource(int ks, DriverData driver) {
     observations.addEvents(EVENT_KEY_DOWN, EVENT_KEY_UP);
     keys = new boolean[ks];
     for (int i = 0; i < ks; i++)
       keys[i] = false;
+    
+    updating = false;
+    this.driver = driver;
   }
   
   protected void update() {
@@ -49,7 +56,8 @@ public final class KeyboardSource extends InputResource {
   }
   
   public void close() {
-    
+    updating = false;
+    observations.broadcast(EVENT_STOPPED_UPDATING, null);
   }
   
   public boolean isUpdating() {
@@ -60,6 +68,17 @@ public final class KeyboardSource extends InputResource {
     return keys[k];
   }
   
-  protected boolean updating = false;
   private boolean[] keys;
+  
+  protected boolean updating;
+  protected DriverData driver;
+  
+  public void handleEvent(Notify event) {
+    int key = ((Integer)event.getParameter("unicodeChar")).intValue();
+    events.add(new KeyboardEvent(
+      event.getEventKey().equals("EVENT_KEY_DOWN") ? EVENT_KEY_DOWN : EVENT_KEY_UP,
+      key,
+      (char)key
+    ));
+  }
 }

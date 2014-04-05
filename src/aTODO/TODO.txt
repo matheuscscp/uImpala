@@ -1,4 +1,6 @@
-refactor engine.io.Keyboard* (uos stuff, remove old manager)
+refactor screen
+refactor io interfaces
+finish keyboard stuff
 refactor engine.util.StringInput (for uos keyboards)
 refactor engine.util.Button
 write basics 7 tutorial

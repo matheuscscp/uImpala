@@ -60,7 +60,7 @@ public abstract class Screen extends OutputResource {
       Display.create();
       Display.setVSyncEnabled(true);
       mouse = GameComponents.get(MouseManager.class) != null ? new MouseSource(Mouse.getButtonCount()) : null;
-      keyboard = GameComponents.get(KeyboardManager.class) != null ? new KeyboardSource(Keyboard.KEYBOARD_SIZE) : null;
+      keyboard = GameComponents.get(KeyboardManager.class) != null ? new KeyboardSource(Keyboard.KEYBOARD_SIZE, null) : null;
       addMouseKeyboard();
     } catch (Throwable e) {
       open = false;
