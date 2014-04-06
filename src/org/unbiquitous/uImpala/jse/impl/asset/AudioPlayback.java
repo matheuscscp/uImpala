@@ -10,7 +10,7 @@ import org.newdawn.slick.openal.OggInputStream;
 import org.unbiquitous.uImpala.engine.io.Speaker;
 
 public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.AudioPlayback {
-  public synchronized AudioPlayback.State state() {
+  public AudioPlayback.State state() {
     if (closed)
       return AudioPlayback.State.STOPPED;
     
@@ -29,24 +29,24 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
     }
   }
   
-  public synchronized void pause() {
+  public void pause() {
     if (!closed && state() == State.PLAYING)
       AL10.alSourcePause(source);
   }
   
-  public synchronized void resume() {
+  public void resume() {
     if (!closed && state() == State.PAUSED)
       AL10.alSourcePlay(source);
   }
   
-  public synchronized void stop() {
+  public void stop() {
     if (!closed)
       AL10.alSourceStop(source);
   }
   
-  public synchronized void volume(float volume) {
+  public void volume(float vol) {
     if (!closed)
-      this.volume = volume;
+      volume = vol;
   }
   
   protected AudioPlayback(Speaker speaker, Audio audio, float volume, boolean loop) {
@@ -116,7 +116,7 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
     }).start();
   }
   
-  private synchronized void close() {
+  private void close() {
     closed = true;
     try {
       stream.close();
@@ -192,6 +192,7 @@ public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.Audio
   private OggInputStream stream;
   private int source, format, freq, nextBuffer;
   private IntBuffer buffers;
-  private boolean loop, done, closed;
-  private float volume;
+  private boolean loop, done;
+  private Boolean closed;
+  private Float volume;
 }

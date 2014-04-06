@@ -8,7 +8,6 @@ import java.util.Map.Entry;
 
 import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
-import org.unbiquitous.uos.core.adaptabitilyEngine.NotifyException;
 import org.unbiquitous.uos.core.driverManager.DriverData;
 
 /**
@@ -25,38 +24,32 @@ public class KeyboardManager implements InputManager {
     if (availableKeyboards.size() == 0)
       return null;
     
+    // remove first available keyboard
     Iterator<Entry<String, KeyboardSource>> i = availableKeyboards.entrySet().iterator();
     Entry<String, KeyboardSource> e = i.next();
+    String id = e.getKey();
     KeyboardSource ks = e.getValue();
-    try {
-      gateway.register(
-        ks,
-        ks.driver.getDevice(),
-        ks.driver.getDriver().getName(),
-        ks.driver.getInstanceID(),
-        "EVENT_KEY_DOWN",
-        null
-      );
-      gateway.register(
-        ks,
-        ks.driver.getDevice(),
-        ks.driver.getDriver().getName(),
-        ks.driver.getInstanceID(),
-        "EVENT_KEY_UP",
-        null
-      );
-      ks.updating = true;
-    } catch (NotifyException e1) {
-      ks.updating = false;
-    }
-    busyKeyboards.put(e.getKey(), ks);
     i.remove();
+    
+    ks.start();
+    
+    busyKeyboards.put(id, ks);
+    
     return ks;
   }
   
   public boolean free(IOResource rsc) {
-    // TODO Auto-generated method stub
-    return false;
+    KeyboardSource ks = (KeyboardSource)rsc;
+    String id = ks.id();
+    
+    if (busyKeyboards.remove(id) == null)
+      return false;
+    
+    ks.stop();
+    
+    availableKeyboards.put(id, ks);
+    
+    return true;
   }
 //==============================================================================
 //nothings else matters from here to below
@@ -102,7 +95,7 @@ public class KeyboardManager implements InputManager {
     for (Iterator<Entry<String, KeyboardSource>> i = container.entrySet().iterator(); i.hasNext();) {
       Entry<String, KeyboardSource> e = i.next();
       if (!currentDriversIDs.contains(e.getKey())) {
-        e.getValue().close();
+        e.getValue().kill();
         i.remove();
       }
     }
@@ -110,7 +103,7 @@ public class KeyboardManager implements InputManager {
   
   private void clear(HashMap<String, KeyboardSource> container) {
     for (Iterator<Entry<String, KeyboardSource>> i = container.entrySet().iterator(); i.hasNext();) {
-      i.next().getValue().close();
+      i.next().getValue().kill();
       i.remove();
     }
   }

@@ -1,5 +1,6 @@
-finish keyboard stuff
-refactor engine.util.StringInput (for uos keyboards)
+implement periodic sinalization between app and driver in keyboard manager update for busy keyboards
+standardize key codes as unicode
+refactor engine.util.StringInput (for unicode standard)
 refactor engine.util.Button
 write basics 7 tutorial
 implement util.math.Overlap.*

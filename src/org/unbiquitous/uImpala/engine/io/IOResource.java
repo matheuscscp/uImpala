@@ -29,7 +29,16 @@ public abstract class IOResource implements Subject {
    * Use to broadcast events.
    */
   protected Observations observations = new Observations(this, EVENT_STARTED_UPDATING, EVENT_STOPPED_UPDATING);
+
+  /**
+   * Method to try to start communication with the associated device.
+   */
+  public abstract void start();
   
+  /**
+   * Method to stop communication with the associated device.
+   */
+  public abstract void stop();
   /**
    * Method to update the resource state and/or broadcast events.
    */

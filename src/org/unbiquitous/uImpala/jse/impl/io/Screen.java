@@ -157,6 +157,14 @@ public class Screen extends org.unbiquitous.uImpala.engine.io.Screen {
     return closeRequested;
   }
   
+  public void start() {
+    
+  }
+  
+  public void stop() {
+    
+  }
+  
   protected void update() {
     if (!open)
       return;
@@ -189,7 +197,7 @@ public class Screen extends org.unbiquitous.uImpala.engine.io.Screen {
     GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
     closeRequested = Display.isCloseRequested();
     if (closeRequested)
-      observations.broadcast(EVENT_CLOSE_REQUEST, null);
+      observations.broadcast(EVENT_CLOSE_REQUEST);
   }
   
   public void close() {

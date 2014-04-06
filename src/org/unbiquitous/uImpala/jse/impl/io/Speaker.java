@@ -23,6 +23,14 @@ public class Speaker extends org.unbiquitous.uImpala.engine.io.Speaker {
     }
   }
   
+  public void start() {
+    
+  }
+  
+  public void stop() {
+    
+  }
+  
   protected void update() {
     
   }

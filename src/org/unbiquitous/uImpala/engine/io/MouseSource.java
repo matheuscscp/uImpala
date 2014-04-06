@@ -42,6 +42,14 @@ public class MouseSource extends InputResource {
       buttons[i] = false;
   }
   
+  public void start() {
+    
+  }
+  
+  public void stop() {
+    
+  }
+  
   protected void update() {
     while (events.size() > 0) {
       MouseEvent event = (MouseEvent)events.poll();

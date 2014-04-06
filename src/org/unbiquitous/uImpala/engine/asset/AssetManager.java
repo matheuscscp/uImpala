@@ -22,7 +22,7 @@ public abstract class AssetManager {
    * Constructor.
    * @return AssetManager created.
    */
-  public static synchronized AssetManager create() {
+  public static AssetManager create() {
     return factory.create();
   }
   

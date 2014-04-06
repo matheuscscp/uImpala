@@ -17,7 +17,7 @@ public abstract class Screen extends OutputResource {
    * Constructor.
    * @return Screen created.
    */
-  public static synchronized Screen create() {
+  public static Screen create() {
     Screen tmp = factory.create();
     if (tmp != null)
       tmp.observations.addEvents(EVENT_CLOSE_REQUEST);

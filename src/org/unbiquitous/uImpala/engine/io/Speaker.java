@@ -16,7 +16,7 @@ public abstract class Speaker extends OutputResource {
    * Constructor.
    * @return Speaker created.
    */
-  public static synchronized Speaker create() {
+  public static Speaker create() {
     return factory.create();
   }
   
