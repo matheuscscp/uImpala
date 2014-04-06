@@ -1,6 +1,6 @@
-implement periodic sinalization between app and driver in keyboard manager update for busy keyboards
 standardize key codes as unicode
 refactor engine.util.StringInput (for unicode standard)
-refactor engine.util.Button
 write basics 7 tutorial
+implement periodic sinalization between app and driver in keyboard manager update for busy keyboards to detect if app or driver failed
+refactor engine.util.Button
 implement util.math.Overlap.*
