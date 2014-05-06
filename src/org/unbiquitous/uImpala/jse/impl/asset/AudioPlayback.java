@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.asset;
+package org.unbiquitous.uImpala.jse.impl.asset;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -9,61 +9,47 @@ import org.lwjgl.openal.AL10;
 import org.newdawn.slick.openal.OggInputStream;
 import org.unbiquitous.uImpala.engine.io.Speaker;
 
-/**
- * Class to handle audio playback.
- * @author Pimenta
- *
- */
-public class AudioControl {
-  /**
-   * Query playback state.
-   * @return Returns a value in {Audio.PLAYING, Audio.PAUSED, Audio.STOPPED}.
-   */
-  public synchronized int state() {
+public class AudioPlayback implements org.unbiquitous.uImpala.engine.asset.AudioPlayback {
+  public AudioPlayback.State state() {
     if (closed)
-      return Audio.STOPPED;
-    return AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE);
+      return AudioPlayback.State.STOPPED;
+    
+    switch (AL10.alGetSourcei(source, AL10.AL_SOURCE_STATE)) {
+      case AL10.AL_PLAYING:
+        return State.PLAYING;
+        
+      case AL10.AL_PAUSED:
+        return State.PAUSED;
+        
+      case AL10.AL_STOPPED:
+        return State.STOPPED;
+        
+      default:
+        return State.STOPPED;
+    }
   }
   
-  /**
-   * Pause playback.
-   */
-  public synchronized void pause() {
-    if (!closed && state() == Audio.PLAYING)
+  public void pause() {
+    if (!closed && state() == State.PLAYING)
       AL10.alSourcePause(source);
   }
   
-  /**
-   * Resume playback.
-   */
-  public synchronized void resume() {
-    if (!closed && state() == Audio.PAUSED)
+  public void resume() {
+    if (!closed && state() == State.PAUSED)
       AL10.alSourcePlay(source);
   }
   
-  /**
-   * Stop playback.
-   */
-  public synchronized void stop() {
+  public void stop() {
     if (!closed)
       AL10.alSourceStop(source);
   }
   
-  /**
-   * Set playback volume.
-   * @param volume A number in [0, 1].
-   */
-  public synchronized void volume(float volume) {
+  public void volume(float vol) {
     if (!closed)
-      AL10.alSourcef(source, AL10.AL_GAIN, volume*speaker.getVolume());
+      volume = vol;
   }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  /**
-   * Engine's private use.
-   */
-  protected AudioControl(Speaker speaker, Audio audio, float volume, boolean loop) {
+  
+  protected AudioPlayback(Speaker speaker, Audio audio, float volume, boolean loop) {
     // init fields, generate source and buffers
     this.speaker = speaker;
     this.audio = audio;
@@ -74,6 +60,7 @@ public class AudioControl {
     nextBuffer = 0;
     buffers = BufferUtils.createIntBuffer(BUFFER_COUNT);
     AL10.alGenBuffers(buffers);
+    this.volume = volume;
     this.loop = loop;
     done = false;
     closed = false;
@@ -95,10 +82,9 @@ public class AudioControl {
           break;
         }
         
-        // reopen stream
         try {
           stream.close();
-        } catch (IOException e1) {
+        } catch (IOException e2) {
         }
         stream = audio.stream();
         
@@ -118,7 +104,7 @@ public class AudioControl {
     // update thread
     new Thread(new Runnable() {
       public void run() {
-        while (state() != Audio.STOPPED) {
+        while (state() != State.STOPPED) {
           try {
             Thread.sleep(UPDATE_PERIOD);
           } catch (InterruptedException e) {
@@ -130,7 +116,7 @@ public class AudioControl {
     }).start();
   }
   
-  private synchronized void close() {
+  private void close() {
     closed = true;
     try {
       stream.close();
@@ -155,6 +141,9 @@ public class AudioControl {
     if (done)
       return;
     
+    // update volume
+    AL10.alSourcef(source, AL10.AL_GAIN, volume*speaker.getVolume());
+    
     // unqueue processed buffers
     int processed = AL10.alGetSourcei(source, AL10.AL_BUFFERS_PROCESSED);
     if (processed == 0)
@@ -175,10 +164,9 @@ public class AudioControl {
           return;
         }
         
-        // reopen stream
         try {
           stream.close();
-        } catch (IOException e1) {
+        } catch (IOException e2) {
         }
         stream = audio.stream();
         
@@ -204,5 +192,7 @@ public class AudioControl {
   private OggInputStream stream;
   private int source, format, freq, nextBuffer;
   private IntBuffer buffers;
-  private boolean loop, done, closed;
+  private boolean loop, done;
+  private Boolean closed;
+  private Float volume;
 }

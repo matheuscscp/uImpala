@@ -62,6 +62,14 @@ public final class Observations {
   }
   
   /**
+   * Method to broadcast an event without data.
+   * @param event_type Event type.
+   */
+  public void broadcast(Integer event_type) {
+    broadcast(event_type, null);
+  }
+  
+  /**
    * Method to broadcast an event.
    * @param event_type Event type.
    * @param event Event data.

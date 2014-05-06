@@ -2,6 +2,7 @@ package org.unbiquitous.uImpala.engine.asset;
 
 import org.unbiquitous.uImpala.engine.io.Screen;
 import org.unbiquitous.uImpala.engine.time.Time;
+import org.unbiquitous.uImpala.util.Color;
 import org.unbiquitous.uImpala.util.Corner;
 
 /**
@@ -9,25 +10,24 @@ import org.unbiquitous.uImpala.util.Corner;
  * @author Pimenta
  *
  */
-public class Animation extends Sprite {
+public class Animation {
   /**
-   * Constructor to load the sprite sheet and set class parameters.
-   * @param assets Object to load the image.
-   * @param path Image path.
-   * @param frames Amount of frames to divide the image.
-   * @param fps Frame rate in frames per second.
+   * Constructor.
+   * @param sprite Sprite to render.
+   * @param frames Number of frames.
+   * @param fps Number of frames per second.
    */
-  public Animation(AssetManager assets, String path, int frames, float fps) {
-    super(assets, path);
+  protected Animation(Sprite sprite, int frames, float fps) {
+    this.sprite = sprite;
     this.frames = frames;
     this.fps = fps;
     frame = 0;
     frameInt = 0;
-    clipWidth = getWidth()/frames;
-    clipHeight = getHeight();
+    clipWidth = sprite.getWidth()/frames;
+    clipHeight = sprite.getHeight();
     lastTime = Time.get();
     running = true;
-    clip(0, 0, clipWidth, clipHeight);
+    sprite.clip(0, 0, clipWidth, clipHeight);
   }
   
   /**
@@ -82,9 +82,90 @@ public class Animation extends Sprite {
     this.frame = frame;
   }
   
-  public void render(Screen screen, float x, float y, Corner corner, float angle, float scaleX, float scaleY, float opacity) {
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the center of the clipping rectangle.
+   * @param y Coordinate y of the center of the clipping rectangle.
+   */
+  public void render(Screen screen, float x, float y) {
+    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
+  }
+  
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the corner of the clipping rectangle.
+   * @param y Coordinate y of the corner of the clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
+   */
+  public void render(Screen screen, float x, float y, Corner corner) {
+    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
+  }
+  
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the corner of the clipping rectangle.
+   * @param y Coordinate y of the corner of the clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity) {
+    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f, Color.white);
+  }
+  
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the corner of the clipping rectangle.
+   * @param y Coordinate y of the corner of the clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle) {
+    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f, Color.white);
+  }
+  
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the corner of the clipping rectangle.
+   * @param y Coordinate y of the corner of the clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
+    render(screen, x, y, corner, opacity, angle, scaleX, scaleY, Color.white);
+  }
+  
+  /**
+   * Render the image.
+   * @param screen Screen on which the image will be rendered.
+   * @param x Coordinate x of the corner of the clipping rectangle.
+   * @param y Coordinate y of the corner of the clipping rectangle.
+   * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the image in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
+   * @param color Color to multiply texture pixels.
+   */
+  public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY, Color color) {
     update();
-    super.render(screen, x, y, corner, angle, scaleX, scaleY, opacity);
+    sprite.render(screen, x, y, corner, opacity, angle, scaleX, scaleY, color);
+  }
+  
+  /**
+   * Get the sprite used to render a sprite sheet.
+   * @return Sprite used to render a sprite sheet.
+   */
+  public Sprite getSprite() {
+    return sprite;
   }
 //==============================================================================
 //nothings else matters from here to below
@@ -101,12 +182,13 @@ public class Animation extends Sprite {
     frame -= frames*Math.floor(frame/frames);
     if (frameInt != (int)frame) {
       frameInt = (int)frame;
-      clip(clipWidth*frameInt, 0, clipWidth, clipHeight);
+      sprite.clip(clipWidth*frameInt, 0, clipWidth, clipHeight);
     }
   }
   
+  private Sprite sprite;
+  private float fps, frame;
   private int frames, frameInt, clipWidth, clipHeight;
   private long lastTime, pauseTime;
-  private float fps, frame;
   private boolean running;
 }

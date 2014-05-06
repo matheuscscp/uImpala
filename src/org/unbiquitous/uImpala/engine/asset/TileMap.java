@@ -10,12 +10,11 @@ import org.unbiquitous.uImpala.engine.io.Screen;
 public class TileMap {
   /**
    * Constructor.
-   * @param assets Object to load the map.
-   * @param mapPath String path.
+   * @param map Logical map to render tiles.
    * @param tileSet TileSet to render each tile.
    */
-  public TileMap(AssetManager assets, String mapPath, TileSet tileSet) {
-    map = assets.getMap(mapPath);
+  protected TileMap(Map map, TileSet tileSet) {
+    this.map = map;
     this.tileSet = tileSet;
   }
   
@@ -36,13 +35,21 @@ public class TileMap {
   }
   
   /**
-   * Gets the read-only Map.
-   * @return Read-only Map.
+   * Get the logical map.
+   * @return The logical map.
    */
   public Map getMap() {
     return map;
   }
   
-  private TileSet tileSet;
+  /**
+   * Get the tile set used to render tiles.
+   * @return TileSet used to render tiles.
+   */
+  public TileSet getTileSet() {
+    return tileSet;
+  }
+  
   private Map map;
+  private TileSet tileSet;
 }

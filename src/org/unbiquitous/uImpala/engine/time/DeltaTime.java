@@ -5,7 +5,7 @@ package org.unbiquitous.uImpala.engine.time;
  * @author Pimenta
  *
  */
-public final class DeltaTime {
+public class DeltaTime {
   /**
    * The fixed value of update rate.
    * @return Frequency in updates per second.

@@ -12,7 +12,7 @@ public abstract class GameScene {
   /**
    * Use to load assets.
    */
-  protected AssetManager assets = new AssetManager();
+  protected AssetManager assets = AssetManager.create();
   
   /**
    * If true, the engine won't call update() for this scene.

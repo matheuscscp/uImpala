@@ -1,5 +1,6 @@
-refactor engine.io.Keyboard* (uos stuff, remove old manager)
-refactor engine.util.StringInput (for uos keyboards)
+standardize key codes as unicode
+refactor engine.util.StringInput (for unicode standard)
 write basics 7 tutorial
-implement util.math.Overlap.*
+implement periodic sinalization between app and driver in keyboard manager update for busy keyboards to detect if app or driver failed
 refactor engine.util.Button
+implement util.math.Overlap.*

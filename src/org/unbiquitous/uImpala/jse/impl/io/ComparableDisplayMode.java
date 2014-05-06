@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.io;
+package org.unbiquitous.uImpala.jse.impl.io;
 
 import org.lwjgl.opengl.DisplayMode;
 
