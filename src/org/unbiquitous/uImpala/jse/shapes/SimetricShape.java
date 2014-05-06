@@ -1,4 +1,4 @@
-package org.unbiquitous.uImpala.engine.util.shapes;
+package org.unbiquitous.uImpala.jse.shapes;
 
 import java.awt.Color;
 import java.awt.Point;
