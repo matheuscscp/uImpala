@@ -8,7 +8,7 @@ import java.util.Iterator;
  * @author Pimenta
  *
  */
-public final class MouseManager implements InputManager {
+public class MouseManager implements InputManager {
   public IOResource alloc() {
     return null;
   }
@@ -27,6 +27,20 @@ public final class MouseManager implements InputManager {
       i.next().close();
       i.remove();
     }
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void add(MouseSource ms) {
+    screenMouses.add(ms);
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void remove(MouseSource ms) {
+    screenMouses.remove(ms);
   }
   
   /**

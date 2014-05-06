@@ -5,7 +5,7 @@ package org.unbiquitous.uImpala.engine.io;
  * @author Pimenta
  *
  */
-public final class SpeakerManager implements OutputManager {
+public class SpeakerManager implements OutputManager {
   public IOResource alloc() {
     if (busy)
       return null;
@@ -29,6 +29,6 @@ public final class SpeakerManager implements OutputManager {
     speaker = null;
   }
   
-  private Speaker speaker = new Speaker();
+  private Speaker speaker = Speaker.create();
   private boolean busy = false;
 }

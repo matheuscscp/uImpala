@@ -24,13 +24,13 @@ import org.unbiquitous.uos.network.socket.radar.MulticastRadar;
  * @author Pimenta
  *
  */
-public final class Game implements UosApplication {
+public abstract class Game implements UosApplication {
   /**
    * Use this method in main() to start the game.
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
    * @param args Command line arguments.
    */
-  public static void run(final GameSettings settings) {
+  protected static void run(final String className, final GameSettings settings) {
     new UOS().init(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
@@ -38,12 +38,17 @@ public final class Game implements UosApplication {
           {"ubiquitos.radar", MulticastRadar.class.getName()},
           {"ubiquitos.eth.tcp.port", "14984"},
           {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.application.deploylist", Game.class.getName()},
+          {"ubiquitos.application.deploylist", className},
           {"uImpala.gameSettings", settings}
         };
       }
     });
   }
+  
+  /**
+   * Method to initialize an engine implementation.
+   */
+  protected abstract void initImpl();
   
   /**
    * Call to change the current game scene.
@@ -89,7 +94,7 @@ public final class Game implements UosApplication {
   private LinkedList<GameScene> scenes = new LinkedList<GameScene>();
   private List<InputManager> inputs = new ArrayList<InputManager>();
   private List<OutputManager> outputs = new ArrayList<OutputManager>();
-  private DeltaTime deltatime = new DeltaTime();
+  private DeltaTime deltatime;
   
   private enum ChangeOption {
     NA, CHANGE, PUSH, POP, QUIT
@@ -170,11 +175,13 @@ public final class Game implements UosApplication {
   
   @SuppressWarnings("unchecked")
   private void init(Gateway gateway) {
+    initImpl();
+    
     validateSettings();
     GameComponents.put(GameSettings.class, settings);
     GameComponents.put(Game.class, this);
     GameComponents.put(Gateway.class, gateway);
-    GameComponents.put(DeltaTime.class, deltatime);
+    GameComponents.put(DeltaTime.class, deltatime = new DeltaTime());
     
     try {
       List<Class<?>> ims = (List<Class<?>>)settings.get("input_managers");

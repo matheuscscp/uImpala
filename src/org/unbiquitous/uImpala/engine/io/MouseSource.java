@@ -7,7 +7,7 @@ import org.unbiquitous.uImpala.util.math.Rectangle;
  * @author Pimenta
  *
  */
-public final class MouseSource extends InputResource {
+public class MouseSource extends InputResource {
   /**
    * Broadcasted when mouse pointer moves.
    */
@@ -33,13 +33,21 @@ public final class MouseSource extends InputResource {
    * Also setup events.
    * @param butts Amount of buttons.
    */
-  protected MouseSource(int butts) {
+  public MouseSource(int butts) {
     observations.addEvents(EVENT_MOUSE_MOTION, EVENT_BUTTON_DOWN, EVENT_BUTTON_UP);
     x = 0; y = 0;
     downX = 0; downY = 0;
     buttons = new boolean[butts];
     for (int i = 0; i < butts; i++)
       buttons[i] = false;
+  }
+  
+  public void start() {
+    
+  }
+  
+  public void stop() {
+    
   }
   
   protected void update() {
@@ -112,6 +120,13 @@ public final class MouseSource extends InputResource {
   
   public boolean getButton(int butt) {
     return buttons[butt];
+  }
+  
+  /**
+   * Engine's private use.
+   */
+  public void add(MouseEvent event) {
+    events.add(event);
   }
   
   private int x, y, downX, downY;

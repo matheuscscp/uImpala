@@ -5,7 +5,7 @@ package org.unbiquitous.uImpala.engine.time;
  * @author Pimenta
  *
  */
-public final class Stopwatch {
+public class Stopwatch {
   /**
    * Starts the time counting. If already counting, starts over.
    */

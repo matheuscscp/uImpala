@@ -5,7 +5,7 @@ package org.unbiquitous.uImpala.engine.io;
  * @author Pimenta
  *
  */
-public final class KeyboardEvent extends InputEvent {
+public class KeyboardEvent extends InputEvent {
   /**
    * Assignment constructor.
    * @param t Event type.

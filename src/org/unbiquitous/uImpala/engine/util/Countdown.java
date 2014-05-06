@@ -75,7 +75,7 @@ public class Countdown extends GameObject implements Subject {
   public void update() {
     if (started && !paused && Time.get() >= finalTime) {
       started = false;
-      observations.broadcast(EVENT_COMPLETE, null);
+      observations.broadcast(EVENT_COMPLETE);
     }
   }
   

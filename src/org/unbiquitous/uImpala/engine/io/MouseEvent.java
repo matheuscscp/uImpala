@@ -7,7 +7,7 @@ import org.unbiquitous.uImpala.util.math.Rectangle;
  * @author Pimenta
  *
  */
-public final class MouseEvent extends InputEvent {
+public class MouseEvent extends InputEvent {
   /**
    * Assignment constructor.
    * @param t Type.

@@ -8,17 +8,15 @@ import java.util.Iterator;
  * @author Pimenta
  *
  */
-public final class ScreenManager implements OutputManager {
+public class ScreenManager implements OutputManager {
   /**
    * Use this method ONLY to create local screens.
    * @return The local screen created.
    */
   public Screen create() {
-    // FIXME when LWJGL support multiple windows
-    if (localScreens.size() > 0)
-      return null;
-    Screen screen = new Screen();
-    localScreens.add(screen);
+    Screen screen = Screen.create();
+    if (screen != null)
+      localScreens.add(screen);
     return screen;
   }
   

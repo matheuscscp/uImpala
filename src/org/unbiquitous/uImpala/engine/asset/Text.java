@@ -1,11 +1,7 @@
 package org.unbiquitous.uImpala.engine.asset;
 
-import java.awt.Font;
-
-import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
-import org.newdawn.slick.TrueTypeFont;
 import org.unbiquitous.uImpala.engine.io.Screen;
+import org.unbiquitous.uImpala.util.Color;
 import org.unbiquitous.uImpala.util.Corner;
 
 /**
@@ -13,54 +9,24 @@ import org.unbiquitous.uImpala.util.Corner;
  * @author Pimenta
  *
  */
-public class Text {
-  /**
-   * Constructor to load a font from a file.
-   * @param assets Object to load the font.
-   * @param path Font path.
-   * @param text String text.
-   */
-  public Text(AssetManager assets, String fontPath, String text) {
-    awtFont = assets.getFont(fontPath).deriveFont(24f);
-    this.text = text;
-    init();
-  }
-  
-  /**
-   * Assigment constructor.
-   * @param font Java font.
-   * @param text String text.
-   */
-  public Text(Font font, String text) {
-    awtFont = font;
-    this.text = text;
-    init();
-  }
-  
+public abstract class Text {
   /**
    * Set text to render.
    * @param text String text.
    */
-  public void setText(String text) {
-    this.text = text;
-    setSize();
-  }
+  public abstract void setText(String text);
   
   /**
    * Gets the width of the text rectangle that will be rendered.
    * @return Width in pixels.
    */
-  public int getWidth() {
-    return width;
-  }
+  public abstract int getWidth();
   
   /**
    * Gets the height of the text rectangle that will be rendered.
    * @return Height in pixels.
    */
-  public int getHeight() {
-    return height;
-  }
+  public abstract int getHeight();
   
   /**
    * Render the text.
@@ -69,7 +35,7 @@ public class Text {
    * @param y Coordinate y of the center of the drawn text.
    */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f);
+    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -80,7 +46,7 @@ public class Text {
    * @param corner Corner of drawn text. Null is considered Corner.CENTER.
    */
   public void render(Screen screen, float x, float y, Corner corner) {
-    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f);
+    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -92,7 +58,7 @@ public class Text {
    * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity) {
-    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f);
+    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -105,7 +71,7 @@ public class Text {
    * @param angle Angle of rotation in degrees.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle) {
-    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f);
+    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f, Color.white);
   }
   
   /**
@@ -120,96 +86,28 @@ public class Text {
    * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
-    color.a = opacity;
-    
-    // check corner
-    if (corner == null)
-      corner = Corner.CENTER;
-    switch (corner) {
-      case TOP_LEFT:
-        x += halfWidth;
-        y += halfHeight;
-        break;
-        
-      case TOP_RIGHT:
-        x -= halfWidth;
-        y += halfHeight;
-        break;
-        
-      case BOTTOM_LEFT:
-        x += halfWidth;
-        y -= halfHeight;
-        break;
-        
-      case BOTTOM_RIGHT:
-        x -= halfWidth;
-        y -= halfHeight;
-        break;
-        
-      default:
-        break;
-    }
-    
-    // setup matrix
-    GL11.glLoadIdentity();
-    GL11.glTranslatef(x, y, 0.0f);
-    GL11.glRotatef(angle, 0f, 0f, 1.0f);
-    GL11.glScalef(scaleX, scaleY, 0.0f);
-    GL11.glTranslatef(-halfWidth, -halfHeight, 0.0f);
-    
-    ttfFont.drawString(0.0f, 0.0f, text, color);
+    render(screen, x, y, corner, opacity, angle, scaleX, scaleY, Color.white);
   }
+  
+  /**
+   * Render the text.
+   * @param screen Screen on which the text will be rendered.
+   * @param x Coordinate x of the corner of the drawn text.
+   * @param y Coordinate y of the corner of the drawn text.
+   * @param corner Corner of drawn text. Null is considered Corner.CENTER.
+   * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
+   * @param angle Angle of rotation in degrees.
+   * @param scaleX Scale the text in the horizontal axis. 1.0f means original size.
+   * @param scaleY Scale the text in the vertical axis. 1.0f means original size.
+   * @param color Color of the text.
+   */
+  public abstract void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY, Color color);
   
   /**
    * Set options. Null arguments won't be considered.
    * @param style Font style, for Java default fonts.
    * @param size Font size.
    * @param antiAlias Apply anti-aliasing when rendering.
-   * @param color Color to render.
    */
-  public void options(Integer style, Float size, Boolean antiAlias, Color color) {
-    boolean changed = false;
-    if (style != null) {
-      awtFont = awtFont.deriveFont(style);
-      changed = true;
-    }
-    if (size != null) {
-      awtFont = awtFont.deriveFont(size);
-      changed = true;
-    }
-    if (antiAlias != null) {
-      this.antiAlias = antiAlias;
-      changed = true;
-    }
-    if (color != null)
-      this.color = color;
-    if (changed) {
-      ttfFont = new TrueTypeFont(awtFont, this.antiAlias);
-      setSize();
-    }
-  }
-//==============================================================================
-//nothings else matters from here to below
-//==============================================================================
-  private void init() {
-    antiAlias = true;
-    color = Color.white;
-    ttfFont = new TrueTypeFont(awtFont, antiAlias);
-    setSize();
-  }
-  
-  private void setSize() {
-    width = ttfFont.getWidth(text);
-    height = ttfFont.getHeight(text);
-    halfWidth = width/2f;
-    halfHeight = height/2f;
-  }
-  
-  private Font awtFont;
-  private TrueTypeFont ttfFont;
-  private String text;
-  private boolean antiAlias;
-  private Color color;
-  private int width, height;
-  private float halfWidth, halfHeight;
+  public abstract void options(Integer style, Float size, Boolean antiAlias);
 }
