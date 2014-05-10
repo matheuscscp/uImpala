@@ -12,7 +12,7 @@ import java.util.List;
  * @author Pimenta
  *
  */
-public abstract class ContainerScene extends GameScene {
+public abstract class TreeScene extends GameScene {
   /**
    * Add a game object to the game scene.
    * @param o Game object.

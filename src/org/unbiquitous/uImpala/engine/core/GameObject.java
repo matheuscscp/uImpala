@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Use this class to implement game objects of a ContainerScene.
- * @see ContainerScene
+ * Use this class to implement game objects of a TreeScene.
+ * @see TreeScene
  * @author Pimenta
  *
  */
