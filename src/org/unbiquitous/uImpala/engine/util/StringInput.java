@@ -2,7 +2,6 @@ package org.unbiquitous.uImpala.engine.util;
 
 import java.awt.event.KeyEvent;
 
-import org.lwjgl.input.Keyboard;
 import org.unbiquitous.uImpala.engine.core.GameObject;
 import org.unbiquitous.uImpala.engine.core.GameRenderers;
 import org.unbiquitous.uImpala.engine.io.KeyboardEvent;
@@ -62,7 +61,7 @@ public class StringInput extends GameObject {
   
   protected void update() {
     if (character != '\0' && stopwatch.time() > delay) {
-      if (key != Keyboard.KEY_BACK)
+      if (key != 8/*backspace*/)
         input += character;
       else if (input.length() > 0)
         input = input.substring(0, input.length() - 1);
@@ -114,7 +113,7 @@ public class StringInput extends GameObject {
     KeyboardEvent ev = (KeyboardEvent)event;
     int k = ev.getKey();
     char c = ev.getCharacter();
-    if (k == Keyboard.KEY_BACK) {
+    if (k == 8/*backspace*/) {
       if (input.length() == 0)
         return;
       input = input.substring(0, input.length() - 1);
