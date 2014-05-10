@@ -1,11 +1,12 @@
 package org.unbiquitous.uImpala.dalvik.impl.time;
 
 public class Time extends org.unbiquitous.uImpala.engine.time.Time {
-
-  @Override
   protected long getTime() {
-    // TODO Auto-generated method stub
-    return 0;
+    return System.currentTimeMillis();
   }
   
+  public static synchronized void initImpl() {
+    if (time == null)
+      time = new Time();
+  }
 }

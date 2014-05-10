@@ -1,35 +1,39 @@
 package org.unbiquitous.uImpala.dalvik.impl.io;
 
 public class Speaker extends org.unbiquitous.uImpala.engine.io.Speaker {
-
-  @Override
+  private static class Factory implements org.unbiquitous.uImpala.engine.io.Speaker.Factory {
+    public Speaker create() {
+      return new Speaker();
+    }
+  }
+  
+  public static synchronized void initImpl() {
+    if (factory == null)
+      factory = new Factory();
+  }
+  
+  private Speaker() {
+    // TODO
+  }
+  
   public void start() {
-    // TODO Auto-generated method stub
     
   }
-
-  @Override
+  
   public void stop() {
-    // TODO Auto-generated method stub
     
   }
-
-  @Override
+  
   protected void update() {
-    // TODO Auto-generated method stub
     
   }
-
-  @Override
+  
   public void close() {
     // TODO Auto-generated method stub
     
   }
-
-  @Override
-  public boolean isUpdating() {
-    // TODO Auto-generated method stub
-    return false;
-  }
   
+  public boolean isUpdating() {
+    return true;
+  }
 }
