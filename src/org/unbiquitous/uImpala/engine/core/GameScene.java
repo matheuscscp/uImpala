@@ -4,7 +4,7 @@ import org.unbiquitous.uImpala.engine.asset.AssetManager;
 
 /**
  * Interface for a game scene.
- * @see TreeScene
+ * @see GameObjectTreeScene
  * @author Pimenta
  *
  */
