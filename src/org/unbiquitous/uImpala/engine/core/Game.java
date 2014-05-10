@@ -140,16 +140,10 @@ public abstract class Game implements UosApplication {
       }
       close();
     } catch (Error e) {
-      String root_path;
-      try {
-        root_path = (String)settings.get("root_path");
-      } catch (Exception e1) {
-        root_path = ".";
-        Logger.log(new Error("Root path not reachable"), root_path + "/ErrorLog.txt");
-      }
-      Logger.log(e, root_path + "/ErrorLog.txt");
-      throw e;
+      Logger.log(e, ((String)settings.get("root_path")) + "/ErrorLog.txt");
+      e.printStackTrace();
     }
+    System.exit(0);
   }
   
   /**

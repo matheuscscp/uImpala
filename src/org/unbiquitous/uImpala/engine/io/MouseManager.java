@@ -1,7 +1,6 @@
 package org.unbiquitous.uImpala.engine.io;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * Class for mouses management.
@@ -23,10 +22,8 @@ public class MouseManager implements InputManager {
   }
   
   public void close() {
-    for (Iterator<MouseSource> i = screenMouses.iterator(); i.hasNext();) {
-      i.next().close();
-      i.remove();
-    }
+    for (MouseSource ms : screenMouses)
+      ms.close();
   }
   
   /**

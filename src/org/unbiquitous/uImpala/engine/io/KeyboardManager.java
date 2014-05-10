@@ -63,7 +63,10 @@ public class KeyboardManager implements InputManager {
   }
   
   public void close() {
-    
+    for (KeyboardSource ks : screenKeyboards)
+      ks.close();
+    for (Entry<String, KeyboardSource> e : busyKeyboards.entrySet())
+      e.getValue().close();
   }
   
   private void updateLists() {

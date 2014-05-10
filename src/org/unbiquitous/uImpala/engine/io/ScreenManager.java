@@ -1,7 +1,6 @@
 package org.unbiquitous.uImpala.engine.io;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 /**
  * Class for screens management.
@@ -59,10 +58,8 @@ public class ScreenManager implements OutputManager {
   }
   
   public void close() {
-    for (Iterator<Screen> i = localScreens.iterator(); i.hasNext();) {
-      i.next().close();
-      i.remove();
-    }
+    for (Screen s : localScreens)
+      s.close();
   }
   
   private HashSet<Screen> localScreens = new HashSet<Screen>();
