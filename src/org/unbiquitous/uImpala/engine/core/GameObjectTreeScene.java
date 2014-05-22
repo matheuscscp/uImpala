@@ -26,7 +26,7 @@ public abstract class GameObjectTreeScene extends GameScene {
   /**
    * Engine's private use.
    */
-  protected void update() {
+  public void update() {
     for (GameObject o : objects) {
       if (!o.destroy && !o.frozen)
         o.updateTree();
@@ -38,7 +38,7 @@ public abstract class GameObjectTreeScene extends GameScene {
   /**
    * Engine's private use.
    */
-  protected void render() {
+  public void render() {
     GameRenderers renderers = new GameRenderers();
     Iterator<GameObject> i = objects.iterator();
     while (i.hasNext()) {
