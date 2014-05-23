@@ -47,6 +47,11 @@ public abstract class Screen extends OutputResource {
   }
   
   /**
+   * Opens the screen in full screen with max resolution
+   */
+  public abstract void open();
+  
+  /**
    * Open the screen.
    * @param t Title.
    * @param w Width.
