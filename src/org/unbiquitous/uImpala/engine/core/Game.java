@@ -8,7 +8,6 @@ import java.util.ListResourceBundle;
 import org.unbiquitous.uImpala.engine.io.InputManager;
 import org.unbiquitous.uImpala.engine.io.OutputManager;
 import org.unbiquitous.uImpala.engine.time.DeltaTime;
-import org.unbiquitous.uImpala.util.Logger;
 import org.unbiquitous.uos.core.InitialProperties;
 import org.unbiquitous.uos.core.UOS;
 import org.unbiquitous.uos.core.UOSLogging;
@@ -39,7 +38,7 @@ public abstract class Game implements UosApplication {
 	 */
 	protected static void run(final String className,
 			final GameSettings settings) {
-		new UOS().init(new ListResourceBundle() {
+		new UOS().start(new ListResourceBundle() {
 			protected Object[][] getContents() {
 				return new Object[][] {
 						{ "ubiquitos.connectionManager",
@@ -183,6 +182,7 @@ public abstract class Game implements UosApplication {
 	 */
 	public void init(OntologyDeploy knowledgeBase,
 			InitialProperties properties, String appId) {
+		//TODO: why not just the use InitialProperties for this task?
 		settings = (GameSettings) properties.get("uImpala.gameSettings");
 	}
 
