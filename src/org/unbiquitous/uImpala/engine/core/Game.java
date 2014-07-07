@@ -3,7 +3,6 @@ package org.unbiquitous.uImpala.engine.core;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListResourceBundle;
 
 import org.unbiquitous.uImpala.engine.io.InputManager;
 import org.unbiquitous.uImpala.engine.io.OutputManager;
@@ -16,8 +15,6 @@ import org.unbiquitous.uos.core.applicationManager.UosApplication;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyDeploy;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyStart;
 import org.unbiquitous.uos.core.ontologyEngine.api.OntologyUndeploy;
-import org.unbiquitous.uos.network.socket.connectionManager.TCPConnectionManager;
-import org.unbiquitous.uos.network.socket.radar.MulticastRadar;
 
 /**
  * The game class. Extend it only to implement getSettings().
@@ -30,21 +27,11 @@ public abstract class Game implements UosApplication {
    * @param game Class{@literal <}?{@literal >} that extends UosGame.
    * @param args Command line arguments.
    */
-  protected static void run(final String className, final GameSettings settings) {
-//	  {"ubiquitos.application.deploylist", className},
-	  settings.addApplication(Class.forName(className));
-    new UOS().start(new ListResourceBundle() {
-      protected Object[][] getContents() {
-        return new Object[][] {
-          {"ubiquitos.connectionManager", TCPConnectionManager.class.getName()},
-          {"ubiquitos.radar", MulticastRadar.class.getName()},
-          {"ubiquitos.eth.tcp.port", "14984"},
-          {"ubiquitos.eth.tcp.passivePortRange", "14985-15000"},
-          {"ubiquitos.application.deploylist", className},
-          {"uImpala.gameSettings", settings}
-        };
-      }
-    });
+  protected static void run(final Class<? extends UosApplication> gameClass, final GameSettings settings) {
+	  settings.addApplication(gameClass);
+	  if (settings.get("root_path") == null)
+	      settings.put("root_path", ".");
+	  new UOS().start(settings);
   }
   
   /**
@@ -211,8 +198,6 @@ public abstract class Game implements UosApplication {
       throw new Error("First game scene not defined!");
     if (settings.get("output_managers") == null)
       throw new Error("Cannot start game with no output managers!");
-    if (settings.get("root_path") == null)
-      settings.put("root_path", ".");
   }
   
   private void close() {
