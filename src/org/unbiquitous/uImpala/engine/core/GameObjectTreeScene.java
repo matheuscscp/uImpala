@@ -71,6 +71,14 @@ public abstract class GameObjectTreeScene extends GameScene {
       o.destroyTree();
   }
   
+  /**
+   * Get children game objects.
+   * @return Children game objects.
+   */
+  public List<GameObject> getChildren() {
+    return objects;
+  }
+  
   private List<GameObject> objects = new LinkedList<GameObject>();
   private LinkedList<GameObject> newObjects = new LinkedList<GameObject>();
 }
