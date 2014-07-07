@@ -31,7 +31,9 @@ public abstract class Game implements UosApplication {
    * @param args Command line arguments.
    */
   protected static void run(final String className, final GameSettings settings) {
-    new UOS().init(new ListResourceBundle() {
+//	  {"ubiquitos.application.deploylist", className},
+	  settings.addApplication(Class.forName(className));
+    new UOS().start(new ListResourceBundle() {
       protected Object[][] getContents() {
         return new Object[][] {
           {"ubiquitos.connectionManager", TCPConnectionManager.class.getName()},
