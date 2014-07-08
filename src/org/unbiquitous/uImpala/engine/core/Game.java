@@ -3,6 +3,7 @@ package org.unbiquitous.uImpala.engine.core;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 
 import org.unbiquitous.uImpala.engine.io.InputManager;
 import org.unbiquitous.uImpala.engine.io.OutputManager;
@@ -116,7 +117,7 @@ public abstract class Game implements UosApplication {
 			}
 			close();
 		} catch (Error e) {
-			LOGGER.severe(e.getMessage());
+			LOGGER.log(Level.SEVERE,"Problems while runnign game.",e);
 		}
 		System.exit(0);
 	}
