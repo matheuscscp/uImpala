@@ -22,7 +22,11 @@ public class Point implements Cloneable, Serializable{
 	}
 	
 	public Point clone(){
-		return new Point(x,y);
+		try {
+			return (Point) super.clone();
+		} catch (CloneNotSupportedException e) {
+			throw new RuntimeException(e);
+		}
 	}
 	
 	@Override
