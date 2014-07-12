@@ -17,6 +17,12 @@ public class Point implements Cloneable, Serializable{
 		this.y = y;
 	}
 	
+	public Point add(Point p) {
+		x += p.x;
+		y += p.y;
+		return this; 
+	}
+	
 	public int distanceTo(Point d) {
 		return Math.abs(this.x-d.x) + Math.abs(this.y-d.y);
 	}
@@ -47,4 +53,5 @@ public class Point implements Cloneable, Serializable{
 	public String toString() {
 		return format("(%s,%s)", x,y);
 	}
+
 }
