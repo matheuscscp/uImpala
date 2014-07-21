@@ -17,13 +17,13 @@ public abstract class GameScene {
   /**
    * If true, the engine won't call update() for this scene.
    */
-  protected boolean frozen = false;
+  private boolean frozen = false;
   
   /**
    * If true, the engine will call render() for this scene, even if
    * frozen is true.
    */
-  protected boolean visible = false;
+  private boolean visible = false;
   
   /**
    * Method to implement update.
@@ -33,7 +33,7 @@ public abstract class GameScene {
   /**
    * Method to implement rendering.
    */
-  protected abstract void render();
+  public abstract void render();
   
   /**
    * Handle a pop from the stack of game scenes.
@@ -45,4 +45,20 @@ public abstract class GameScene {
    * Method to close whatever is necessary.
    */
   protected abstract void destroy();
+
+	public boolean isFrozen() {
+		return frozen;
+	}
+
+	protected void setFrozen(boolean frozen) {
+		this.frozen = frozen;
+	}
+
+	public boolean isVisible() {
+		return visible;
+	}
+
+	protected void setVisible(boolean visible) {
+		this.visible = visible;
+	}
 }
