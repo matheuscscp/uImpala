@@ -29,8 +29,8 @@ pom.xml
   <dependencies>
     <dependency>
       <groupId>org.unbiquitous</groupId>
-      <artifactId>uImpala</artifactId>
-      <version>1.0-SNAPSHOT</version>
+      <artifactId>uImpala-jse</artifactId>
+      <version>1.0</version>
     </dependency>
   </dependencies>
   
@@ -54,4 +54,11 @@ pom.xml
       </plugin>
     </plugins>
   </build>
+  
+  <repositories>
+		<repository>
+			<id>ubiquitos</id>
+			<url>http://ubiquitos.googlecode.com/svn/trunk/src/Java/maven/</url>
+		</repository>
+	</repositories>
 ```
