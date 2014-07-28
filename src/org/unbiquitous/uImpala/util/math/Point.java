@@ -2,6 +2,7 @@ package org.unbiquitous.uImpala.util.math;
 import static java.lang.String.format;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @SuppressWarnings("serial")
 public class Point implements Cloneable, Serializable{
@@ -56,6 +57,10 @@ public class Point implements Cloneable, Serializable{
 	@Override
 	public String toString() {
 		return format("(%s,%s)", x,y);
+	}
+
+	public int module() {
+		return Math.abs(x)+Math.abs(y);
 	}
 
 }

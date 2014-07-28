@@ -19,12 +19,19 @@ public class PointTest {
 		assertThat(original).isEqualTo(new Point(4,7));
 	}
 	
-	@Test public void calculatsTheDistanceBetweenTwoPoints(){
+	@Test public void calculatesTheDistanceBetweenTwoPoints(){
 		assertThat(new Point(1,1).distanceTo(new Point(1,1))).isEqualTo(0);
 		assertThat(new Point(10,0).distanceTo(new Point(20,0))).isEqualTo(10);
 		assertThat(new Point(0,40).distanceTo(new Point(0,70))).isEqualTo(30);
 		assertThat(new Point(15,5).distanceTo(new Point(35,0))).isEqualTo(25);
 		assertThat(new Point(35,0).distanceTo(new Point(15,5))).isEqualTo(25);
+	}
+	
+	@Test public void calculatesThemModule(){
+		assertThat(new Point(10,0).module()).isEqualTo(10);
+		assertThat(new Point(0,15).module()).isEqualTo(15);
+		assertThat(new Point(10,15).module()).isEqualTo(25);
+		assertThat(new Point(-10,-20).module()).isEqualTo(30);
 	}
 	
 	@Test public void pointIsClonable(){
