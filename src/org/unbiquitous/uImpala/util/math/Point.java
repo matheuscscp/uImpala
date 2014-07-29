@@ -2,7 +2,6 @@ package org.unbiquitous.uImpala.util.math;
 import static java.lang.String.format;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @SuppressWarnings("serial")
 public class Point implements Cloneable, Serializable{

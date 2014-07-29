@@ -27,7 +27,7 @@ public abstract class Sprite {
    * @param y Coordinate y of the center of the clipping rectangle.
    */
   public void render(Screen screen, float x, float y) {
-    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
+    render(screen, x, y, Corner.CENTER, 1.0f, 0.0f, 1.0f, 1.0f, Color.WHITE);
   }
   
   /**
@@ -38,7 +38,7 @@ public abstract class Sprite {
    * @param corner Corner of clipping rectangle. Null is considered Corner.CENTER.
    */
   public void render(Screen screen, float x, float y, Corner corner) {
-    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f, Color.white);
+    render(screen, x, y, corner, 1.0f, 0.0f, 1.0f, 1.0f, Color.WHITE);
   }
   
   /**
@@ -50,7 +50,7 @@ public abstract class Sprite {
    * @param opacity The opacity. 1.0f means opaque, 0.0f means transparent.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity) {
-    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f, Color.white);
+    render(screen, x, y, corner, opacity, 0.0f, 1.0f, 1.0f, Color.WHITE);
   }
   
   /**
@@ -63,7 +63,7 @@ public abstract class Sprite {
    * @param angle Angle of rotation in degrees.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle) {
-    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f, Color.white);
+    render(screen, x, y, corner, opacity, angle, 1.0f, 1.0f, Color.WHITE);
   }
   
   /**
@@ -78,7 +78,7 @@ public abstract class Sprite {
    * @param scaleY Scale the image in the vertical axis. 1.0f means original size.
    */
   public void render(Screen screen, float x, float y, Corner corner, float opacity, float angle, float scaleX, float scaleY) {
-    render(screen, x, y, corner, opacity, angle, scaleX, scaleY, Color.white);
+    render(screen, x, y, corner, opacity, angle, scaleX, scaleY, Color.WHITE);
   }
   
   /**

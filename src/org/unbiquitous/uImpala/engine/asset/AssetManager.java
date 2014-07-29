@@ -5,6 +5,8 @@ import java.util.HashMap;
 
 import org.unbiquitous.uImpala.engine.core.GameComponents;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
+import org.unbiquitous.uImpala.util.Color;
+import org.unbiquitous.uImpala.util.math.Point;
 
 /**
  * Class to manage assets of a game scene.
@@ -185,6 +187,11 @@ public abstract class AssetManager {
   public TileMap newTileMap(String mapPath, String tsPath, int tsRows, int tsCols) {
     return new TileMap(getMap(mapPath), new TileSet(newSprite(tsPath), tsRows, tsCols));
   }
+  
+  public abstract SimetricShape newSimetricShape(Point center, Color paint, float radius, int numberOfSides);
+  public abstract SimetricShape newCircle(Point center, Color paint, float radius);
+  public abstract Rectangle newRectangle(Point center, Color paint, float width, float height);
+  
   
   /**
    * Engine's private use.
