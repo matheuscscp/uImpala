@@ -117,7 +117,7 @@ public abstract class Game implements UosApplication {
 			}
 			close();
 		} catch (Error e) {
-			LOGGER.log(Level.SEVERE,"Problems while runnign game.",e);
+			LOGGER.log(Level.SEVERE,"Problems while running game.",e);
 		}
 		System.exit(0);
 	}
