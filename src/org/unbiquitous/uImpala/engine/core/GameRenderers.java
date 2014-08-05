@@ -38,13 +38,12 @@ public class GameRenderers {
   }
   
   /**
-   * Method to move the rendering operations from another GameRenderers object
+   * Method to copy the rendering operations from another GameRenderers object
    * to this one.
    * @param otherRenderers Other GameRenderers object.
    */
-  public void absorb(GameRenderers otherRenderers) {
-    while (otherRenderers.renderers.size() > 0) {
-      Entry<Integer, List<Runnable>> entry = otherRenderers.renderers.pollFirstEntry();
+  public void copy(GameRenderers otherRenderers) {
+    for (Entry<Integer, List<Runnable>> entry : otherRenderers.renderers.entrySet()) {
       List<Runnable> l = renderers.get(entry.getKey());
       if (l == null) {
         l = new LinkedList<Runnable>();

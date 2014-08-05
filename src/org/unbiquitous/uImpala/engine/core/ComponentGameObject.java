@@ -109,6 +109,7 @@ public abstract class ComponentGameObject extends GameObject {
     }
     addedComponents.clear();
     
+    renderers = new GameRenderers();
     for (Entry<Class<? extends GameObjectComponent>, GameObjectComponent> entry : components.entrySet()) {
       entry.getValue().update();
     }
@@ -126,7 +127,7 @@ public abstract class ComponentGameObject extends GameObject {
   }
   
   protected void render(GameRenderers renderers) {
-    renderers.absorb(this.renderers);
+    renderers.copy(this.renderers);
   }
   
   protected void wakeup(Object... args) {
