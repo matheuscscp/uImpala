@@ -116,4 +116,24 @@ public abstract class GameObject {
   
   private List<GameObject> objects = new LinkedList<GameObject>();
   private LinkedList<GameObject> newObjects = new LinkedList<GameObject>();
+
+  public boolean isFrozen() {
+    return frozen;
+  }
+
+  public void setFrozen(boolean frozen) {
+    this.frozen = frozen;
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+
+  public void setVisible(boolean visible) {
+    this.visible = visible;
+  }
+
+  public void setDestroy(boolean destroy) {
+    this.destroy = destroy;
+  }
 }
