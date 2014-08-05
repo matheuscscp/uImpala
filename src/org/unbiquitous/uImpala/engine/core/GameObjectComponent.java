@@ -16,7 +16,7 @@ public abstract class GameObjectComponent {
    * @param field Field name.
    */
   protected void hook(String field) {
-    object.hook(field, getClass());
+    object.hook(field, family());
   }
   
   /**
@@ -25,7 +25,7 @@ public abstract class GameObjectComponent {
    * @param field Field name.
    */
   protected void unhook(String field) {
-    object.unhook(field, getClass());
+    object.unhook(field, family());
   }
   
   /**
@@ -36,6 +36,23 @@ public abstract class GameObjectComponent {
    */
   protected void render(int z, Runnable renderer) {
     object.putRenderer(z, renderer);
+  }
+  
+  /**
+   * Method to tell the component family. Implement this method in subclasses
+   * to tell the component family.
+   * @return Component family name.
+   */
+  protected abstract String family();
+  
+  /**
+   * Method to tell the components' families on which this component depends.
+   * Implement this method in subclasses to tell the components on which
+   * your will depend.
+   * @return Components' families.
+   */
+  protected String[] depends() {
+    return new String[0];
   }
   
   /**
