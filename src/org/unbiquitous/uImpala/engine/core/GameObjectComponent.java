@@ -11,6 +11,14 @@ public abstract class GameObjectComponent {
   protected ComponentGameObject object;
   
   /**
+   * Constructor to assign parent game object.
+   * @param object The parent game object.
+   */
+  public GameObjectComponent(ComponentGameObject object) {
+    this.object = object;
+  }
+  
+  /**
    * Method to hook on a field. Every time the field is written, handle will
    * be called.
    * @param field Field name.

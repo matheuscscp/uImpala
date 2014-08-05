@@ -4,14 +4,21 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-import org.unbiquitous.uImpala.util.Pair;
-
 public abstract class ComponentGameObject extends GameObject {
+  private static class GameObjectField {
+    public boolean locked;
+    public Object raw;
+    public GameObjectField(Object raw) {
+      locked = false;
+      this.raw = raw;
+    }
+  }
+  
   private HashSet<GameObjectComponent> addedComponents = new HashSet<GameObjectComponent>();
   private HashSet<Class<? extends GameObjectComponent>> removedComponents = new HashSet<Class<? extends GameObjectComponent>>();
   private HashMap<Class<? extends GameObjectComponent>, GameObjectComponent> components = new HashMap<Class<? extends GameObjectComponent>, GameObjectComponent>();
-  private HashMap<String, Object> fields = new HashMap<String, Object>();
-  private HashMap<String, Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>>> hooks = new HashMap<String, Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>>>();
+  private HashMap<String, GameObjectField> fields = new HashMap<String, GameObjectField>();
+  private HashMap<String, HashSet<Class<? extends GameObjectComponent>>> hooks = new HashMap<String, HashSet<Class<? extends GameObjectComponent>>>();
   private GameRenderers renderers = new GameRenderers();
   
   /**
@@ -39,11 +46,11 @@ public abstract class ComponentGameObject extends GameObject {
    */
   @SuppressWarnings("unchecked")
   public <T> T read(String field, T defaultValue) {
-    Object tmp = fields.get(field);
+    GameObjectField tmp = fields.get(field);
     if (tmp == null) {
-      tmp = defaultValue;
+      return defaultValue;
     }
-    return (T)tmp;
+    return (T)tmp.raw;
   }
   
   /**
@@ -53,38 +60,42 @@ public abstract class ComponentGameObject extends GameObject {
    * @param value
    */
   public void write(String field, Object value) {
-    Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>> compClasses = hooks.get(field);
-    if (compClasses != null) {
-      // already locked
-      if (compClasses.first) {
-        throw new Error("Something tried to write the field \"" + field + "\" while locked.");
-      }
-      else {
-        fields.put(field, value);
-        compClasses.first = true;
-        for (Class<? extends GameObjectComponent> compClass : compClasses.second) {
-          components.get(compClass).handle(field, value);
-        }
-        compClasses.first = false;
-      }
+    GameObjectField goField = fields.get(field);
+    if (goField == null) {
+      goField = new GameObjectField(value);
+      fields.put(field, goField);
     }
+    if (goField.locked) {
+      throw new Error("Something tried to write the field \"" + field + "\" while locked.");
+    }
+    goField.raw = value;
+    goField.locked = true;
+    HashSet<Class<? extends GameObjectComponent>> compClasses = hooks.get(field);
+    if (compClasses == null) {
+      compClasses = new HashSet<Class<? extends GameObjectComponent>>();
+      hooks.put(field, compClasses);
+    }
+    for (Class<? extends GameObjectComponent> compClass : compClasses) {
+      components.get(compClass).handle(field, value);
+    }
+    goField.locked = false;
   }
   
   protected void hook(String field, Class<? extends GameObjectComponent> componentClass) {
     if (components.get(componentClass) != null) {
-      Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>> compClasses = hooks.get(field);
+      HashSet<Class<? extends GameObjectComponent>> compClasses = hooks.get(field);
       if (compClasses == null) {
-        compClasses = new Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>>(new Boolean(false), new HashSet<Class<? extends GameObjectComponent>>());
+        compClasses = new HashSet<Class<? extends GameObjectComponent>>();
         hooks.put(field, compClasses);
       }
-      compClasses.second.add(componentClass);
+      compClasses.add(componentClass);
     }
   }
   
   protected void unhook(String field, Class<? extends GameObjectComponent> componentClass) {
-    Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>> compClasses = hooks.get(field);
+    HashSet<Class<? extends GameObjectComponent>> compClasses = hooks.get(field);
     if (compClasses != null) {
-      compClasses.second.remove(componentClass);
+      compClasses.remove(componentClass);
     }
   }
   
@@ -94,7 +105,6 @@ public abstract class ComponentGameObject extends GameObject {
   
   protected void update() {
     for (GameObjectComponent comp : addedComponents) {
-      comp.object = this;
       components.put(comp.getClass(), comp);
     }
     addedComponents.clear();
@@ -108,8 +118,8 @@ public abstract class ComponentGameObject extends GameObject {
       if (component != null) {
         component.destroy();
       }
-      for (Entry<String, Pair<Boolean, HashSet<Class<? extends GameObjectComponent>>>> entry : hooks.entrySet()) {
-        entry.getValue().second.remove(compClass);
+      for (Entry<String, HashSet<Class<? extends GameObjectComponent>>> entry : hooks.entrySet()) {
+        entry.getValue().remove(compClass);
       }
     }
     removedComponents.clear();
