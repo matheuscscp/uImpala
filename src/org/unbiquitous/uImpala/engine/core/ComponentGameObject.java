@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
-public abstract class ComponentGameObject extends GameObject {
+public class ComponentGameObject extends GameObject {
   private static class GameObjectField {
     public boolean locked;
     public Object raw;
@@ -22,10 +22,21 @@ public abstract class ComponentGameObject extends GameObject {
   private GameRenderers renderers = new GameRenderers();
   
   /**
+   * Constructor to assign a set of game object components.
+   * @param components Set of game object components to assign.
+   */
+  public ComponentGameObject(GameObjectComponent... components) {
+    for (GameObjectComponent comp : components) {
+      addComponent(comp);
+    }
+  }
+  
+  /**
    * Method to add a component to this game object.
    * @param component The new component.
    */
   public void addComponent(GameObjectComponent component) {
+    component.object = this;
     addedComponents.add(component);
   }
   

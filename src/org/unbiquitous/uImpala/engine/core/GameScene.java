@@ -12,7 +12,7 @@ public abstract class GameScene {
   /**
    * Use to load assets.
    */
-  protected AssetManager assets = AssetManager.create();
+  private AssetManager assets = AssetManager.create();
   
   /**
    * If true, the engine won't call update() for this scene.
@@ -50,7 +50,7 @@ public abstract class GameScene {
 		return frozen;
 	}
 
-	protected void setFrozen(boolean frozen) {
+	public void setFrozen(boolean frozen) {
 		this.frozen = frozen;
 	}
 
@@ -58,7 +58,11 @@ public abstract class GameScene {
 		return visible;
 	}
 
-	protected void setVisible(boolean visible) {
+	public void setVisible(boolean visible) {
 		this.visible = visible;
+	}
+	
+	public AssetManager getAssets() {
+	  return assets;
 	}
 }

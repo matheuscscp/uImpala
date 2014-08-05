@@ -11,14 +11,6 @@ public abstract class GameObjectComponent {
   protected ComponentGameObject object;
   
   /**
-   * Constructor to assign parent game object.
-   * @param object The parent game object.
-   */
-  public GameObjectComponent(ComponentGameObject object) {
-    this.object = object;
-  }
-  
-  /**
    * Method to hook on a field. Every time the field is written, handle will
    * be called.
    * @param field Field name.
@@ -45,6 +37,11 @@ public abstract class GameObjectComponent {
   protected void render(int z, Runnable renderer) {
     object.putRenderer(z, renderer);
   }
+  
+  /**
+   * Method to initialize shared fields of the parent game object.
+   */
+  protected abstract void init();
   
   /**
    * Method to implement update.
