@@ -1,5 +1,8 @@
 package org.unbiquitous.uImpala.engine.core;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Use this class to implement components for the component-based
  * game object class.
@@ -51,8 +54,8 @@ public abstract class GameObjectComponent {
    * your will depend.
    * @return Components' families.
    */
-  protected String[] depends() {
-    return new String[0];
+  protected List<String> depends() {
+    return Arrays.asList();
   }
   
   /**

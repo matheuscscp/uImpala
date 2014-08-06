@@ -2,6 +2,8 @@ package org.unbiquitous.uImpala.engine.core;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 public class ComponentGameObject extends GameObject {
@@ -14,7 +16,7 @@ public class ComponentGameObject extends GameObject {
     }
   }
   
-  private HashSet<GameObjectComponent> addedComponents = new HashSet<GameObjectComponent>();
+  private LinkedList<GameObjectComponent> addedComponents = new LinkedList<GameObjectComponent>();
   private HashSet<String> removedComponents = new HashSet<String>();
   private HashMap<String, GameObjectComponent> components = new HashMap<String, GameObjectComponent>();
   private HashMap<String, Field> fields = new HashMap<String, Field>();
@@ -124,10 +126,28 @@ public class ComponentGameObject extends GameObject {
   }
   
   private void addComponents() {
+    HashSet<String> newCompsFamilies = new HashSet<String>();
     for (GameObjectComponent comp : addedComponents) {
       components.put(comp.family(), comp);
+      newCompsFamilies.add(comp.family());
     }
-    addedComponents.clear();
+    while (addedComponents.size() > 0) {
+      GameObjectComponent comp = addedComponents.removeFirst();
+      List<String> depends = comp.depends();
+      int dependenciesAlreadyInitialized = 0;
+      for (String dep : depends) {
+        if (!newCompsFamilies.contains(dep)) {
+          dependenciesAlreadyInitialized++;
+        }
+      }
+      if (dependenciesAlreadyInitialized == depends.size()) {
+        comp.init();
+        newCompsFamilies.remove(comp.family());
+      }
+      else {
+        addedComponents.addLast(comp);
+      }
+    }
   }
   
   private void removeComponents() {
