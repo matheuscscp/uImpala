@@ -41,12 +41,16 @@ public abstract class GameObject {
    * Handle a pop from the stack of game scenes.
    * @param args Arguments passed from the scene popped.
    */
-  protected abstract void wakeup(Object... args);
+  protected void wakeup(Object... args) {
+    
+  }
   
   /**
    * Method to close whatever is necessary.
    */
-  protected abstract void destroy();
+  protected void destroy() {
+    
+  }
   
   /**
    * Add a child game object.

@@ -72,17 +72,23 @@ public abstract class GameObjectComponent {
    * Handle a pop from the stack of game scenes.
    * @param args Arguments passed from the scene popped.
    */
-  protected abstract void wakeup(Object... args);
+  protected void wakeup(Object... args) {
+    
+  }
   
   /**
    * Method to close whatever is necessary.
    */
-  protected abstract void destroy();
+  protected void destroy() {
+    
+  }
   
   /**
    * Method to handle a field write.
    * @param field Field name.
    * @param value Field value.
    */
-  protected abstract void handle(String field, Object value);
+  protected void handle(String field, Object value) {
+    
+  }
 }
