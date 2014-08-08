@@ -243,7 +243,7 @@ public abstract class Game implements UosApplication {
 
 		case CHANGE:
 			tmp = scenes.removeLast();
-			tmp.getAssets().destroy();
+			tmp.assets().destroy();
 			tmp.destroy();
 			scenes.add(scene_change);
 			break;
@@ -254,7 +254,7 @@ public abstract class Game implements UosApplication {
 
 		case POP:
 			tmp = scenes.removeLast();
-			tmp.getAssets().destroy();
+			tmp.assets().destroy();
 			tmp.destroy();
 			if (scenes.size() > 0)
 				scenes.getLast().wakeup(pop_args);

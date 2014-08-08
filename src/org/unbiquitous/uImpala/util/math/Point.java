@@ -62,4 +62,8 @@ public class Point implements Cloneable, Serializable{
 		return Math.abs(x)+Math.abs(y);
 	}
 
+	public boolean isInside(Rectangle r){
+		return r.isPointInside(x, y);
+	}
+	
 }

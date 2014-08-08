@@ -66,7 +66,7 @@ public abstract class GameScene {
 		this.visible = visible;
 	}
 	
-	public AssetManager getAssets() {
+	public AssetManager assets() {
 	  return assets;
 	}
 }
