@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.unbiquitous.uImpala.engine.core.GameComponents;
+import org.unbiquitous.uImpala.util.observer.Observation;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.driverManager.DriverData;
 
@@ -67,6 +68,15 @@ public class KeyboardManager implements InputManager {
       ks.close();
     for (Entry<String, KeyboardSource> e : busyKeyboards.entrySet())
       e.getValue().close();
+  }
+  
+  /**
+   * Allows to connect to an event in all available sources
+   */
+  public void connect(Integer eventType, Observation obs){
+	  for (KeyboardSource ks : screenKeyboards){
+		  ks.connect(eventType, obs);
+	  }
   }
   
   private void updateLists() {

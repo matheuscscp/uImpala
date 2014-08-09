@@ -1,5 +1,7 @@
 package org.unbiquitous.uImpala.engine.io;
 
+import org.unbiquitous.uImpala.util.observer.Observation;
+
 /**
  * Interface for IO resources management.
  * @author Pimenta
@@ -29,4 +31,5 @@ public interface IOManager {
    * Engine's private use.
    */
   public void close();
+  
 }
