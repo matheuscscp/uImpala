@@ -1,5 +1,6 @@
 package org.unbiquitous.uImpala.engine.io;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -57,6 +58,6 @@ public class MouseManager implements InputManager {
 	
 	@SuppressWarnings("unchecked")
 	public List<IOResource> list() {
-		return (List<IOResource>) screenMouses.clone();
+		return new ArrayList<IOResource>(screenMouses);
 	}
 }
