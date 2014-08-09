@@ -9,7 +9,9 @@ import java.lang.reflect.Modifier;
  * @author Pimenta
  *
  */
-public final class Observation {
+public class Observation {
+	
+	public Observation(){}
   /**
    * Create an object observation.
    * @param object Object.
@@ -67,7 +69,9 @@ public final class Observation {
   }
   
   public int hashCode() {
-    int code = method.hashCode();
+    int code = 0;
+    if (method != null)
+    	code+= method.hashCode();
     if (object != null)
       code += object.hashCode();
     return code;
