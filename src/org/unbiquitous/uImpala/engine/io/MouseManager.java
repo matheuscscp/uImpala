@@ -1,6 +1,7 @@
 package org.unbiquitous.uImpala.engine.io;
 
 import java.util.HashSet;
+import java.util.List;
 
 import org.unbiquitous.uImpala.util.observer.Observation;
 
@@ -53,4 +54,9 @@ public class MouseManager implements InputManager {
 	 * Engine's private use.
 	 */
 	protected HashSet<MouseSource> screenMouses = new HashSet<MouseSource>();
+	
+	@SuppressWarnings("unchecked")
+	public List<IOResource> list() {
+		return (List<IOResource>) screenMouses.clone();
+	}
 }

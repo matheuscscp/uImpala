@@ -1,6 +1,7 @@
 package org.unbiquitous.uImpala.engine.io;
 
 import java.util.HashSet;
+import java.util.List;
 
 /**
  * Class for screens management.
@@ -63,4 +64,9 @@ public class ScreenManager implements OutputManager {
   }
   
   private HashSet<Screen> localScreens = new HashSet<Screen>();
+  
+	@SuppressWarnings("unchecked")
+	public List<IOResource> list() {
+		return (List<IOResource>) localScreens.clone();
+	}
 }

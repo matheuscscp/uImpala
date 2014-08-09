@@ -1,6 +1,6 @@
 package org.unbiquitous.uImpala.engine.io;
 
-import org.unbiquitous.uImpala.util.observer.Observation;
+import java.util.List;
 
 /**
  * Interface for IO resources management.
@@ -31,5 +31,10 @@ public interface IOManager {
    * Engine's private use.
    */
   public void close();
+  
+  /**
+   * Inform the list of sources available in that manager
+   */
+  public List<IOResource> list();
   
 }

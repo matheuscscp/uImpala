@@ -1,5 +1,8 @@
 package org.unbiquitous.uImpala.engine.io;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Class for sound speakers management.
  * @author Pimenta
@@ -31,4 +34,9 @@ public class SpeakerManager implements OutputManager {
   
   private Speaker speaker = Speaker.create();
   private boolean busy = false;
+  
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public List list() {
+		return Arrays.asList(speaker);
+	}
 }
