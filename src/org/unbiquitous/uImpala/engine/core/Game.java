@@ -34,7 +34,8 @@ public abstract class Game implements UosApplication {
 	 *            Command line arguments.
 	 */
   protected static void run(final Class<? extends UosApplication> gameClass, final GameSettings settings) {
-	  settings.addApplication(gameClass);
+	  String gameId = settings.getString("game_id");
+	  settings.addApplication(gameClass,gameId);
 	  if (settings.get("root_path") == null)
 	      settings.put("root_path", ".");
 	  new UOS().start(settings);
