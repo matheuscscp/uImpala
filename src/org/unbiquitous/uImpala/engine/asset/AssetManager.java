@@ -3,7 +3,7 @@ package org.unbiquitous.uImpala.engine.asset;
 import java.awt.Font;
 import java.util.HashMap;
 
-import org.unbiquitous.uImpala.engine.core.GameComponents;
+import org.unbiquitous.uImpala.engine.core.GameSingletons;
 import org.unbiquitous.uImpala.engine.core.GameSettings;
 import org.unbiquitous.uImpala.util.Color;
 import org.unbiquitous.uImpala.util.math.Point;
@@ -113,7 +113,7 @@ public abstract class AssetManager {
       return asset;
     
     asset = new Map(
-      GameComponents.get(GameSettings.class).get("root_path") + "/" + path
+      GameSingletons.get(GameSettings.class).get("root_path") + "/" + path
     );
     
     assets.put(path, asset);
