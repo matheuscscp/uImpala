@@ -56,7 +56,6 @@ public class MouseManager implements InputManager {
 	 */
 	protected HashSet<MouseSource> screenMouses = new HashSet<MouseSource>();
 	
-	@SuppressWarnings("unchecked")
 	public List<IOResource> list() {
 		return new ArrayList<IOResource>(screenMouses);
 	}

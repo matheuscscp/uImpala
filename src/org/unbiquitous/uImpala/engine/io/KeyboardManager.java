@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.unbiquitous.uImpala.engine.core.GameComponents;
+import org.unbiquitous.uImpala.engine.core.GameSingletons;
 import org.unbiquitous.uImpala.util.observer.Observation;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.driverManager.DriverData;
@@ -19,7 +19,7 @@ import org.unbiquitous.uos.core.driverManager.DriverData;
  */
 public class KeyboardManager implements InputManager {
 	public KeyboardManager() {
-		gateway = GameComponents.get(Gateway.class);
+		gateway = GameSingletons.get(Gateway.class);
 	}
 
 	public IOResource alloc() {

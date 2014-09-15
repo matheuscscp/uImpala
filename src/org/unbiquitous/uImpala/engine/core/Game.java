@@ -187,10 +187,10 @@ public abstract class Game implements UosApplication {
 		initImpl();
 
 		validateSettings();
-		GameComponents.put(GameSettings.class, settings);
-		GameComponents.put(Game.class, this);
-		GameComponents.put(Gateway.class, gateway);
-		GameComponents.put(DeltaTime.class, deltatime = new DeltaTime());
+		GameSingletons.put(GameSettings.class, settings);
+		GameSingletons.put(Game.class, this);
+		GameSingletons.put(Gateway.class, gateway);
+		GameSingletons.put(DeltaTime.class, deltatime = new DeltaTime());
 
 		try {
 			List<Class<?>> ims = (List<Class<?>>) settings
@@ -198,7 +198,7 @@ public abstract class Game implements UosApplication {
 			if (ims != null) {
 				for (Class<?> imc : ims) {
 					InputManager im = (InputManager) imc.newInstance();
-					GameComponents.put(imc, im);
+					GameSingletons.put(imc, im);
 					inputs.add(im);
 				}
 			}
@@ -208,7 +208,7 @@ public abstract class Game implements UosApplication {
 			if (oms != null) {
 				for (Class<?> omc : oms) {
 					OutputManager om = (OutputManager) omc.newInstance();
-					GameComponents.put(omc, om);
+					GameSingletons.put(omc, om);
 					outputs.add(om);
 				}
 			}

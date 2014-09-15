@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @author Matheus
  */
 @SuppressWarnings("serial")
-public class ComponentContainer extends HashMap<Class<?>, Object> {
+public class SingletonContainer extends HashMap<Class<?>, Object> {
   /**
    * Overriding to add type cast.
    * @param key Key object.

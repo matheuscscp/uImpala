@@ -1,6 +1,6 @@
 package org.unbiquitous.uImpala.engine.io;
 
-import org.unbiquitous.uImpala.engine.core.GameComponents;
+import org.unbiquitous.uImpala.engine.core.GameSingletons;
 import org.unbiquitous.uos.core.adaptabitilyEngine.Gateway;
 import org.unbiquitous.uos.core.adaptabitilyEngine.NotifyException;
 import org.unbiquitous.uos.core.adaptabitilyEngine.UosEventListener;
@@ -40,7 +40,7 @@ public class KeyboardSource extends InputResource implements UosEventListener {
     registerThread = null;
     unregisterThread = null;
     
-    gateway = GameComponents.get(Gateway.class);
+    gateway = GameSingletons.get(Gateway.class);
   }
   
   public void start() {
