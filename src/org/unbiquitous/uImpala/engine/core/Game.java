@@ -146,12 +146,13 @@ public abstract class Game implements UosApplication {
 	}
 
 	protected void updateScenes() {
-		while (deltatime.dtReachedLimit()) {
+//		while (deltatime.dtReachedLimit()) {
+		deltatime.sleepDt();
 			for (GameScene gs : scenes) {
 				if (!gs.isFrozen())
 					gs.update();
 			}
-		}
+//		}
 	}
 
 	protected void updateInputs() {

@@ -67,22 +67,24 @@ public class DeltaTime {
     updateID = now - 1;
   }
   
-  /**
-   * Engine's private use.
-   */
-  public boolean dtReachedLimit() {
-    if (dt >= dtFixed) {
-      dt -= dtFixed;
-      updateID++;
-      return true;
-    }
-    return false;
+  public void sleepDt(){
+	  long now = Time.get();
+	  long deltaSpent = now - last;
+	  long deltaLeft = dtFixed - deltaSpent; 
+	  if (deltaLeft > 0) {
+	      try {
+			Thread.sleep(deltaLeft);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	      updateID++;
+	  }
   }
   
   /**
    * Engine's private use.
    */
   public void accumulate() {
-    last -= dt;
+//    last -= dt;
   }
 }
